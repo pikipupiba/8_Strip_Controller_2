@@ -21,13 +21,19 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+//#define FASTLED_ALLOW_INTERRUPTS 0
+#include <HTTP_Method.h>
 #include <FastLED.h>
+#include <WebServer.h>
 #include <WiFi.h>
-#include <ESP8266WebServer.h>
 #include <FS.h>
 #include <SPIFFS.h>
 #include <EEPROM.h>
+
+#include <SSD1306.h> // alias for #include "SSD1306Wire.h"'
+
+// Initialize the OLED display using Wire library
+SSD1306  display(0x3c, 4, 15);
 
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001008)
 #warning "Requires FastLED 3.1.8 or later; check github for latest code."
@@ -35,7 +41,8 @@
 
 WebServer webServer(80);
 
-const int led = 5;
+
+const int led = 2;
 
 uint8_t autoplay = 0;
 uint8_t autoplayDuration = 10;
@@ -72,17 +79,17 @@ unsigned long paletteTimeout = 0;
 #define DATA_PIN    12 // pins tested so far on the Feather ESP32: 13, 12, 27, 33, 15, 32, 14, SCL
 //#define CLK_PIN   4
 #define LED_TYPE    WS2812B
-#define COLOR_ORDER RGB
-#define NUM_STRIPS 8
-#define NUM_LEDS_PER_STRIP 100
+#define COLOR_ORDER GRB
+#define NUM_STRIPS 1
+#define NUM_LEDS_PER_STRIP 300
 #define NUM_LEDS NUM_LEDS_PER_STRIP * NUM_STRIPS
 CRGB leds[NUM_LEDS];
 
-#define MILLI_AMPS         4000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
+#define MILLI_AMPS         60000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define FRAMES_PER_SECOND  120
 
 // -- The core to run FastLED.show()
-#define FASTLED_SHOW_CORE 0
+#define FASTLED_SHOW_CORE 1
 
 #include "patterns.h"
 
@@ -90,8 +97,10 @@ CRGB leds[NUM_LEDS];
 #include "fields.h"
 
 #include "secrets.h"
-#include "wifi.h"
+#include "wifi_changed.h"
 #include "web.h"
+
+String ipaddress;
 
 // wifi ssid and password should be added to a file in the sketch named secrets.h
 // the secrets.h file should be added to the .gitignore file and never committed or
@@ -174,11 +183,30 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
 }
 
 void setup() {
+
+  delay(3000); // 3 second delay for recovery
+
+  // Get the display running.
+  pinMode(16, OUTPUT);
+  digitalWrite(16, LOW); // set GPIO16 low to reset OLED
+  delay(50);
+  digitalWrite(16, HIGH); // while OLED is running, must set GPIO16 in high
+  
+  display.init();
+  display.flipScreenVertically();
+  display.setColor(WHITE);
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.setFont(ArialMT_Plain_10);
+  
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
 
-  //  delay(3000); // 3 second delay for recovery
   Serial.begin(115200);
+
+  display.clear();
+  display.drawString(2, 20, String("Connecting to Wi-Fi"));
+ 
+  display.display();
 
   SPIFFS.begin();
   listDir(SPIFFS, "/", 1);
@@ -189,20 +217,21 @@ void setup() {
   setupWeb();
 
   // three-wire LEDs (WS2811, WS2812, NeoPixel)
-  //  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
   // four-wire LEDs (APA102, DotStar)
   //FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
-  // Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL
-  FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, 0, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, 2 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 33, COLOR_ORDER>(leds, 3 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 15, COLOR_ORDER>(leds, 4 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 32, COLOR_ORDER>(leds, 5 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, 14, COLOR_ORDER>(leds, 6 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<LED_TYPE, SCL, COLOR_ORDER>(leds, 7 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  // Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL.0
+  
+  //FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, 0, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, 2 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 33, COLOR_ORDER>(leds, 3 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 15, COLOR_ORDER>(leds, 4 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 32, COLOR_ORDER>(leds, 5 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, 14, COLOR_ORDER>(leds, 6 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, SCL, COLOR_ORDER>(leds, 7 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
 
   FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS);
   
@@ -217,12 +246,32 @@ void setup() {
   xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
 
   autoPlayTimeout = millis() + (autoplayDuration * 1000);
+
+  
+  ipaddress = WiFi.localIP().toString();
+  
+  Serial.print("Server IP: ");
+  Serial.println(ipaddress);
+  Serial.println("\n\n");
+
+  display.clear();
+  display.drawString(2, 20, ipaddress);
+ 
+  display.display();
 }
 
 void loop()
 {
   handleWeb();
 
+  if (ipaddress != WiFi.localIP().toString()) {
+
+    ipaddress = WiFi.localIP().toString();
+    display.clear();
+    display.drawString(2, 50, "IP Addr: " + ipaddress);
+    display.display();
+  }
+  
   if (power == 0) {
     fill_solid(leds, NUM_LEDS, CRGB::Black);
   }
@@ -246,6 +295,11 @@ void loop()
       paletteTimeout = millis() + (paletteDuration * 1000);
     }
   }
+
+  // Copy the first strip to the second strip
+  // for(int i = 0; i < NUM_LEDS_PER_STRIP; i++) {
+  //   leds[NUM_LEDS_PER_STRIP + i] = leds[i];
+  // }
 
   // send the 'leds' array out to the actual LED strip
   FastLEDshowESP32();

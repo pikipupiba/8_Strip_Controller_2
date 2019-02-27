@@ -207,4 +207,3 @@ String getFieldsJson(FieldList fields, uint8_t count) {
 
   return json;
 }
-

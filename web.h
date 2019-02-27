@@ -23,65 +23,65 @@
 */
 
 void setupWeb() {
-  webServer.on("/all", HTTP_GET, []() {
-    digitalWrite(led, 0);
-    String json = getFieldsJson(fields, fieldCount);
-    webServer.send(200, "text/json", json);
-    digitalWrite(led, 1);
-  });
+	webServer.on("/all", HTTP_GET, []() {
+		digitalWrite(led, 0);
+		String json = getFieldsJson(fields, fieldCount);
+		webServer.send(200, "text/json", json);
+		digitalWrite(led, 1);
+	});
 
-  webServer.on("/fieldValue", HTTP_GET, []() {
-    digitalWrite(led, 0);
-    String name = webServer.arg("name");
-    String value = getFieldValue(name, fields, fieldCount);
-    webServer.send(200, "text/json", value);
-    digitalWrite(led, 1);
-  });
+	webServer.on("/fieldValue", HTTP_GET, []() {
+		digitalWrite(led, 0);
+		String name = webServer.arg("name");
+		String value = getFieldValue(name, fields, fieldCount);
+		webServer.send(200, "text/json", value);
+		digitalWrite(led, 1);
+	});
 
-  webServer.on("/fieldValue", HTTP_POST, []() {
-    digitalWrite(led, 0);
-    String name = webServer.arg("name");
-    String value = webServer.arg("value");
-    String newValue = setFieldValue(name, value, fields, fieldCount);
-    webServer.send(200, "text/json", newValue);
-    digitalWrite(led, 1);
-  });
+	webServer.on("/fieldValue", HTTP_POST, []() {
+		digitalWrite(led, 0);
+		String name = webServer.arg("name");
+		String value = webServer.arg("value");
+		String newValue = setFieldValue(name, value, fields, fieldCount);
+		webServer.send(200, "text/json", newValue);
+		digitalWrite(led, 1);
+	});
 
-  webServer.serveStatic("/", SPIFFS, "/index.htm", "max-age=86400");
-  webServer.serveStatic("/index.htm", SPIFFS, "/index.htm", "max-age=86400");
-  webServer.serveStatic("/favicon.ico", SPIFFS, "/favicon.ico", "max-age=86400");
-  webServer.serveStatic("/css/styles.css", SPIFFS, "/css/styles.css", "max-age=86400");
-  webServer.serveStatic("/js/app.js", SPIFFS, "/js/app.js", "max-age=86400");
-  webServer.serveStatic("/images/atom196.png", SPIFFS, "/images/atom196.png", "max-age=86400");
+	webServer.serveStatic("/", SPIFFS, "/index.htm", "max-age=86400");
+	webServer.serveStatic("/index.htm", SPIFFS, "/index.htm", "max-age=86400");
+	webServer.serveStatic("/favicon.ico", SPIFFS, "/favicon.ico", "max-age=86400");
+	webServer.serveStatic("/css/styles.css", SPIFFS, "/css/styles.css", "max-age=86400");
+	webServer.serveStatic("/js/app.js", SPIFFS, "/js/app.js", "max-age=86400");
+	webServer.serveStatic("/images/atom196.png", SPIFFS, "/images/atom196.png", "max-age=86400");
 
-  webServer.begin();
-  Serial.println ( "HTTP server started" );
+	webServer.begin();
+	Serial.println("HTTP server started");
 }
 
 void handleWeb() {
-  static bool webServerStarted = false;
+	static bool webServerStarted = false;
 
-  // check for connection
-  if ( WiFi.status() == WL_CONNECTED ) {
-    if (!webServerStarted) {
-      // turn off the board's LED when connected to wifi
-      digitalWrite(led, 1);
-      Serial.println();
-      Serial.println("WiFi connected");
-      Serial.print("IP address: ");
-      Serial.println(WiFi.localIP());
-      webServerStarted = true;
-      setupWeb();
-    }
-    webServer.handleClient();
-  } else {
-    // blink the board's LED while connecting to wifi
-    static uint8_t ledState = 0;
-    EVERY_N_MILLIS(125) {
-      ledState = ledState == 0 ? 1 : 0;
-      digitalWrite(led, ledState);
-      Serial.print (".");
-    }
-  }
+	// check for connection
+	if (WiFi.status() == WL_CONNECTED) {
+		if (!webServerStarted) {
+			// turn off the board's LED when connected to wifi
+			digitalWrite(led, 1);
+			Serial.println();
+			Serial.println("WiFi connected");
+			Serial.print("IP address: ");
+			Serial.println(WiFi.localIP());
+			webServerStarted = true;
+			setupWeb();
+		}
+		webServer.handleClient();
+	}
+	else {
+		// blink the board's LED while connecting to wifi
+		static uint8_t ledState = 0;
+		EVERY_N_MILLIS(125) {
+			ledState = ledState == 0 ? 1 : 0;
+			digitalWrite(led, ledState);
+			Serial.print(".");
+		}
+	}
 }
-

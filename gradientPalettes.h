@@ -464,4 +464,3 @@ DEFINE_GRADIENT_PALETTE( Blue_Cyan_Yellow_gp ) {
   127,   0,255,255,
   191,  42,255, 45,
   255, 255,255,  0};
-
