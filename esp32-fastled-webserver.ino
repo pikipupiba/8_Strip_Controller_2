@@ -80,7 +80,7 @@ unsigned long paletteTimeout = 0;
 //#define CLK_PIN   4
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
-#define NUM_STRIPS 1
+#define NUM_STRIPS 2
 #define NUM_LEDS_PER_STRIP 300
 #define NUM_LEDS NUM_LEDS_PER_STRIP * NUM_STRIPS
 CRGB leds[NUM_LEDS];
@@ -100,7 +100,6 @@ CRGB leds[NUM_LEDS];
 #include "wifi_changed.h"
 #include "web.h"
 
-String ipaddress;
 
 // wifi ssid and password should be added to a file in the sketch named secrets.h
 // the secrets.h file should be added to the .gitignore file and never committed or
@@ -113,211 +112,288 @@ static TaskHandle_t FastLEDshowTaskHandle = 0;
 static TaskHandle_t userTaskHandle = 0;
 
 /** show() for ESP32
-    Call this function instead of FastLED.show(). It signals core 0 to issue a show,
-    then waits for a notification that it is done.
+	Call this function instead of FastLED.show(). It signals core 0 to issue a show,
+	then waits for a notification that it is done.
 */
 void FastLEDshowESP32()
 {
-  if (userTaskHandle == 0) {
-    // -- Store the handle of the current task, so that the show task can
-    //    notify it when it's done
-    userTaskHandle = xTaskGetCurrentTaskHandle();
+	if (userTaskHandle == 0) {
+		// -- Store the handle of the current task, so that the show task can
+		//    notify it when it's done
+		userTaskHandle = xTaskGetCurrentTaskHandle();
 
-    // -- Trigger the show task
-    xTaskNotifyGive(FastLEDshowTaskHandle);
+		// -- Trigger the show task
+		xTaskNotifyGive(FastLEDshowTaskHandle);
 
-    // -- Wait to be notified that it's done
-    const TickType_t xMaxBlockTime = pdMS_TO_TICKS( 200 );
-    ulTaskNotifyTake(pdTRUE, xMaxBlockTime);
-    userTaskHandle = 0;
-  }
+		// -- Wait to be notified that it's done
+		const TickType_t xMaxBlockTime = pdMS_TO_TICKS(200);
+		ulTaskNotifyTake(pdTRUE, xMaxBlockTime);
+		userTaskHandle = 0;
+	}
 }
 
 /** show Task
-    This function runs on core 0 and just waits for requests to call FastLED.show()
+	This function runs on core 0 and just waits for requests to call FastLED.show()
 */
 void FastLEDshowTask(void *pvParameters)
 {
-  // -- Run forever...
-  for (;;) {
-    // -- Wait for the trigger
-    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+	// -- Run forever...
+	for (;;) {
+		// -- Wait for the trigger
+		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-    // -- Do the show (synchronously)
-    FastLED.show();
+		// -- Do the show (synchronously)
+		FastLED.show();
 
-    // -- Notify the calling task
-    xTaskNotifyGive(userTaskHandle);
-  }
+		// -- Notify the calling task
+		xTaskNotifyGive(userTaskHandle);
+	}
 }
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
-  Serial.printf("Listing directory: %s\n", dirname);
+	Serial.printf("Listing directory: %s\n", dirname);
 
-  File root = fs.open(dirname);
-  if (!root) {
-    Serial.println("Failed to open directory");
-    return;
-  }
-  if (!root.isDirectory()) {
-    Serial.println("Not a directory");
-    return;
-  }
+	File root = fs.open(dirname);
+	if (!root) {
+		Serial.println("Failed to open directory");
+		return;
+	}
+	if (!root.isDirectory()) {
+		Serial.println("Not a directory");
+		return;
+	}
 
-  File file = root.openNextFile();
-  while (file) {
-    if (file.isDirectory()) {
-      Serial.print("  DIR : ");
-      Serial.println(file.name());
-      if (levels) {
-        listDir(fs, file.name(), levels - 1);
-      }
-    } else {
-      Serial.print("  FILE: ");
-      Serial.print(file.name());
-      Serial.print("  SIZE: ");
-      Serial.println(file.size());
-    }
-    file = root.openNextFile();
-  }
+	File file = root.openNextFile();
+	while (file) {
+		if (file.isDirectory()) {
+			Serial.print("  DIR : ");
+			Serial.println(file.name());
+			if (levels) {
+				listDir(fs, file.name(), levels - 1);
+			}
+		}
+		else {
+			Serial.print("  FILE: ");
+			Serial.print(file.name());
+			Serial.print("  SIZE: ");
+			Serial.println(file.size());
+		}
+		file = root.openNextFile();
+	}
 }
+
+int potPin1 = 36;
+int potPin2 = 37;
+int butPin1 = 39;
+int butPin2 = 38;
 
 void setup() {
 
-  delay(3000); // 3 second delay for recovery
+	delay(3000); // 3 second delay for recovery
 
-  // Get the display running.
-  pinMode(16, OUTPUT);
-  digitalWrite(16, LOW); // set GPIO16 low to reset OLED
-  delay(50);
-  digitalWrite(16, HIGH); // while OLED is running, must set GPIO16 in high
-  
-  display.init();
-  display.flipScreenVertically();
-  display.setColor(WHITE);
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.setFont(ArialMT_Plain_10);
-  
-  pinMode(led, OUTPUT);
-  digitalWrite(led, 1);
+	pinMode(butPin1, INPUT);
+	pinMode(butPin2, INPUT);
 
-  Serial.begin(115200);
+	// Get the display running.
+	pinMode(16, OUTPUT);
+	digitalWrite(16, LOW); // set GPIO16 low to reset OLED
+	delay(50);
+	digitalWrite(16, HIGH); // while OLED is running, must set GPIO16 in high
 
-  display.clear();
-  display.drawString(2, 20, String("Connecting to Wi-Fi"));
- 
-  display.display();
+	display.init();
+	display.flipScreenVertically();
+	display.setColor(WHITE);
+	display.setTextAlignment(TEXT_ALIGN_LEFT);
+	display.setFont(ArialMT_Plain_10);
 
-  SPIFFS.begin();
-  listDir(SPIFFS, "/", 1);
+	pinMode(led, OUTPUT);
+	digitalWrite(led, 1);
 
-//  loadFieldsFromEEPROM(fields, fieldCount);
+	Serial.begin(115200);
 
-  setupWifi();
-  setupWeb();
+	display.clear();
+	display.drawString(2, 20, String("Connecting to Wi-Fi"));
 
-  // three-wire LEDs (WS2811, WS2812, NeoPixel)
-  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+	display.display();
 
-  // four-wire LEDs (APA102, DotStar)
-  //FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+	SPIFFS.begin();
+	listDir(SPIFFS, "/", 1);
 
-  // Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL.0
-  
-  //FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, 0, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, 2 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 33, COLOR_ORDER>(leds, 3 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 15, COLOR_ORDER>(leds, 4 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 32, COLOR_ORDER>(leds, 5 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, 14, COLOR_ORDER>(leds, 6 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-  //FastLED.addLeds<LED_TYPE, SCL, COLOR_ORDER>(leds, 7 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//  loadFieldsFromEEPROM(fields, fieldCount);
 
-  FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS);
-  
-  // set master brightness control
-  FastLED.setBrightness(brightness);
+	setupWifi();
+	setupWeb();
 
-  int core = xPortGetCoreID();
-  Serial.print("Main code running on core ");
-  Serial.println(core);
+	// three-wire LEDs (WS2811, WS2812, NeoPixel)
+	//FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
-  // -- Create the FastLED show task
-  xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
+	// four-wire LEDs (APA102, DotStar)
+	//FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
-  autoPlayTimeout = millis() + (autoplayDuration * 1000);
+	// Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL.0
 
-  
-  ipaddress = WiFi.localIP().toString();
-  
-  Serial.print("Server IP: ");
-  Serial.println(ipaddress);
-  Serial.println("\n\n");
+	FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, 0, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, 2 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, 33, COLOR_ORDER>(leds, 3 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, 15, COLOR_ORDER>(leds, 4 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, 32, COLOR_ORDER>(leds, 5 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, 14, COLOR_ORDER>(leds, 6 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+	//FastLED.addLeds<LED_TYPE, SCL, COLOR_ORDER>(leds, 7 * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
 
-  display.clear();
-  display.drawString(2, 20, ipaddress);
- 
-  display.display();
+	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS);
+
+	// set master brightness control
+	FastLED.setBrightness(brightness);
+
+	int core = xPortGetCoreID();
+	Serial.print("Main code running on core ");
+	Serial.println(core);
+
+	// -- Create the FastLED show task
+	xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
+
+	autoPlayTimeout = millis() + (autoplayDuration * 1000);
+
+
+	Serial.print("Server IP: ");
+	Serial.println(WiFi.localIP().toString());
+	Serial.println("\n\n");
+
+	drawMenu();
 }
 
 void loop()
 {
-  handleWeb();
+	handleWeb();
 
-  if (ipaddress != WiFi.localIP().toString()) {
+	handleButtons();
 
-    ipaddress = WiFi.localIP().toString();
-    display.clear();
-    display.drawString(2, 50, "IP Addr: " + ipaddress);
-    display.display();
-  }
-  
-  if (power == 0) {
-    fill_solid(leds, NUM_LEDS, CRGB::Black);
-  }
-  else {
-    // Call the current pattern function once, updating the 'leds' array
-    patterns[currentPatternIndex].pattern();
+	drawMenu();
 
-    EVERY_N_MILLISECONDS(40) {
-      // slowly blend the current palette to the next
-      nblendPaletteTowardPalette(currentPalette, targetPalette, 8);
-      gHue++;  // slowly cycle the "base color" through the rainbow
-    }
 
-    if (autoplay == 1 && (millis() > autoPlayTimeout)) {
-      nextPattern();
-      autoPlayTimeout = millis() + (autoplayDuration * 1000);
-    }
+	if (power == 0) {
+		fill_solid(leds, NUM_LEDS, CRGB::Black);
+	}
+	else {
+		// Call the current pattern function once, updating the 'leds' array
+		patterns[currentPatternIndex].pattern();
 
-    if (cyclePalettes == 1 && (millis() > paletteTimeout)) {
-      nextPalette();
-      paletteTimeout = millis() + (paletteDuration * 1000);
-    }
-  }
+		EVERY_N_MILLISECONDS(40) {
+			// slowly blend the current palette to the next
+			nblendPaletteTowardPalette(currentPalette, targetPalette, 8);
+			gHue++;  // slowly cycle the "base color" through the rainbow
+		}
 
-  // Copy the first strip to the second strip
-  // for(int i = 0; i < NUM_LEDS_PER_STRIP; i++) {
-  //   leds[NUM_LEDS_PER_STRIP + i] = leds[i];
-  // }
+		if (autoplay == 1 && (millis() > autoPlayTimeout)) {
+			nextPattern();
+			autoPlayTimeout = millis() + (autoplayDuration * 1000);
+		}
 
-  // send the 'leds' array out to the actual LED strip
-  FastLEDshowESP32();
+		if (cyclePalettes == 1 && (millis() > paletteTimeout)) {
+			nextPalette();
+			paletteTimeout = millis() + (paletteDuration * 1000);
+		}
+	}
 
-  // FastLED.show();
-  // insert a delay to keep the framerate modest
-  // FastLED.delay(1000 / FRAMES_PER_SECOND);
-  delay(1000 / FRAMES_PER_SECOND);
+	// Copy the first strip to the second strip
+	 for(int i = 0; i < NUM_LEDS_PER_STRIP; i++) {
+	   leds[NUM_LEDS_PER_STRIP + i] = leds[i];
+	 }
+
+	// send the 'leds' array out to the actual LED strip
+	FastLEDshowESP32();
+
+	// FastLED.show();
+	// insert a delay to keep the framerate modest
+	// FastLED.delay(1000 / FRAMES_PER_SECOND);
+	delay(1000 / FRAMES_PER_SECOND);
 }
 
 void nextPattern()
 {
-  // add one to the current pattern number, and wrap around at the end
-  currentPatternIndex = (currentPatternIndex + 1) % patternCount;
+	// add one to the current pattern number, and wrap around at the end
+	currentPatternIndex = (currentPatternIndex + 1) % patternCount;
 }
 
 void nextPalette()
 {
-  currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
-  targetPalette = palettes[currentPaletteIndex];
+	currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
+	targetPalette = palettes[currentPaletteIndex];
+}
+
+void drawMenu()
+{
+	display.clear();
+	display.drawString(2, 2, "Pattern: " + patterns[currentPatternIndex].name);
+	display.drawString(2, 12, "Palette: " + paletteNames[currentPaletteIndex]);
+	display.drawString(2, 22, "Brightness: " + String(brightness));
+	display.drawString(2, 32, "Speed: " + String(speed));
+	display.drawString(2, 50, "IP: " + WiFi.localIP().toString());
+
+	if (power == 0)
+	{
+		display.drawString(100, 50, "OFF");
+	}
+	else
+	{
+		display.drawString(100, 50, "ON");
+	}
+
+	display.display();
+}
+
+void handleButtons()
+{
+	static long prevPress = 0;
+	static int potVal1 = 0;
+	static int potVal2 = 0;
+
+	static int prevPotVal1 = 0;
+	static int prevPotVal2 = 0;
+	 
+	long buttonTime = 200;
+
+	if (millis() - prevPress > buttonTime)
+	{
+		if (digitalRead(butPin1))
+		{
+			if (power == 0)
+			{
+				power = 1;
+			}
+			else
+			{
+				power = 0;
+			}
+			prevPress = millis();
+		}
+		if (digitalRead(butPin2))
+		{
+			nextPattern();
+			prevPress = millis();
+		}
+	}
+
+	potVal1 = (prevPotVal1 * 4 + 255 - map(analogRead(potPin1), 0, 4096, 0, 255))/5;
+	potVal2 = (prevPotVal2 * 4 + 255 - map(analogRead(potPin2), 0, 4096, 0, 255))/5;
+
+	if (brightness - potVal1 > 2 || brightness - potVal1 < -2)
+	{
+		brightness = potVal1;
+		FastLED.setBrightness(brightness);
+	}
+	if (speed*5 - potVal2 > 2 || speed*5 - potVal2 < -2)
+	{
+		speed = potVal2/5;
+		
+		if (patterns[currentPatternIndex].name == "Solid Color")
+		{
+			solidColor = CHSV(potVal2,255,255);
+		}
+	}
+
+	prevPotVal1 = potVal1;
+	prevPotVal2 = potVal2;
+
 }
