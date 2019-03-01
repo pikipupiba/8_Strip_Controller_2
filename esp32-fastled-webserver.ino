@@ -21,15 +21,16 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//#define FASTLED_ALLOW_INTERRUPTS 0
-#include <HTTP_Method.h>
+
+// -----------------------------------------------------------------------------------//
+// --------------------------------OUTSIDE LIBRARIES----------------------------------//
+// -----------------------------------------------------------------------------------//
 #include <FastLED.h>
 #include <WebServer.h>
 #include <WiFi.h>
 #include <FS.h>
 #include <SPIFFS.h>
 #include <EEPROM.h>
-
 #include <SSD1306.h> // alias for #include "SSD1306Wire.h"'
 
 // Initialize the OLED display using Wire library
@@ -39,14 +40,13 @@ SSD1306  display(0x3c, 4, 15);
 #warning "Requires FastLED 3.1.8 or later; check github for latest code."
 #endif
 
+// Define the WebServer object.
 WebServer webServer(80);
 
-
-const int led = 2;
-
-uint8_t autoplay = 0;
-uint8_t autoplayDuration = 10;
-unsigned long autoPlayTimeout = 0;
+// -----------------------------------------------------------------------------------//
+// -------------------------------ANIMATION VARIABLES---------------------------------//
+// -----------------------------------------------------------------------------------//
+// TODO Save and restore these settings from EEPROM.
 
 uint8_t currentPatternIndex = 0; // Index number of which pattern is current
 
@@ -55,7 +55,12 @@ uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 uint8_t power = 1;
 uint8_t brightness = 8;
 
+// Speed value used by many animations.
+// TODO Normalize speed value between the varias animations.
 uint8_t speed = 30;
+
+// Number of milliseconds between incrementing gHue.
+int hueDelay = 40;
 
 // COOLING: How much does the air cool as it rises?
 // Less cooling = taller flames.  More cooling = shorter flames.
@@ -68,6 +73,10 @@ uint8_t cooling = 50;
 uint8_t sparking = 120;
 
 CRGB solidColor = CRGB::Blue;
+
+uint8_t autoplay = 0;
+uint8_t autoplayDuration = 10;
+unsigned long autoPlayTimeout = 0;
 
 uint8_t cyclePalettes = 0;
 uint8_t paletteDuration = 10;
@@ -90,6 +99,18 @@ CRGB leds[NUM_LEDS];
 
 // -- The core to run FastLED.show()
 #define FASTLED_SHOW_CORE 1
+
+// WiFi Status led.
+// TODO No longer needed. REMOVE IT! Maybe?
+const int boardLedPin = 2;
+// BRIGHTNESS Potentiometer
+const int potPin1 = 36;
+// SPEED and HUE of Solid Color Potentiometer
+const int potPin2 = 37;
+// Blackout Button
+const int butPin1 = 39;
+// Pattern Change Button
+const int butPin2 = 38;
 
 #include "patterns.h"
 
@@ -151,6 +172,7 @@ void FastLEDshowTask(void *pvParameters)
 }
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
+
 	Serial.printf("Listing directory: %s\n", dirname);
 
 	File root = fs.open(dirname);
@@ -182,19 +204,23 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
 	}
 }
 
-int potPin1 = 36;
-int potPin2 = 37;
-int butPin1 = 39;
-int butPin2 = 38;
-
 void setup() {
 
 	delay(3000); // 3 second delay for recovery
 
+	// Start the Serial Monitor for debugging.
+	Serial.begin(115200);
+
+	// Set the Button Pins for INPUT.
 	pinMode(butPin1, INPUT);
 	pinMode(butPin2, INPUT);
 
+	// Set the LED on the board for OUTPUT and turn it on.
+	pinMode(boardLedPin, OUTPUT);
+	digitalWrite(boardLedPin, 1);
+
 	// Get the display running.
+	// TODO Learn more about the display library.
 	pinMode(16, OUTPUT);
 	digitalWrite(16, LOW); // set GPIO16 low to reset OLED
 	delay(50);
@@ -204,22 +230,22 @@ void setup() {
 	display.flipScreenVertically();
 	display.setColor(WHITE);
 	display.setTextAlignment(TEXT_ALIGN_LEFT);
+
+	// TODO Figure out what other fonts are available and choose one.
 	display.setFont(ArialMT_Plain_10);
-
-	pinMode(led, OUTPUT);
-	digitalWrite(led, 1);
-
-	Serial.begin(115200);
 
 	display.clear();
 	display.drawString(2, 20, String("Connecting to Wi-Fi"));
 
 	display.display();
-
+	
+	// Starts the SPIFFS? and list the contents.
+	// TODO Learn about SPIFFS
 	SPIFFS.begin();
 	listDir(SPIFFS, "/", 1);
 
-	//  loadFieldsFromEEPROM(fields, fieldCount);
+	// TODO Learn how to save and read settings to EEPROM and then implement!
+	//loadFieldsFromEEPROM(fields, fieldCount);
 
 	setupWifi();
 	setupWeb();
@@ -246,6 +272,8 @@ void setup() {
 	// set master brightness control
 	FastLED.setBrightness(brightness);
 
+	// Print the core the main code is running on.
+	// Make sure to change FASTLED_SHOW_CORE if it is the same as this one.
 	int core = xPortGetCoreID();
 	Serial.print("Main code running on core ");
 	Serial.println(core);
@@ -253,14 +281,9 @@ void setup() {
 	// -- Create the FastLED show task
 	xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
 
+	// Update the Timeout variables after the setup code has completed.
 	autoPlayTimeout = millis() + (autoplayDuration * 1000);
-
-
-	Serial.print("Server IP: ");
-	Serial.println(WiFi.localIP().toString());
-	Serial.println("\n\n");
-
-	drawMenu();
+	paletteTimeout = millis() + (paletteDuration * 1000);
 }
 
 void loop()
@@ -271,20 +294,30 @@ void loop()
 
 	drawMenu();
 
-
 	if (power == 0) {
-		fill_solid(leds, NUM_LEDS, CRGB::Black);
+		// Make all LEDS black if the power is off.
+		//fill_solid(leds, NUM_LEDS, CRGB::Black);
+
+		// NEW METHOD Turn the brightness all the way down so that the state of the strip is saved.
+		FastLED.setBrightness(0);
 	}
-	else {
+
+	// Removing the ELSE so the patterns keep running even if they are off.
+	// This will hopefully allow smoother transitions between on and off.
+	// TODO Remove all evidence once its behavior is confirmed.
+	// else {
+
 		// Call the current pattern function once, updating the 'leds' array
 		patterns[currentPatternIndex].pattern();
 
-		EVERY_N_MILLISECONDS(40) {
+		EVERY_N_MILLISECONDS(hueDelay) {
 			// slowly blend the current palette to the next
 			nblendPaletteTowardPalette(currentPalette, targetPalette, 8);
 			gHue++;  // slowly cycle the "base color" through the rainbow
 		}
 
+		// Advance the pattern and palette if applicable.
+		// TODO Should this only happen if POWER is on?
 		if (autoplay == 1 && (millis() > autoPlayTimeout)) {
 			nextPattern();
 			autoPlayTimeout = millis() + (autoplayDuration * 1000);
@@ -294,43 +327,63 @@ void loop()
 			nextPalette();
 			paletteTimeout = millis() + (paletteDuration * 1000);
 		}
-	}
+	//} // This is the other bracket of the removed ELSE.
 
-	// Copy the first strip to the second strip
+	// Copy the first strip to the second strip.
+	// TODO Immplement a mode that duplicates strips or lets eeach do its own thing.
 	 for(int i = 0; i < NUM_LEDS_PER_STRIP; i++) {
 	   leds[NUM_LEDS_PER_STRIP + i] = leds[i];
 	 }
 
 	// send the 'leds' array out to the actual LED strip
+	// FastLED.show();
 	FastLEDshowESP32();
 
-	// FastLED.show();
-	// insert a delay to keep the framerate modest
+	// insert a delay to keep the framerate modest.
+	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
 	delay(1000 / FRAMES_PER_SECOND);
 }
 
 void nextPattern()
 {
-	// add one to the current pattern number, and wrap around at the end
+	// add one to the current pattern number and wrap around at the end
 	currentPatternIndex = (currentPatternIndex + 1) % patternCount;
 }
 
 void nextPalette()
 {
+	// add one to the current palette number and wrap around at the end
 	currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
 	targetPalette = palettes[currentPaletteIndex];
 }
 
+// Draws the menu onto the OLED display.
+// TODO Implement a more rigourous menu structure that uses a rotary encoder for navigation.
+// TODO Come up with some icons to easily communicate certain information.
 void drawMenu()
 {
+	// Clear the display for updating.
 	display.clear();
+
+	// ALONG THE TOP or ALONG THE RIGHT.
+	// TODO Implement a status bar.
+
+	// TOP LEFT CORNER
+	// Display the current state.
 	display.drawString(2, 2, "Pattern: " + patterns[currentPatternIndex].name);
 	display.drawString(2, 12, "Palette: " + paletteNames[currentPaletteIndex]);
 	display.drawString(2, 22, "Brightness: " + String(brightness));
 	display.drawString(2, 32, "Speed: " + String(speed));
+
+	// BOTTOM LEFT CORNER
+	// Diaplay the current IP Address to control via WiFi.
+	// TODO Switch between IP Address and the host network SSID every few seconds.
+	// TODO Display "Manual Control Only!" if no connection has been made.
 	display.drawString(2, 50, "IP: " + WiFi.localIP().toString());
 
+	// BOTTOM RIGHT CORNER
+	// Display the current power state of the lights.
 	if (power == 0)
 	{
 		display.drawString(100, 50, "OFF");
@@ -343,19 +396,27 @@ void drawMenu()
 	display.display();
 }
 
+// Handle any and all physical buttons on the package.
+
+// TODO Inputs on the final package will be as follows:
+// Potentiometer 1 will control BRIGHTNESS.
+// Potentiometer 2 will control SPEED as well as HUE of a solid color.
+// Button 1 will turn the strip off.
+// Button 2 will toggle HOLD and SET modes. SET changes things immediately and HOLD will wait until returning to SET.
+// The ROTARY ENCODER will navigate the menu and make changes to settings.
 void handleButtons()
 {
 	static long prevPress = 0;
 	static int potVal1 = 0;
 	static int potVal2 = 0;
+	
+	// Time between button repeats.
+	static int buttonTime = 200;
 
-	static int prevPotVal1 = 0;
-	static int prevPotVal2 = 0;
-	 
-	long buttonTime = 200;
-
+	// Read button inputs if past the minimum repeat time.
 	if (millis() - prevPress > buttonTime)
 	{
+		// Button 1 controls power.
 		if (digitalRead(butPin1))
 		{
 			if (power == 0)
@@ -368,6 +429,8 @@ void handleButtons()
 			}
 			prevPress = millis();
 		}
+
+		// Button 2 changes the pattern.
 		if (digitalRead(butPin2))
 		{
 			nextPattern();
@@ -375,9 +438,11 @@ void handleButtons()
 		}
 	}
 
-	potVal1 = (prevPotVal1 * 4 + 255 - map(analogRead(potPin1), 0, 4096, 0, 255))/5;
-	potVal2 = (prevPotVal2 * 4 + 255 - map(analogRead(potPin2), 0, 4096, 0, 255))/5;
+	// Weight the current value heavily against any new values to reduce signal jitter.
+	potVal1 = (potVal1 * 4 + 255 - map(analogRead(potPin1), 0, 4096, 0, 255))/5;
+	potVal2 = (potVal2 * 4 + 255 - map(analogRead(potPin2), 0, 4096, 0, 255))/5;
 
+	// Require a change of 2 or more to further reduce jitter.
 	if (brightness - potVal1 > 2 || brightness - potVal1 < -2)
 	{
 		brightness = potVal1;
@@ -385,15 +450,13 @@ void handleButtons()
 	}
 	if (speed*5 - potVal2 > 2 || speed*5 - potVal2 < -2)
 	{
+		// TODO Need to normalize speed settings in each animation. This is a quick fix.
 		speed = potVal2/5;
 		
+		// If showing a Solid Color the speed dial changes the hue.
 		if (patterns[currentPatternIndex].name == "Solid Color")
 		{
 			solidColor = CHSV(potVal2,255,255);
 		}
 	}
-
-	prevPotVal1 = potVal1;
-	prevPotVal2 = potVal2;
-
 }
