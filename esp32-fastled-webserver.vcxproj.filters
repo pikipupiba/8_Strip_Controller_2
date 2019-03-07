@@ -48,5 +48,17 @@
     <ClInclude Include="wifi_changed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="physicalInputs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="builtInDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stripSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tasks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

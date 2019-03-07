@@ -28,7 +28,7 @@
 void rainbow()
 {
 	// FastLED's built-in rainbow generator
-	fill_rainbow(leds, NUM_LEDS, gHue, speed);
+	fill_rainbow(leds, NUM_LEDS, gHue, speed/10);
 }
 
 void addGlitter(fract8 chanceOfGlitter)
@@ -57,7 +57,7 @@ void sinelon()
 {
 	// a colored dot sweeping back and forth, with fading trails
 	fadeToBlackBy(leds, NUM_LEDS, 20);
-	int pos = beatsin16(speed, 0, NUM_LEDS_PER_STRIP - 1);
+	int pos = beatsin16(speed/10, 0, NUM_LEDS_PER_STRIP - 1);
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 	if (pos < prevpos) {
@@ -72,7 +72,7 @@ void sinelon()
 void bpm()
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-	uint8_t beat = beatsin8(speed, 64, 255);
+	uint8_t beat = beatsin8(speed/1.5, 64, 255);
 	CRGBPalette16 palette = palettes[currentPaletteIndex];
 	for (int i = 0; i < NUM_LEDS; i++) {
 		leds[i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
@@ -84,7 +84,7 @@ void juggle() {
 	fadeToBlackBy(leds, NUM_LEDS, 20);
 	byte dothue = 0;
 	for (int i = 0; i < 8; i++) {
-		leds[beatsin16(i + speed, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
+		leds[beatsin16(i + speed/20, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
 		dothue += 32;
 	}
 }
@@ -94,26 +94,31 @@ void showSolidColor()
 	fill_solid(leds, NUM_LEDS, solidColor);
 }
 
+void showSolidColorChanging()
+{
+	fill_solid(leds, NUM_LEDS, gHue);
+}
+
 // based on FastLED example Fire2012WithPalette: https://github.com/FastLED/FastLED/blob/master/examples/Fire2012WithPalette/Fire2012WithPalette.ino
 void heatMap(CRGBPalette16 palette, bool up)
 {
-	fill_solid(leds, NUM_LEDS, CRGB::Black);
+	fill_solid(leds, NUM_LEDS_PER_STRIP, CRGB::Black);
 
 	// Add entropy to random number generator; we use a lot of it.
 	random16_add_entropy(random(256));
 
 	// Array of temperature readings at each simulation cell
-	static byte heat[NUM_LEDS];
+	static byte heat[NUM_LEDS_PER_STRIP];
 
 	byte colorindex;
 
 	// Step 1.  Cool down every cell a little
-	for (uint16_t i = 0; i < NUM_LEDS; i++) {
+	for (uint16_t i = 0; i < NUM_LEDS_PER_STRIP; i++) {
 		heat[i] = qsub8(heat[i], random8(0, ((cooling * 10) / NUM_LEDS) + 2));
 	}
 
 	// Step 2.  Heat from each cell drifts 'up' and diffuses a little
-	for (uint16_t k = NUM_LEDS - 1; k >= 2; k--) {
+	for (uint16_t k = NUM_LEDS_PER_STRIP - 1; k >= 2; k--) {
 		heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
 	}
 
@@ -124,7 +129,7 @@ void heatMap(CRGBPalette16 palette, bool up)
 	}
 
 	// Step 4.  Map from heat cells to LED colors
-	for (uint16_t j = 0; j < NUM_LEDS; j++) {
+	for (uint16_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
 		// Scale the heat value from 0-255 down to 0-240
 		// for best results with color palettes.
 		colorindex = scale8(heat[j], 190);
@@ -135,7 +140,7 @@ void heatMap(CRGBPalette16 palette, bool up)
 			leds[j] = color;
 		}
 		else {
-			leds[(NUM_LEDS - 1) - j] = color;
+			leds[(NUM_LEDS_PER_STRIP - 1) - j] = color;
 		}
 	}
 }
@@ -256,7 +261,9 @@ void colorWaves()
 
 void colorWipe()
 {
-	int pos = beatsin16(speed, 0, NUM_LEDS_PER_STRIP - 1);
+
+	int pos = beatsin16(speed/5, 0, NUM_LEDS_PER_STRIP - 1);
+	
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 	if (pos < prevpos) {
@@ -272,7 +279,11 @@ void continuousWipe()
 	static int pos = 0;
 	pos += speed / 10;
 
-	if (pos >= NUM_LEDS_PER_STRIP)
+	if (pos >= NUM_LEDS_PER_STRIP && copyStrip == 1)
+	{
+		pos = 0;
+	}
+	else if (pos >= NUM_LEDS && copyStrip == 0)
 	{
 		pos = 0;
 	}
@@ -317,7 +328,7 @@ PatternAndNameList patterns = {
 	{ juggle, "juggle" },
 	{ bpm, "bpm" },
 
-	{ showSolidColor,         "Solid Color" },
+	{ showSolidColor,         "Solid Color" }
 };
 
 const uint8_t patternCount = ARRAY_SIZE(patterns);
