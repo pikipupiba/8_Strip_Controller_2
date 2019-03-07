@@ -1,3 +1,5 @@
+#pragma once
+
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
    Copyright (C) 2017 Jason Coon
@@ -24,6 +26,7 @@
 
 // A mostly red palette with green accents and white trim.
 // "CRGB::Gray" is used as white to keep the brightness more uniform.
+
 const TProgmemRGBPalette16 RedGreenWhite_p FL_PROGMEM =
 { CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red,
   CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red,

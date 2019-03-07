@@ -1,3 +1,5 @@
+#pragma once
+
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
    Copyright (C) 2017 Jason Coon

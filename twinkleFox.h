@@ -1,3 +1,5 @@
+#pragma once
+
 //  TwinkleFOX by Mark Kriegsman: https://gist.github.com/kriegsman/756ea6dcae8e30845b5a
 //
 //  TwinkleFOX: Twinkling 'holiday' lights that fade in and out.
@@ -195,7 +197,7 @@ void drawTwinkles()
   uint8_t backgroundBrightness = bg.getAverageLight();
 
   for(uint16_t i = 0; i < NUM_LEDS; i++) {
-    CRGB& pixel = leds[i];
+    CRGB& pixel = leds[0][i];
 
     PRNG16 = (uint16_t)(PRNG16 * 2053) + 1384; // next 'random' number
     uint16_t myclockoffset16= PRNG16; // use that number as clock offset

@@ -1,3 +1,5 @@
+#pragma once
+
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
    Copyright (C) 2017 Jason Coon
@@ -22,19 +24,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "palettes.h";
-#include "twinkleFox.h"
-
 void rainbow()
 {
 	// FastLED's built-in rainbow generator
-	fill_rainbow(leds, NUM_LEDS, gHue, speed/10);
+	fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
 }
 
 void addGlitter(fract8 chanceOfGlitter)
 {
 	if (random8() < chanceOfGlitter) {
-		leds[random16(NUM_LEDS)] += CRGB::White;
+		leds[0][random16(NUM_LEDS)] += CRGB::White;
 	}
 }
 
@@ -48,23 +47,23 @@ void rainbowWithGlitter()
 void confetti()
 {
 	// random colored speckles that blink in and fade smoothly
-	fadeToBlackBy(leds, NUM_LEDS, 10);
+	fadeToBlackBy(leds[0], NUM_LEDS, 10);
 	int pos = random16(NUM_LEDS);
-	leds[pos] += CHSV(gHue + random8(64), 200, 255);
+	leds[0][pos] += CHSV(gHue + random8(64), 200, 255);
 }
 
 void sinelon()
 {
 	// a colored dot sweeping back and forth, with fading trails
-	fadeToBlackBy(leds, NUM_LEDS, 20);
+	fadeToBlackBy(leds[0], NUM_LEDS, 20);
 	int pos = beatsin16(speed/10, 0, NUM_LEDS_PER_STRIP - 1);
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 	if (pos < prevpos) {
-		fill_solid(leds + pos, (prevpos - pos) + 1, color);
+		fill_solid(leds[0] + pos, (prevpos - pos) + 1, color);
 	}
 	else {
-		fill_solid(leds + prevpos, (pos - prevpos) + 1, color);
+		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
 	prevpos = pos;
 }
@@ -75,34 +74,34 @@ void bpm()
 	uint8_t beat = beatsin8(speed/1.5, 64, 255);
 	CRGBPalette16 palette = palettes[currentPaletteIndex];
 	for (int i = 0; i < NUM_LEDS; i++) {
-		leds[i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
+		leds[0][i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
 	}
 }
 
 void juggle() {
 	// eight colored dots, weaving in and out of sync with each other
-	fadeToBlackBy(leds, NUM_LEDS, 20);
+	fadeToBlackBy(leds[0], NUM_LEDS, 20);
 	byte dothue = 0;
 	for (int i = 0; i < 8; i++) {
-		leds[beatsin16(i + speed/20, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
+		leds[0][beatsin16(i + speed/20, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
 		dothue += 32;
 	}
 }
 
 void showSolidColor()
 {
-	fill_solid(leds, NUM_LEDS, solidColor);
+	fill_solid(leds[0], NUM_LEDS, solidColor);
 }
 
 void showSolidColorChanging()
 {
-	fill_solid(leds, NUM_LEDS, gHue);
+	fill_solid(leds[0], NUM_LEDS, gHue);
 }
 
 // based on FastLED example Fire2012WithPalette: https://github.com/FastLED/FastLED/blob/master/examples/Fire2012WithPalette/Fire2012WithPalette.ino
 void heatMap(CRGBPalette16 palette, bool up)
 {
-	fill_solid(leds, NUM_LEDS_PER_STRIP, CRGB::Black);
+	fill_solid(leds[0], NUM_LEDS_PER_STRIP, CRGB::Black);
 
 	// Add entropy to random number generator; we use a lot of it.
 	random16_add_entropy(random(256));
@@ -137,10 +136,10 @@ void heatMap(CRGBPalette16 palette, bool up)
 		CRGB color = ColorFromPalette(palette, colorindex);
 
 		if (up) {
-			leds[j] = color;
+			leds[0][j] = color;
 		}
 		else {
-			leds[(NUM_LEDS_PER_STRIP - 1) - j] = color;
+			leds[0][(NUM_LEDS_PER_STRIP - 1) - j] = color;
 		}
 	}
 }
@@ -195,7 +194,7 @@ void pride()
 		uint16_t pixelnumber = i;
 		pixelnumber = (NUM_LEDS - 1) - pixelnumber;
 
-		nblend(leds[pixelnumber], newcolor, 64);
+		nblend(leds[0][pixelnumber], newcolor, 64);
 	}
 }
 
@@ -256,7 +255,7 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 
 void colorWaves()
 {
-	colorwaves(leds, NUM_LEDS, currentPalette);
+	colorwaves(leds[0], NUM_LEDS, currentPalette);
 }
 
 void colorWipe()
@@ -267,10 +266,10 @@ void colorWipe()
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 	if (pos < prevpos) {
-		fill_solid(leds + pos, (prevpos - pos) + 1, color);
+		fill_solid(leds[0] + pos, (prevpos - pos) + 1, color);
 	}
 	else {
-		fill_solid(leds + prevpos, (pos - prevpos) + 1, color);
+		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
 	prevpos = pos;
 }
@@ -291,7 +290,7 @@ void continuousWipe()
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 
-	fill_solid(leds + prevpos, (pos - prevpos) + 1, color);
+	fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 
 	prevpos = pos;
 }

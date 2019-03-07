@@ -33,28 +33,16 @@ void handleInputs()
 		// Button 1 controls power.
 		if (digitalRead(butPin1))
 		{
-			if (power == 0)
-			{
-				power = 1;
-				FastLED.setBrightness(255);
-			}
-			else
-			{
-				if (copyStrip == 0) {
-					copyStrip = 1;
-				}
-				else {
-					copyStrip = 0;
-				}
-				power = 0;
-			}
+			masterPower = !masterPower;
+			FastLED.setBrightness(255);
+			
 			prevPress = millis();
 		}
 
 		// Button 2 changes the pattern.
 		if (digitalRead(butPin2))
 		{
-			nextPattern();
+			strip[0]->nextPattern();
 			prevPress = millis();
 		}
 	}
@@ -74,7 +62,7 @@ void handleInputs()
 		speed = potVal2;
 
 		// If showing a Solid Color the speed dial changes the hue.
-		if (patterns[currentPatternIndex].name == "Solid Color")
+		if (patterns[curPattern].name == "Solid Color")
 		{
 			solidColor = CHSV(potVal2, 255, 255);
 		}

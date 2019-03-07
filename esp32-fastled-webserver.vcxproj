@@ -128,7 +128,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="secrets.h" />
-    <ClInclude Include="stripSettings.h" />
+    <ClInclude Include="stripController.h" />
     <ClInclude Include="tasks.h" />
     <ClInclude Include="twinkleFox.h">
       <FileType>CppCode</FileType>
@@ -140,6 +140,9 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stripController.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

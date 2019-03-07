@@ -32,27 +32,31 @@
 #include <SPIFFS.h>
 #include <EEPROM.h>
 
+// Define the WebServer object.
+WebServer webServer(80);
 
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001008)
 #warning "Requires FastLED 3.1.8 or later; check github for latest code."
 #endif
 
-// Define the WebServer object.
-WebServer webServer(80);
-
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
-// -- The core to run FastLED.show()
-#define FASTLED_SHOW_CORE 1
+// -----------------------------------------------------------------------------------//
+// -------------------------------ANIMATION VARIABLES---------------------------------//
+// -----------------------------------------------------------------------------------//
+// TODO Save and restore these settings from EEPROM.
+
+uint8_t gHue = 0; // rotating "base color" used by many of the patterns
+
 
 // WiFi Status led.
 // TODO No longer needed. REMOVE IT! Maybe?
 const int boardLedPin = 2;
 
 #include "tasks.h"
-#include "stripSettings.h"
 
 #include "patterns.h"
+#include "palettes.h"
 
 #include "field.h"
 #include "fields.h"
@@ -62,6 +66,11 @@ const int boardLedPin = 2;
 #include "web.h"
 #include "physicalInputs.h"
 #include "builtInDisplay.h"
+
+#include "StripController.h"
+
+// Create array of strips available to the program.
+StripController* strip[8];
 
 
 void setup() {
@@ -109,12 +118,23 @@ void setup() {
 
 	setupWifi();
 	setupWeb();
-	setupStrips();
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strip[i] = new StripController(i, NUM_LEDS_PER_STRIP, Strip);
+	}
+
+	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
+
+	// set master brightness control
+	FastLED.setBrightness(masterBrightness);
+
 	createTasks();
 
-	// Update the Timeout variables after the setup code has completed.
-	autoPlayTimeout = millis() + (autoplayDuration * 1000);
-	paletteTimeout = millis() + (paletteDuration * 1000);
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strip[i]->resetTimeouts();
+	}
 }
 
 void loop()
@@ -123,50 +143,19 @@ void loop()
 	handleInputs();
 	drawMenu();
 
-	if (power == 0) {
-
-		// Make all LEDS black if the power is off.
-		//fill_solid(leds, NUM_LEDS, CRGB::Black);
-
-		// NEW METHOD Turn the brightness all the way down so that the state of the strip is saved.
+	if (masterPower)
+	{
+		FastLED.setBrightness(masterBrightness);
+	}
+	else
+	{
 		FastLED.setBrightness(0);
 	}
 
-	// Removing the ELSE so the patterns keep running even if they are off.
-	// This will hopefully allow smoother transitions between on and off.
-	// TODO Remove all evidence once its behavior is confirmed.
-	// else {
-
-		// Call the current pattern function once, updating the 'leds' array
-		patterns[currentPatternIndex].pattern();
-
-		EVERY_N_MILLISECONDS(10) {
-			// slowly blend the current palette to the next
-			nblendPaletteTowardPalette(currentPalette, targetPalette, 8);
-			gHue += hueSpeed/10;  // slowly cycle the "base color" through the rainbow
-		}
-
-		// Advance the pattern and palette if applicable.
-		// TODO Should this only happen if POWER is on?
-		if (autoplay == 1 && (millis() > autoPlayTimeout)) {
-			nextPattern();
-			autoPlayTimeout = millis() + (autoplayDuration * 1000);
-		}
-
-		if (cyclePalettes == 1 && (millis() > paletteTimeout)) {
-			nextPalette();
-			paletteTimeout = millis() + (paletteDuration * 1000);
-		}
-	//} // This is the other bracket of the removed ELSE.
-
-	// Copy the first strip to the second strip.
-	// TODO Immplement a mode that duplicates strips or lets eeach do its own thing.
-		if (copyStrip == 1) {
-			for (int i = 0; i < NUM_LEDS_PER_STRIP; i++) {
-				leds[NUM_LEDS_PER_STRIP + i] = leds[i];
-			}
-		}
-
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strip[i]->updateStrip();
+	}
 	// send the 'leds' array out to the actual LED strip
 	// FastLED.show();
 	FastLEDshowESP32();
@@ -175,17 +164,4 @@ void loop()
 	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
 	delay(1000 / FRAMES_PER_SECOND);
-}
-
-void nextPattern()
-{
-	// add one to the current pattern number and wrap around at the end
-	currentPatternIndex = (currentPatternIndex + 1) % patternCount;
-}
-
-void nextPalette()
-{
-	// add one to the current palette number and wrap around at the end
-	currentPaletteIndex = (currentPaletteIndex + 1) % paletteCount;
-	targetPalette = palettes[currentPaletteIndex];
 }

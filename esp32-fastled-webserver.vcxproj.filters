@@ -54,11 +54,16 @@
     <ClInclude Include="builtInDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stripSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stripController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stripController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

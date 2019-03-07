@@ -1,3 +1,5 @@
+#pragma once
+
 // From ColorWavesWithPalettes by Mark Kriegsman: https://gist.github.com/kriegsman/8281905786e8b2632aeb
 
 // Gradient Color Palette definitions for 33 different cpt-city color palettes.

@@ -1,5 +1,7 @@
 #pragma once
 
+// -- The core to run FastLED.show()
+#define FASTLED_SHOW_CORE 1
 
 // -- Task handles for use in the notifications
 static TaskHandle_t FastLEDshowTaskHandle = 0;
