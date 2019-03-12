@@ -73,9 +73,9 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs, Shapes 
 void StripController::UpdateStrip()
 {
 
-	for (Animations & i : animation)
+	for (Animations* i : animation)
 	{
-		i.Update();
+		i->Update();
 	}
 	// Call the current pattern function once, updating the 'leds[index]' array
 	patterns[curPattern].pattern(index);

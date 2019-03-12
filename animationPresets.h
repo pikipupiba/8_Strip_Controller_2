@@ -36,10 +36,12 @@ typedef struct
 	int repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
 	int repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
 
+	//Oscillators* curOscillators[];
+
 }AnimationPreset;
 
-AnimationPreset FunkyMovers = { "Mover",	0,			0,			4294967295,	// Name,		index,		rangeStart,		rangeEnd
+AnimationPreset FunkyMovers = { "Mover",	0,			0,			uINT32_MAX,	// Name,		index,		rangeStart,		rangeEnd
 								Strip,		None,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
 								4294967295, 0,			200,		0,			// Brightness,	Hue,		Hue Speed,		Hue Acceleration
-								0,			200000,		0,			1000000		// Position,	Speed,		Acceleration,	Feature Size
-								5,			1000000,	1000000};				// Num Repeats, Pos Offset,	Hue Offset
+								0,			200000,		0,			1000000,		// Position,	Speed,		Acceleration,	Feature Size
+								5,			uINT32_MAX/20,	1000000 };				// Num Repeats, Pos Offset,	Hue Offset
