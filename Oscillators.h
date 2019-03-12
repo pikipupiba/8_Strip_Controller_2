@@ -11,11 +11,13 @@ public:
 	Oscillators();
 	~Oscillators();
 
+	// Different oscillators combine different harmonic series of the overall BPM at different intensities.
 	int Oscillator1();
 	int Oscillator2();
 	int Oscillator3();
 	int Oscillator4();
 	
+	// Change the BPM smoothly maintaining the oscillator's current position.
 	void ChangeBPM(uint32_t newBPM, uint32_t newChangeTime);
 };
 

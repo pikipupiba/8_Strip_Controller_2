@@ -65,4 +65,3 @@ public:
 	virtual void Draw() = 0;	// Draw the animation into it's CRGB[] based on its parameters. 
 
 };
-

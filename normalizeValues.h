@@ -38,7 +38,7 @@ int integerPart(uint32_t val, int min, int max)
 // Return the fractional part of an unsigned 32-bit integer when compressed to size max - min.
 float fractionalPart(uint32_t val, int min, int max)
 {
-	return (val - expand(integerPart(val, min, max), min, max, 1)) / expand(1, min, max, 1);
+	return (val - expand(integerPart(val, min, max), min, max, 1)) / (uINT32_MAX / (max - min));
 }
 
 // Undo the normalization of a number. This probably loses information so watch out.
@@ -48,5 +48,17 @@ long int expand(int val, int min, int max, uint32_t type)
 	{
 	case 1: return map(val, min, max, uINT32_MIN,	uINT32_MAX);	// type 1 is uint32_t
 	case 2: return map(val, min, max, INT32_MIN,	INT32_MAX);		// type 2 is int
+	}
+}
+
+// Calcualtes the step size based on data type and current range.
+uint32_t stepSize(int min, int max, uint32_t type)
+{
+	int size = max - min;
+
+	switch (type) // Expanding depends of the desired variable type.
+	{
+	case 1: return uINT32_MAX / size;	// type 1 is uint32_t
+	case 2: return INT32_MAX / size;	// type 2 is int
 	}
 }
