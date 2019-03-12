@@ -1,5 +1,11 @@
 #pragma once
 
+// These patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
+// My new patterns will create and destroy animation objects as needed to create the desired effect.
+// The patterns will have access to the animation[] array of each strip and associated parameters.
+// I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
+
+
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
    Copyright (C) 2017 Jason Coon

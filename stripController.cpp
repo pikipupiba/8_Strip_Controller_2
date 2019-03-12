@@ -1,27 +1,21 @@
-// 
-// 
-// 
+#pragma once
 
 #include "stripController.h"
 
-// This constructor assumes WS2812B LEDs and bases the data pin on the strip number and ESP32 controller.
-StripController::StripController(uint8_t newIndex, uint16_t newNumLEDs, Shapes newShape)
+// This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
+StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs, Shapes newShape)
 {
-	numLEDs = newNumLEDs;
-	index = newIndex;
+	stripNumLEDs = newNumLEDs;
+	stripIndex = newIndex;
 
-	shape = newShape;
+	stripShape = newShape;
 
-	power = true;
-	brightness = 255;
+	// Default values used for the rest of the strip variables.
+	stripPower = true;
+	stripBrightness = 255;
 
-	curPos = 0;
-	speed = 0;
-	curHue = 0;
-	hueSpeed = 0;
-
-	bool autoplay = false;
-	uint8_t autoplayDuration = 10;
+	autoplay = false;
+	autoplayDuration = 10;
 
 	cyclePalettes = false;
 	paletteDuration = 10;
@@ -32,43 +26,57 @@ StripController::StripController(uint8_t newIndex, uint16_t newNumLEDs, Shapes n
 	curPalette = CRGBPalette16(CRGB::Black);
 	tarPalette = palettes[0];
 
-	if (index == 0)
+
+	if (stripIndex == 0)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 1)
+	else if (stripIndex == 1)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 2)
+	else if (stripIndex == 2)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 3)
+	else if (stripIndex == 3)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 4)
+	else if (stripIndex == 4)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 5)
+	else if (stripIndex == 5)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 6)
+	else if (stripIndex == 6)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
-	else if (index == 7)
+	else if (stripIndex == 7)
 	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds[index], 0, numLEDs).setCorrection(TypicalLEDStrip);
+		FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 
 }
 
-void StripController::updateStrip()
+void StripController::UpdateStrip()
 {
+
+	for (Animations & i : animation)
+	{
+		i.Update();
+	}
 	// Call the current pattern function once, updating the 'leds[index]' array
 	patterns[curPattern].pattern(index);
 
@@ -91,31 +99,39 @@ void StripController::updateStrip()
 	}
 }
 
-void StripController::resetTimeouts()
+// Reset the timeouts for the strip when autoplay is turned on or after setup.
+void StripController::ResetTimeouts()
 {
 	autoPlayTimeout = millis() + (autoplayDuration * 1000);
 	paletteTimeout = millis() + (paletteDuration * 1000);
 }
 
-void StripController::nextPattern()
+// TODO will make this cycle through presets instead of patterns.
+void StripController::NextPattern()
 {
 	// add one to the current pattern number and wrap around at the end
 	curPattern = (curPattern + 1) % patternCount;
 }
 
-void StripController::nextPalette()
+void StripController::NextPalette()
 {
 	// add one to the current palette number and wrap around at the end
 	curPaletteIndex = (curPaletteIndex + 1) % paletteCount;
 	tarPalette = palettes[curPaletteIndex];
 }
 
-uint8_t StripController::getLength()
+void StripController::AddAnimation(uint32_t newAnimationPreset)
 {
-	return numLEDs;
-}
+	if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
+	{
+		numAnimations++;
+		
+		// TODO Figure out how to initialize an animation object like this.
+		// This has not been worked on at all yet.
+		// Will probably use a similar system to the following taken from my AnimationClassTest.ino at line 42.
+		// typedef void(*SimplePatternList[])();
+		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
-int StripController::getSpeed()
-{
-	return int(speed);
+		animation[numAnimations] = new animationPreset[newAnimationPreset];
+	}
 }

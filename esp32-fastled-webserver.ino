@@ -31,6 +31,7 @@
 #include <FS.h>
 #include <SPIFFS.h>
 #include <EEPROM.h>
+#include <MemoryFree.h>
 
 // Define the WebServer object.
 WebServer webServer(80);
@@ -42,7 +43,7 @@ WebServer webServer(80);
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
 // -----------------------------------------------------------------------------------//
-// -------------------------------ANIMATION VARIABLES---------------------------------//
+// ----------------------------GLOBAL ANIMATION VARIABLES-----------------------------//
 // -----------------------------------------------------------------------------------//
 // TODO Save and restore these settings from EEPROM.
 
@@ -53,21 +54,39 @@ uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 // TODO No longer needed. REMOVE IT! Maybe?
 const int boardLedPin = 2;
 
-#include "tasks.h"
+// -----------------------------------------------------------------------------------//
+// --------------------------------PROJECT LIBRARIES----------------------------------//
+// -----------------------------------------------------------------------------------//
 
-#include "patterns.h"
-#include "palettes.h"
+#include "tasks.h"			// Functions related to interrupts.
 
-#include "field.h"
-#include "fields.h"
+#include "defaultSettings.h"// Contains all default settings to use if no saved settings are available.
+#include "normalizeValues.h"// Contains the functions to compress signed and unsigned ints to more precise smaller ranges.
 
-#include "secrets.h"
-#include "wifi_changed.h"
-#include "web.h"
-#include "physicalInputs.h"
-#include "builtInDisplay.h"
+#include "animationPresets.h"	// The location of presets used when initializing animation objects.
+#include "stripPresets.h"	// The location of presets for entire strips which can include multiple animation presets.
+#include "universePresets.h"// The location of presets for a collection of strips.
 
-#include "StripController.h"
+#include "patterns.h"		// Patterns use various animation objects to create an effect.
+#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
+
+#include "field.h"			// Gets field values from the web server.
+#include "fields.h"			// Causes field values to affect program.
+
+#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
+#include "wifi_changed.h"	// 
+#include "web.h"			// Sets up the web server and handles web input.
+#include "physicalInputs.h"	// Sets up and handles input from physical inputs.
+#include "builtInDisplay.h"	// Handles setting up and displaying to the built in display.
+
+// -----------------------------------------------------------------------------------//
+// ---------------------------------PROJECT CLASSES-----------------------------------//
+// -----------------------------------------------------------------------------------//
+
+#include "Oscillators.h"	// A custom oscillator class for varying animation variables.
+#include "StripController.h"// A strip controller is created for each strip connected to the ESP32.
+#include "Animations.h"		// An interface class from which individual animations can inherit their base functionality.
+
 
 // Create array of strips available to the program.
 StripController* strip[8];
@@ -75,50 +94,31 @@ StripController* strip[8];
 
 void setup() {
 
-	delay(3000); // 3 second delay for recovery
+	delay(3000);			// 3 second delay for recovery
 
-	// Start the Serial Monitor for debugging.
-	Serial.begin(115200);
+	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	// Set the Button Pins for INPUT.
-	pinMode(butPin1, INPUT);
-	pinMode(butPin2, INPUT);
+	setupInputs();			// Setup the physical inputs.
 
-	// Set the LED on the board for OUTPUT and turn it on.
-	pinMode(boardLedPin, OUTPUT);
-	digitalWrite(boardLedPin, 1);
-
-	// Get the display running.
-	// TODO Learn more about the display library.
-	pinMode(16, OUTPUT);
-	digitalWrite(16, LOW); // set GPIO16 low to reset OLED
-	delay(50);
-	digitalWrite(16, HIGH); // while OLED is running, must set GPIO16 in high
-
-	display.init();
-	display.flipScreenVertically();
-	display.setColor(WHITE);
-	display.setTextAlignment(TEXT_ALIGN_LEFT);
-
-	// TODO Figure out what other fonts are available and choose one.
-	display.setFont(ArialMT_Plain_10);
-
-	display.clear();
-	display.drawString(2, 20, String("Connecting to Wi-Fi"));
-
-	display.display();
+	setupDisplay();			// Setup the built in display.
 	
-	// Starts the SPIFFS? and list the contents.
+	// Start the SPIFFS? (whatever that means) and list the contents.
 	// TODO Learn about SPIFFS
 	SPIFFS.begin();
 	listDir(SPIFFS, "/", 1);
 
 	// TODO Learn how to save and read settings to EEPROM and then implement!
 	//loadFieldsFromEEPROM(fields, fieldCount);
+	// TODO Might actually need to save and restore from an SD card depending on implementation of presets.
 
-	setupWifi();
-	setupWeb();
+	setupWifi();			// Try to connect to WiFi networks specified in secrets.h
+	setupWeb();				// Put the contents of the SPIFFS onto the web server.
 
+	// Initialize the strips connected to the ESP32.
+	// TODO I need to figure out how to adjust this based on settings. Users will probably have to save these values into
+	// EEPROM and then restart the ESP32 to apply the new settings. Maybe you select a strip setup in this setup() function
+	// either by manually entering strip lengths or selecting a previously saved setup.
+	// TODO Figure out how to change these things during execution.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
 		strip[i] = new StripController(i, NUM_LEDS_PER_STRIP, Strip);
@@ -130,18 +130,21 @@ void setup() {
 	FastLED.setBrightness(masterBrightness);
 
 	createTasks();
+	
+	displayMemory("after setup");
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strip[i]->resetTimeouts();
+		strip[i]->ResetTimeouts();
 	}
+
 }
 
 void loop()
 {
-	handleWeb();
-	handleInputs();
-	drawMenu();
+	handleWeb();	// Handles input from the web server.
+	handleInputs();	// Handles input from physical controls.
+	drawMenu();		// Displays menu on the built in display.
 
 	if (masterPower)
 	{
@@ -152,10 +155,12 @@ void loop()
 		FastLED.setBrightness(0);
 	}
 
+	// Update each strip.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strip[i]->updateStrip();
+		strip[i]->UpdateStrip();
 	}
+
 	// send the 'leds' array out to the actual LED strip
 	// FastLED.show();
 	FastLEDshowESP32();

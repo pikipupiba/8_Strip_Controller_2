@@ -9,6 +9,17 @@ const int butPin1 = 39;
 // Pattern Change Button
 const int butPin2 = 38;
 
+void setupInputs()
+{
+	// Set the Button Pins for INPUT.
+	pinMode(butPin1, INPUT);
+	pinMode(butPin2, INPUT);
+
+	// Set the LED on the board for OUTPUT and turn it on.
+	pinMode(boardLedPin, OUTPUT);
+	digitalWrite(boardLedPin, 1);
+}
+
 // Handle any and all physical buttons on the package.
 
 // TODO Inputs on the final package will be as follows:
