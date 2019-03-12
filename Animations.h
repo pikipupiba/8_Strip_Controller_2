@@ -4,7 +4,7 @@
 // Are my design decisions in this section going to achieve what I want?
 
 // Animation objects contain properties and rules for displaying a specific pattern to a CRGBSet.
-// For an example of usage check out  my AnimationClassTest Repo on GitHub.
+// For an example of usage check out my AnimationClassTest Repo on GitHub.
 
 // 32-bit int math is way faster than float math so I an using 32-bit integers and using normalizeValues.h to map them
 // to a decimal value between 0...255 (for example 178.035) when the extra precision is needed. I think this
