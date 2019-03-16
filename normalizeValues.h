@@ -25,14 +25,21 @@
 
 #define INT32_MIN  -2147483648
 #define INT32_MAX	2147483647
+#define INT32_RANGE INT32_MAX - INT32_MIN
 
 #define uINT32_MIN	0
 #define uINT32_MAX	4294967295
+#define uINT32_RANGE uINT32_MAX - uINT32_MIN
 
 // Return the integer part of an unsigned 32-bit integer when compressed to size max - min.
-int integerPart(uint32_t val, int min, int max)
+float uint32_to_float(uint32_t val, int min, int max)
 {
-	return map(val, uINT32_MIN, uINT32_MAX, min, max);
+	return val / uINT32_RANGE * (max - min) + min;
+}
+
+float int32_to_float(int val, int min, int max)
+{
+    return (val - INT32_MIN) / INT32_RANGE * (max - min) + min;
 }
 
 // Return the fractional part of an unsigned 32-bit integer when compressed to size max - min.
