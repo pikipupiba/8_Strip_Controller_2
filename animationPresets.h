@@ -16,7 +16,6 @@ typedef struct
 
 	Shapes animationShape;				// The shape of the strip the animation is playing on.
 	Textures animationTexture;			// A modifier applied to the animation after values are calculated.
-	Overlays animationOverlay;			// A modifier applied to the animation after values are calculated.
 	EndOfRanges animationEndOfRange;	// How an animation acts when it approaches the end of its range.
 
 	uint32_t brightness;
@@ -41,7 +40,7 @@ typedef struct
 }AnimationPreset;
 
 AnimationPreset FunkyMovers = { "Mover",	0,			0,			uINT32_MAX,	// Name,		index,		rangeStart,		rangeEnd
-								Strip,		None,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
+								Strip,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
 								4294967295, 0,			200,		0,			// Brightness,	Hue,		Hue Speed,		Hue Acceleration
 								0,			200000,		0,			1000000,		// Position,	Speed,		Acceleration,	Feature Size
 								5,			uINT32_MAX/20,	1000000 };				// Num Repeats, Pos Offset,	Hue Offset

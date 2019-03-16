@@ -32,8 +32,7 @@
 
 // Define some enumerated values.
 enum Shapes		{ Strip, Panel, Ring };		// The shape of a strip can effect how the animations are displayed.
-enum Textures	{ None, Dashed, Wavey };	// Textures are modifications of some variable based on where on the strip a pixel is.
-enum Overlays	{ None, Strobe, Twinkle };	// Overlays are masks that can change which pixels are shown and when.
+enum Textures	{ None, Dashed, Wavey, Strobe };	// Textures are modifications of some variable based on where on the strip a pixel is.
 enum EndOfRanges{ Continue, Bounce, Fade };	// This describes the behavior an animation will display when it reaches the end of its specified range.
 
 // Set the master variables to their starting values.
@@ -42,3 +41,8 @@ uint8_t masterBrightness = 128;
 
 // Define our master array of LEDs.
 CRGBArray<NUM_LEDS> leds;
+
+uint32_t frameTime = 0;
+long lastFrameTime = 0;
+uint32_t newFrames = 0;
+uint32_t FPS = 0;

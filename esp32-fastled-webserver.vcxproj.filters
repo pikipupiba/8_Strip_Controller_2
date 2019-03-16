@@ -81,6 +81,9 @@
     <ClInclude Include="universePresets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stripController.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Oscillators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mover.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

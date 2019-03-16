@@ -57,14 +57,21 @@ void drawMenu()
 
 	// BOTTOM RIGHT CORNER
 	// Display the current power state of the lights.
-	if (power == 0)
-	{
-		display.drawString(100, 50, "OFF");
-	}
-	else
-	{
-		display.drawString(100, 50, "ON");
-	}
+	//if (power == 0)
+	//{
+	//	display.drawString(100, 50, "OFF");
+	//}
+	//else
+	//{
+	//	display.drawString(100, 50, "ON");
+	//}
+	display.drawString(80, 40, String(frameTime) + " ms");
+	display.drawString(100, 50, String(FPS));
+	
+	Serial.print(FPS);
+	Serial.println(" ms");
+	Serial.print("FPS: ");
+	Serial.println(FPS);
 
 	display.display();
 }
@@ -74,4 +81,15 @@ void displayMemory(string label)
 	Serial.print("Memory remaining " + label + ": ");
 	Serial.print(freeMemory());
 	Serial.println(" Bytes");
+}
+
+void calcFPS()
+{
+	frameTime = (lastFrameTime - millis()) / newFrames;
+
+	FPS = 1000 / frameTime;
+
+	lastFrameTime = millis();
+	newFrames = 0;
+
 }

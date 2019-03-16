@@ -76,27 +76,29 @@ void StripController::UpdateStrip()
 	for (Animations* i : animation)
 	{
 		i->Update();
+		stripLEDs += i->animationLEDs;
 	}
-	// Call the current pattern function once, updating the 'leds[index]' array
-	patterns[curPattern].pattern(index);
 
-	EVERY_N_MILLISECONDS(20) {
-		// slowly blend the current palette to the next
-		nblendPaletteTowardPalette(curPalette, tarPalette, 8);
-		curHue += hueSpeed;  // slowly cycle the "base color" through the rainbow
-	}
+	// Call the current pattern function once, updating the 'leds[index]' array
+	//patterns[curPattern].pattern(index);
+
+	//EVERY_N_MILLISECONDS(20) {
+	//	// slowly blend the current palette to the next
+	//	nblendPaletteTowardPalette(curPalette, tarPalette, 8);
+	//	curHue += hueSpeed;  // slowly cycle the "base color" through the rainbow
+	//}
 
 	// Advance the pattern and palette if applicable.
 	// TODO Should this only happen if POWER is on?
-	if (autoplay && (millis() > autoPlayTimeout)) {
-		nextPattern();
-		autoPlayTimeout = millis() + (autoplayDuration * 1000);
-	}
+	//if (autoplay && (millis() > autoPlayTimeout)) {
+	//	nextPattern();
+	//	autoPlayTimeout = millis() + (autoplayDuration * 1000);
+	//}
 
-	if (cyclePalettes && (millis() > paletteTimeout)) {
-		nextPalette();
-		paletteTimeout = millis() + (paletteDuration * 1000);
-	}
+	//if (cyclePalettes && (millis() > paletteTimeout)) {
+	//	nextPalette();
+	//	paletteTimeout = millis() + (paletteDuration * 1000);
+	//}
 }
 
 // Reset the timeouts for the strip when autoplay is turned on or after setup.
@@ -132,6 +134,6 @@ void StripController::AddAnimation(uint32_t newAnimationPreset)
 		// typedef void(*SimplePatternList[])();
 		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
-		animation[numAnimations] = new animationPreset[newAnimationPreset];
+		animation[numAnimations] = new Mover(newAnimationPreset);
 	}
 }

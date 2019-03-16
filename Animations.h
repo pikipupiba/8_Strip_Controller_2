@@ -15,18 +15,20 @@
 // Right now I think each animation object uses between 1 KB and 2 KB of memory. Not sure if that is a lot...
 // With 8 strips each containing a maximum of 10 animations I potentially need room for 80 animation objects.
 
+#include "Mover.h"
+
 class Animations
 {
 private:
 
 protected:
 	// The array of pixel values currently being used by the animation.
-	CRGB animationLEDs[300];
 
 public:
 	// Public variables allow effect functions to be written easier and with less overhead.
 
 	// The index position helps layer different animations together in the final step.
+	CRGBSet animationLEDs;
 	uint32_t indexPosition;
 
 	// Where on the strip the animation should start and end.
@@ -36,7 +38,6 @@ public:
 
 	Shapes animationShape;				// The shape of the strip the animation is playing on.
 	Textures animationTexture;			// A modifier applied to the animation after values are calculated.
-	Overlays animationOverlay;			// A modifier applied to the animation after values are calculated.
 	EndOfRanges animationEndOfRange;	// How an animation acts when it approaches the end of its range.
 
 	uint32_t brightness;
@@ -61,6 +62,7 @@ public:
 	~Animations();
 
 	// Virtual functions that each child needs to implement to work.
+	void GeneralUpdate();
 	virtual void Update() = 0;	// Update the animation variables based on speeds, oscillators, etc.
 	virtual void Draw() = 0;	// Draw the animation into it's CRGB[] based on its parameters. 
 

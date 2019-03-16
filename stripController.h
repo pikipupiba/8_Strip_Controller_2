@@ -23,7 +23,6 @@ class StripController
 
 	 Shapes stripShape;					// The default shape of animations created on this strip.
 	 Textures stripTexture;				// A modifier applied to the strip after values are calculated.
-	 Overlays stripOverlay;				// A modifier applied to the strip after values are calculated.
 	 EndOfRanges stripEndOfRange;		// The default behavior of animations created on this strip.
 
 	 bool stripPower;					// If FALSE then the strip brightness is temporarily set to 0.
