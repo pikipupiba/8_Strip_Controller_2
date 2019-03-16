@@ -3,7 +3,7 @@
 #include "stripController.h"
 
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
-StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs, Shapes newShape)
+StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs = 300, Shapes newShape = Strip)
 {
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
@@ -122,7 +122,7 @@ void StripController::NextPalette()
 	tarPalette = palettes[curPaletteIndex];
 }
 
-void StripController::AddAnimation(uint32_t newAnimationPreset)
+void StripController::AddAnimation(uint32_t newAnimationPreset = 0)
 {
 	if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
 	{
