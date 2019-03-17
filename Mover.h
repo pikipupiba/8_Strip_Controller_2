@@ -4,7 +4,7 @@ class Mover :
 	public Animations
 {
 public:
-	Mover(uint32_t newPreset);
+	Mover();
 	~Mover();
 
 	void Update();

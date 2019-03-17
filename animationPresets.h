@@ -4,7 +4,7 @@
 
 typedef struct
 {
-	string animationName;
+	String animationName;
 
 	// The index position helps layer different animations together in the final step.
 	uint32_t indexPosition;
@@ -43,4 +43,4 @@ AnimationPreset FunkyMovers = { "Mover",	0,			0,			uINT32_MAX,	// Name,		index,	
 								Strip,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
 								4294967295, 0,			200,		0,			// Brightness,	Hue,		Hue Speed,		Hue Acceleration
 								0,			200000,		0,			1000000,		// Position,	Speed,		Acceleration,	Feature Size
-								5,			uINT32_MAX/20,	1000000 };				// Num Repeats, Pos Offset,	Hue Offset
+								5,			INT32_MAX/20,	1000000 };				// Num Repeats, Pos Offset,	Hue Offset

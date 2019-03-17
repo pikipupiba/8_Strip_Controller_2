@@ -1,5 +1,9 @@
 // stripController.h
 #pragma once
+//#include <stdint.h>
+//#include <FastLED.h>
+//#include "defaultSettings.h"
+//#include "Animations.h"
 
 // HELP!
 // Is my whole paradigm of using strip controller objects to combine animation objects onto a strip a good one?
@@ -19,7 +23,7 @@ class StripController
 	 uint32_t stripNumLEDs;
 
 	 // The CRGBSet containing the number of LEDs on this strip.
-	 CRGBSet stripLEDs;
+	 struct CRGB stripLEDs[300];
 
 	 Shapes stripShape;					// The default shape of animations created on this strip.
 	 Textures stripTexture;				// A modifier applied to the strip after values are calculated.
@@ -57,8 +61,8 @@ class StripController
 	 void NextPattern();	// Advances the pattern playing on the strip. TODO replace with presets instead of simple patterns.
 	 void NextPalette();	// Advances the palette being used by animations on the strip.
 
-	 void AddAnimation(uint32_t newAnimationPreset); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
+	 void AddAnimation(); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
 
-	 void StackAnimations();// Combine all animation CRGB[]s into the strip's CRGBSet.
+	 //void StackAnimations();// Combine all animation CRGB[]s into the strip's CRGBSet.
 
 };

@@ -42,10 +42,9 @@ float int32_to_float(int val, int min, int max)
     return (val - INT32_MIN) / INT32_RANGE * (max - min) + min;
 }
 
-// Return the fractional part of an unsigned 32-bit integer when compressed to size max - min.
-float fractionalPart(uint32_t val, int min, int max)
+uint32_t uint32_to_uint32(uint32_t val, uint32_t min, uint32_t max)
 {
-	return (val - expand(integerPart(val, min, max), min, max, 1)) / (uINT32_MAX / (max - min));
+	return val / uINT32_RANGE * (max - min) + min;
 }
 
 // Undo the normalization of a number. This probably loses information so watch out.

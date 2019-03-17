@@ -1,5 +1,8 @@
 #pragma once
 
+//#include <stdint.h>
+//#include <FastLED.h>
+
 class Oscillators
 {
 private:

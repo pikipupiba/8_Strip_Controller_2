@@ -20,6 +20,7 @@
 // -----------------------------------------------------------------------------------//
 // --------------------------------OUTSIDE LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
+#include <stdint.h>
 #include <FastLED.h>
 #include <WebServer.h>
 #include <WiFi.h>
@@ -63,15 +64,15 @@ const int boardLedPin = 2;
 #include "universePresets.h"// The location of presets for a collection of strips.
 
 //#include "patterns.h"		// Patterns use various animation objects to create an effect.
-#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
+//#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
 
-#include "field.h"			// Gets field values from the web server.
-#include "fields.h"			// Causes field values to affect program.
+//#include "field.h"			// Gets field values from the web server.
+//#include "fields.h"			// Causes field values to affect program.
 
-#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
-#include "wifi_changed.h"	// 
-#include "web.h"			// Sets up the web server and handles web input.
-#include "physicalInputs.h"	// Sets up and handles input from physical inputs.
+//#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
+//#include "wifi_changed.h"	// 
+//#include "web.h"			// Sets up the web server and handles web input.
+//#include "physicalInputs.h"	// Sets up and handles input from physical inputs.
 #include "builtInDisplay.h"	// Handles setting up and displaying to the built in display.
 
 // -----------------------------------------------------------------------------------//
@@ -80,6 +81,7 @@ const int boardLedPin = 2;
 
 #include "Oscillators.h"	// A custom oscillator class for varying animation variables.
 #include "Animations.h"		// An interface class from which individual animations can inherit their base functionality.
+#include "Mover.h"
 #include "StripController.h"// A strip controller is created for each strip connected to the ESP32.
 
 
@@ -93,21 +95,21 @@ void setup() {
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	setupInputs();			// Setup the physical inputs.
+	//setupInputs();			// Setup the physical inputs.
 
 	setupDisplay();			// Setup the built in display.
 	
 	// Start the SPIFFS? (whatever that means) and list the contents.
 	// TODO Learn about SPIFFS
 	SPIFFS.begin();
-	listDir(SPIFFS, "/", 1);
+	//listDir(SPIFFS, "/", 1);
 
 	// TODO Learn how to save and read settings to EEPROM and then implement!
 	//loadFieldsFromEEPROM(fields, fieldCount);
 	// TODO Might actually need to save and restore from an SD card depending on implementation of presets.
 
-	setupWifi();			// Try to connect to WiFi networks specified in secrets.h
-	setupWeb();				// Put the contents of the SPIFFS onto the web server.
+	//setupWifi();			// Try to connect to WiFi networks specified in secrets.h
+	//setupWeb();				// Put the contents of the SPIFFS onto the web server.
 
 	// Initialize the strips connected to the ESP32.
 	// TODO I need to figure out how to adjust this based on settings. Users will probably have to save these values into
@@ -137,8 +139,8 @@ void setup() {
 
 void loop()
 {
-	handleWeb();	// Handles input from the web server.
-	handleInputs();	// Handles input from physical controls.
+	//handleWeb();	// Handles input from the web server.
+	//handleInputs();	// Handles input from physical controls.
 	drawMenu();		// Displays menu on the built in display.
 
 	if (masterPower)
@@ -160,7 +162,7 @@ void loop()
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
-			strip[i]->AddAnimation(0);
+			strip[i]->AddAnimation();
 		}
 	}
 

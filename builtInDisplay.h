@@ -44,16 +44,16 @@ void drawMenu()
 
 	// TOP LEFT CORNER
 	// Display the current state.
-	display.drawString(2, 2, "Pattern: " + patterns[currentPatternIndex].name);
-	display.drawString(2, 12, "Palette: " + paletteNames[currentPaletteIndex]);
-	display.drawString(2, 22, "Hue Speed: " + String(hueSpeed));
-	display.drawString(2, 32, "Speed: " + String(speed));
+	//display.drawString(2, 2, "Pattern: " + patterns[currentPatternIndex].name);
+	//display.drawString(2, 12, "Palette: " + paletteNames[currentPaletteIndex]);
+	//display.drawString(2, 22, "Hue Speed: " + String(hueSpeed));
+	//display.drawString(2, 32, "Speed: " + String(speed));
 
 	// BOTTOM LEFT CORNER
 	// Diaplay the current IP Address to control via WiFi.
 	// TODO Switch between IP Address and the host network SSID every few seconds.
 	// TODO Display "Manual Control Only!" if no connection has been made.
-	display.drawString(2, 50, "IP: " + WiFi.localIP().toString());
+	//display.drawString(2, 50, "IP: " + WiFi.localIP().toString());
 
 	// BOTTOM RIGHT CORNER
 	// Display the current power state of the lights.
@@ -76,7 +76,7 @@ void drawMenu()
 	display.display();
 }
 
-void displayMemory(string label)
+void displayMemory(String label)
 {
 	Serial.print("Memory remaining " + label + ": ");
 	Serial.print(freeMemory());
