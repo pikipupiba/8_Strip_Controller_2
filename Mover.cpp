@@ -39,7 +39,7 @@ Mover::~Mover()
 
 void Mover::Update()
 {
-	GeneralUpdate();
+	UpdatePosition();
 	Draw();
 }
 

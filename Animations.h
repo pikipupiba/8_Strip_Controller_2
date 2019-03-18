@@ -24,13 +24,15 @@ class Animations
 private:
 
 protected:
-	// The array of pixel values currently being used by the animation.
+	
 
 public:
 	// Public variables allow effect functions to be written easier and with less overhead.
 
-	// The index position helps layer different animations together in the final step.
+	// The array of pixel values currently being used by the animation.
 	struct CRGB animationLEDs[300];
+
+	// The index position helps layer different animations together in the final step.
 	uint32_t indexPosition;
 
 	// Where on the strip the animation should start and end.
@@ -64,7 +66,7 @@ public:
 	~Animations();
 
 	// Virtual functions that each child needs to implement to work.
-	void GeneralUpdate();
+	void UpdatePosition();
 	void Update();	// Update the animation variables based on speeds, oscillators, etc.
 	void Draw();	// Draw the animation into it's CRGB[] based on its parameters. 
 

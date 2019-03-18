@@ -23,4 +23,3 @@ public:
 	// Change the BPM smoothly maintaining the oscillator's current position.
 	void ChangeBPM(uint32_t newBPM, uint32_t newChangeTime);
 };
-
