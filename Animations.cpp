@@ -20,33 +20,33 @@ void Animations::UpdatePosition()
 	position += speed;
 	speed += acceleration;
 
-	switch (animationEndOfRange)
-	{
-	case Bounce:
+	//switch (animationEndOfRange)
+	//{
+	//case Bounce:
 
-		if (position < rangeEnd && position > rangeStart)
-		{}
-		else if (position > rangeEnd)
-		{
-			position = rangeEnd;
-			speed = -speed;
-			if (acceleration > 0)
-			{
-				acceleration = -acceleration;
-			}
-		}
-		else if (position < rangeStart)
-		{
-			position = rangeStart;
-			speed = -speed;
-			if (acceleration < 0)
-			{
-				acceleration = -acceleration;
-			}
-		}
-		break;
-
-	case Continue:
+	//	if (position < rangeEnd && position > rangeStart)
+	//	{}
+	//	else if (position > rangeEnd)
+	//	{
+	//		position = rangeEnd;
+	//		speed = -speed;
+	//		if (acceleration > 0)
+	//		{
+	//			acceleration = -acceleration;
+	//		}
+	//	}
+	//	else if (position < rangeStart)
+	//	{
+	//		position = rangeStart;
+	//		speed = -speed;
+	//		if (acceleration < 0)
+	//		{
+	//			acceleration = -acceleration;
+	//		}
+	//	}
+	//	break;
+	//
+	//case Continue:
 
 		if (position > rangeEnd)
 		{
@@ -56,8 +56,8 @@ void Animations::UpdatePosition()
 		{
 			position += rangeSize;
 		}
-		break;
-	}
+//		break;
+//	}
 
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;

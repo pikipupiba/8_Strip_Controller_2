@@ -13,23 +13,7 @@
 // TODO Make sure negatives, etc are handled correctly.
 // TODO Potentialy pass variables by reference to set the integer and fractional parts in the function itself.
 
-// Define minimum and maximum values of some data types.
-#define uINT8_MIN	0
-#define uINT8_MAX	255
-
-#define INT16_MIN  -32768
-#define INT16_MAX	32767
-
-#define uINT16_MIN	0
-#define uINT16_MAX	65535
-
-#define INT32_MIN  -2147483648
-#define INT32_MAX	2147483647
-#define INT32_RANGE INT32_MAX - INT32_MIN
-
-#define uINT32_MIN	0
-#define uINT32_MAX	4294967295
-#define uINT32_RANGE uINT32_MAX - uINT32_MIN
+#include "globalStuff.h"
 
 // Return the integer part of an unsigned 32-bit integer when compressed to size max - min.
 float uint32_to_float(uint32_t val, int min, int max)

@@ -2,6 +2,14 @@
 
 // Animation presets store all the information required to pick an animation up right where it left off.
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
+#include "globalStuff.h"
+
 typedef struct
 {
 	String animationName;
@@ -14,9 +22,9 @@ typedef struct
 	uint32_t rangeEnd;
 	//uint32_t rangeSize; // Automatically calculated rangeSize for easier to read code.
 
-	Shapes animationShape;				// The shape of the strip the animation is playing on.
-	Textures animationTexture;			// A modifier applied to the animation after values are calculated.
-	EndOfRanges animationEndOfRange;	// How an animation acts when it approaches the end of its range.
+	//Shapes animationShape;				// The shape of the strip the animation is playing on.
+	//Textures animationTexture;			// A modifier applied to the animation after values are calculated.
+	//EndOfRanges animationEndOfRange;	// How an animation acts when it approaches the end of its range.
 
 	uint32_t brightness;
 	uint32_t hue;			// Hue is the starting value used to calculate the various colors in an animation step.
@@ -40,7 +48,7 @@ typedef struct
 }AnimationPreset;
 
 AnimationPreset FunkyMovers = { "Mover",	0,			0,			uINT32_MAX,	// Name,		index,		rangeStart,		rangeEnd
-								Strip,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
+								//Strip,		None,		Bounce,		// Shape,		Texture,	Overlay,		End of Range
 								4294967295, 0,			200,		0,			// Brightness,	Hue,		Hue Speed,		Hue Acceleration
 								0,			200000,		0,			1000000,		// Position,	Speed,		Acceleration,	Feature Size
 								5,			INT32_MAX/20,	1000000 };				// Num Repeats, Pos Offset,	Hue Offset

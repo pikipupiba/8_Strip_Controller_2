@@ -15,9 +15,15 @@
 // Right now I think each animation object uses between 1 KB and 2 KB of memory. Not sure if that is a lot...
 // With 8 strips each containing a maximum of 10 animations I potentially need room for 80 animation objects.
 
-#include <stdint.h>
+//#include <stdint.h>
 #include <FastLED.h>
-#include "defaultSettings.h"
+#include "globalStuff.h"
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
+#endif
 
 class Animations
 {

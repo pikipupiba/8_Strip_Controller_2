@@ -1,15 +1,16 @@
 #pragma once
 
 #include "stripController.h"
-//#include "Mover.h"
+
+
 
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
-StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs, Shapes newShape)
+StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shapes newShape)
 {
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
 
-	stripShape = newShape;
+	//stripShape = newShape;
 
 	// Default values used for the rest of the strip variables.
 	stripPower = true;
@@ -80,10 +81,10 @@ void StripController::UpdateStrip()
 	{
 		i->Update();
 
-		for (CRGB j : stripLEDs)
+		/*for (CRGB j : stripLEDs)
 		{
 			stripLEDs[j] += i->animationLEDs[j];
-		}
+		}*/
 	}
 
 	// Call the current pattern function once, updating the 'leds[index]' array

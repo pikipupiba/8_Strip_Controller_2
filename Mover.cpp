@@ -3,6 +3,24 @@
 #include "Mover.h"
 //#include "normalizeValues.h"
 
+// Define minimum and maximum values of some data types.
+#include "thing.h"
+#define uINT8_MIN	0
+#define uINT8_MAX	255
+
+#define INT16_MIN  -32768
+#define INT16_MAX	32767
+
+#define uINT16_MIN	0
+#define uINT16_MAX	65535
+
+#define INT32_MIN  -2147483648
+#define INT32_MAX	2147483647
+#define INT32_RANGE INT32_MAX - INT32_MIN
+
+#define uINT32_MIN	0
+#define uINT32_MAX	4294967295
+#define uINT32_RANGE uINT32_MAX - uINT32_MIN
 
 Mover::Mover()
 {
@@ -10,9 +28,9 @@ Mover::Mover()
 	rangeEnd = uINT32_MAX;
 	rangeSize = rangeEnd - rangeStart; // Automatically calculated rangeSize for easier to read code.
 
-	animationShape = Strip;				// The shape of the strip the animation is playing on.
-	animationTexture = None;			// A modifier applied to the animation after values are calculated.
-	animationEndOfRange = Bounce;	// How an animation acts when it approaches the end of its range.
+	//animationShape = Strip;				// The shape of the strip the animation is playing on.
+	//animationTexture = None;			// A modifier applied to the animation after values are calculated.
+	//animationEndOfRange = Bounce;	// How an animation acts when it approaches the end of its range.
 
 	brightness = uINT32_MAX;
 	hue = 0;			// Hue is the starting value used to calculate the various colors in an animation step.
@@ -45,25 +63,25 @@ void Mover::Update()
 
 void Mover::Draw()
 {
-	float fEnd1 = uint32_to_float(end1, 0, 300);
-	float fEnd2 = uint32_to_float(end2, 0, 300);
+	//float fEnd1 = uint32_to_float(end1, 0, 300);
+	//float fEnd2 = uint32_to_float(end2, 0, 300);
 
-	int iEnd1 = (int)fEnd1;
-	int iEnd2 = (int)fEnd2;
+	//int iEnd1 = (int)fEnd1;
+	//int iEnd2 = (int)fEnd2;
 
 	animationLEDs[0, 300] = CRGB::Black;
 
 	if (end1 < end2)
 	{
-		animationLEDs[iEnd1, iEnd2] = hue;
+		//animationLEDs[iEnd1, iEnd2] = hue;
 	}
 	else
 	{
-		animationLEDs[iEnd1, uint32_to_uint32(rangeEnd,0,300)];
-		animationLEDs[uint32_to_uint32(rangeStart, 0, 300), iEnd2];
+		//animationLEDs[iEnd1, uint32_to_uint32(rangeEnd,0,300)];
+		//animationLEDs[uint32_to_uint32(rangeStart, 0, 300), iEnd2];
 	}
 
-	animationLEDs[(int)fEnd1] *= 1 - fEnd1 + iEnd1;
-	animationLEDs[(int)fEnd2] *= fEnd2 - iEnd2;
+	//animationLEDs[(int)fEnd1] *= 1 - fEnd1 + iEnd1;
+	//animationLEDs[(int)fEnd2] *= fEnd2 - iEnd2;
 
 }
