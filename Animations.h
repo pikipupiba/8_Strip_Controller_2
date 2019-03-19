@@ -15,9 +15,9 @@
 // Right now I think each animation object uses between 1 KB and 2 KB of memory. Not sure if that is a lot...
 // With 8 strips each containing a maximum of 10 animations I potentially need room for 80 animation objects.
 
-//#include <stdint.h>
-//#include <FastLED.h>
-//#include "defaultSettings.h"
+#include <stdint.h>
+#include <FastLED.h>
+#include "defaultSettings.h"
 
 class Animations
 {
@@ -25,8 +25,8 @@ private:
 
 protected:
 	
-
 public:
+
 	// Public variables allow effect functions to be written easier and with less overhead.
 
 	// The array of pixel values currently being used by the animation.
@@ -60,6 +60,7 @@ public:
 	uint32_t numRepeats;		// Used to copy a small animation to different positions in its range.
 	int repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
 	int repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
+	
 
 	// Constructors and destructors.
 	Animations();

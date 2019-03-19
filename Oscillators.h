@@ -1,7 +1,7 @@
 #pragma once
 
-//#include <stdint.h>
-//#include <FastLED.h>
+#include <stdint.h>
+#include <FastLED.h>
 
 class Oscillators
 {

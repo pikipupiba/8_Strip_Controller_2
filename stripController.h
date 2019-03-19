@@ -1,9 +1,10 @@
 // stripController.h
 #pragma once
-//#include <stdint.h>
-//#include <FastLED.h>
-//#include "defaultSettings.h"
-//#include "Animations.h"
+#include <stdint.h>
+#include <FastLED.h>
+#include "defaultSettings.h"
+#include "Animations.h"
+#include "Mover.h"
 
 // HELP!
 // Is my whole paradigm of using strip controller objects to combine animation objects onto a strip a good one?

@@ -48,7 +48,7 @@ uint32_t uint32_to_uint32(uint32_t val, uint32_t min, uint32_t max)
 }
 
 // Undo the normalization of a number. This probably loses information so watch out.
-long int expand(int val, int min, int max, uint32_t type)
+/*long int expand(int val, int min, int max, uint32_t type)
 {
 	switch (type) // Expanding depends of the desired variable type.
 	{
@@ -67,4 +67,4 @@ uint32_t stepSize(int min, int max, uint32_t type)
 	case 1: return uINT32_MAX / size;	// type 1 is uint32_t
 	case 2: return INT32_MAX / size;	// type 2 is int
 	}
-}
+}*/
