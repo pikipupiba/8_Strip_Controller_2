@@ -1,2 +1,4 @@
 secrets.h
 
+esp32-fastled-webserver.vcxproj
+esp32-fastled-webserver.vcxproj.filters
