@@ -9,8 +9,6 @@
 #endif
 
 #include <SSD1306.h> // alias for #include "SSD1306Wire.h"'
-#include <FS.h>
-#include <MemoryFree.h>
 
 #include "globalStuff.h"
 

@@ -44,7 +44,7 @@ void handleInputs()
 		// Button 1 controls power.
 		if (digitalRead(butPin1))
 		{
-			masterPower = !masterPower;
+			gPower = !gPower;
 			FastLED.setBrightness(255);
 			
 			prevPress = millis();
@@ -53,7 +53,7 @@ void handleInputs()
 		// Button 2 changes the pattern.
 		if (digitalRead(butPin2))
 		{
-			strip[0]->nextPattern();
+			//strip[0]->nextPattern();
 			prevPress = millis();
 		}
 	}
@@ -63,19 +63,19 @@ void handleInputs()
 	potVal2 = (potVal2 * 4 + 255 - map(analogRead(potPin2), 0, 4096, 0, 255)) / 5;
 
 	// Require a change of 2 or more to further reduce jitter.
-	if (hueSpeed - potVal1 > 2 || hueSpeed - potVal1 < -2)
+	if (gHueSpeed - potVal1 > 2 || gHueSpeed - potVal1 < -2)
 	{
-		hueSpeed = potVal1;
+		gHueSpeed = potVal1;
 	}
-	if (speed - potVal2 > 2 || speed - potVal2 < -2)
+	if (gSpeed - potVal2 > 2 || gSpeed - potVal2 < -2)
 	{
 		// TODO Need to normalize speed settings in each animation. This is a quick fix.
-		speed = potVal2;
+		gSpeed = potVal2;
 
 		// If showing a Solid Color the speed dial changes the hue.
-		if (patterns[curPattern].name == "Solid Color")
+		/*if (patterns[curPattern].name == "Solid Color")
 		{
 			solidColor = CHSV(potVal2, 255, 255);
-		}
+		}*/
 	}
 }

@@ -1,5 +1,11 @@
 #pragma once
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
 // HELP!
 // Obviously this is not optimized, but once completed will this be faster than just using floats to track animation parameters?
 // If this method is faster than using floats, then am I on the right track as far as how to accomplish my goal?
@@ -16,39 +22,14 @@
 #include "globalStuff.h"
 
 // Return the integer part of an unsigned 32-bit integer when compressed to size max - min.
-float uint32_to_float(uint32_t val, int min, int max)
-{
-	return val / uINT32_RANGE * (max - min) + min;
-}
+float uint32_to_float(uint32_t val, int min, int max);
 
-float int32_to_float(int val, int min, int max)
-{
-    return (val - INT32_MIN) / INT32_RANGE * (max - min) + min;
-}
+float int32_to_float(int val, int min, int max);
 
-uint32_t uint32_to_uint32(uint32_t val, uint32_t min, uint32_t max)
-{
-	return val / uINT32_RANGE * (max - min) + min;
-}
+uint32_t uint32_to_uint32(uint32_t val, uint32_t min, uint32_t max);
 
 // Undo the normalization of a number. This probably loses information so watch out.
-/*long int expand(int val, int min, int max, uint32_t type)
-{
-	switch (type) // Expanding depends of the desired variable type.
-	{
-	case 1: return map(val, min, max, uINT32_MIN,	uINT32_MAX);	// type 1 is uint32_t
-	case 2: return map(val, min, max, INT32_MIN,	INT32_MAX);		// type 2 is int
-	}
-}
+//long int expand(int val, int min, int max, uint32_t type);
 
 // Calcualtes the step size based on data type and current range.
-uint32_t stepSize(int min, int max, uint32_t type)
-{
-	int size = max - min;
-
-	switch (type) // Expanding depends of the desired variable type.
-	{
-	case 1: return uINT32_MAX / size;	// type 1 is uint32_t
-	case 2: return INT32_MAX / size;	// type 2 is int
-	}
-}*/
+//uint32_t stepSize(int min, int max, uint32_t type);

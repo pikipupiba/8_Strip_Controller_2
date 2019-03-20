@@ -24,6 +24,41 @@ void setupDisplay()
 	delay(2000);
 }
 
+/*void drawMenu()
+{
+	// Clear the display for updating.
+	display.clear();
+
+	// ALONG THE TOP or ALONG THE RIGHT.
+	// TODO Implement a status bar.
+
+	// TOP LEFT CORNER
+	// Display the current state.
+	display.drawString(2, 2, "Pattern: ");// +patterns[currentPatternIndex].name);
+	display.drawString(2, 12, "Palette: ");// +paletteNames[currentPaletteIndex]);
+	display.drawString(2, 22, "Brightness: ");// +String(brightness));
+	display.drawString(2, 32, "Speed: ");// +String(speed));
+
+	// BOTTOM LEFT CORNER
+	// Diaplay the current IP Address to control via WiFi.
+	// TODO Switch between IP Address and the host network SSID every few seconds.
+	// TODO Display "Manual Control Only!" if no connection has been made.
+	display.drawString(2, 50, "IP: ");// + WiFi.localIP().toString());
+
+	// BOTTOM RIGHT CORNER
+	// Display the current power state of the lights.
+	if (gPower == 0)
+	{
+		display.drawString(100, 50, "OFF");
+	}
+	else
+	{
+		display.drawString(100, 50, "ON");
+	}
+
+	display.display();
+}*/
+
 
 // Draws the menu onto the OLED display.
 // TODO Implement a more rigourous menu structure that uses a rotary encoder for navigation.
@@ -32,7 +67,8 @@ void drawMenu()
 {
 	if (millis() - mTime > 100)
 	{
-		startTime("Draw Menu");
+
+		//startTime("Draw Menu");
 		// Clear the display for updating.
 		display.clear();
 
@@ -43,7 +79,7 @@ void drawMenu()
 		// Display the current state.
 		display.drawString(2, 2, "Pattern: ");// +patterns[currentPatternIndex].name);
 		display.drawString(2, 12, "Palette: ");// + paletteNames[currentPaletteIndex]);
-		display.drawString(2, 22, "Hue Speed: ");// +String(hueSpeed));
+		display.drawString(2, 22, "Hue Speed: " + String(gHueSpeed));
 		display.drawString(2, 32, "Speed: " + String(gSpeed));
 
 		// BOTTOM LEFT CORNER
@@ -60,40 +96,46 @@ void drawMenu()
 		}
 		else
 		{
-			display.drawString(70, 40, String(frameTime) + " ms");
-			display.drawString(90, 50, String(FPS));
+			display.drawString(70, 40, "Hmmm");// String(frameTime) + " ms");
+			String sHue = String(gHue);
+			//display.drawString(90, 50, sHue);// String(FPS));
 		}
 
 		display.display();
 
 		mTime = millis();
 
-		endTime();
+		//endTime();
+
 	}
 }
 
-void displayMemory(String label)
+void displayMemory(String label = "")
 {
-	Serial.print("Memory remaining " + label + ": ");
-	//Serial.print(freeMemory());
-	Serial.println(" Bytes");
+	Serial.print("Memory remaining" + label + ": ");
+	Serial.print(ESP.getFreeHeap()/1000);
+	Serial.println(" KB");
+	Serial.print("Number of Objects: ");
+	Serial.println(numObjects);
 }
 
 void calcFPS()
 {
 
-	/*Serial.print("New Frames: ");
-	Serial.println(newFrames);
-	Serial.print(frameTime);
-	Serial.println(" ms");
-	*/
-	frameTime = (millis() - lastFrameTime) / newFrames;
+	if (newFrames > 0)
+	{
+		frameTime = (millis() - lastFrameTime) / newFrames;
 
-	FPS = 1000 / frameTime;
+		FPS = 1000 / frameTime;
 
-	lastFrameTime = millis();
-	newFrames = 0;
+		lastFrameTime = millis();
+		newFrames = 0;
 
+		Serial.print("Frame Time: ");
+		Serial.println(frameTime);
+		Serial.print("FPS: ");
+		Serial.println(FPS);
+	}
 	
 }
 

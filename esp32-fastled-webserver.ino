@@ -22,15 +22,14 @@
 // --------------------------------OUTSIDE LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
 #include <FastLED.h>
-//#include <WebServer.h>
-//#include <WiFi.h>
+#include <WebServer.h>
+#include <WiFi.h>
 #include <FS.h>
-//#include <SPIFFS.h>
-//#include <EEPROM.h>
-#include <MemoryFree.h>
+#include <SPIFFS.h>
+#include <EEPROM.h>
 
 // Define the WebServer object.
-//WebServer webServer(80);
+WebServer webServer(80);
 
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001008)
 #warning "Requires FastLED 3.1.8 or later; check github for latest code."
@@ -47,10 +46,9 @@ const int boardLedPin = 2;
 // --------------------------------PROJECT LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
 
-//#include "tasks.h"			// Functions related to interrupts.
+#include "tasks.h"			// Functions related to interrupts.
 
-//#include "defaultSettings.h"// Contains all default settings to use if no saved settings are available.
-//#include "globalStuff.h"
+#include "globalStuff.h"
 #include "normalizeValues.h"// Contains the functions to compress signed and unsigned ints to more precise smaller ranges.
 
 #include "animationPresets.h"	// The location of presets used when initializing animation objects.
@@ -60,13 +58,13 @@ const int boardLedPin = 2;
 //#include "patterns.h"		// Patterns use various animation objects to create an effect.
 //#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
 
-//#include "field.h"			// Gets field values from the web server.
-//#include "fields.h"			// Causes field values to affect program.
+#include "field.h"			// Gets field values from the web server.
+#include "fields.h"			// Causes field values to affect program.
 
-//#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
-//#include "wifi_changed.h"	// 
-//#include "web.h"			// Sets up the web server and handles web input.
-//#include "physicalInputs.h"	// Sets up and handles input from physical inputs.
+#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
+#include "wifi_changed.h"	// 
+#include "web.h"			// Sets up the web server and handles web input.
+#include "physicalInputs.h"	// Sets up and handles input from physical inputs.
 #include "display.h"	// Handles setting up and displaying to the built in display and serial output.
 
 // -----------------------------------------------------------------------------------//
@@ -81,64 +79,6 @@ const int boardLedPin = 2;
 
 // Create array of strips available to the program.
 StripController* strip[8];
-
-
-// -- Task handles for use in the notifications
-static TaskHandle_t FastLEDshowTaskHandle = 0;
-static TaskHandle_t userTaskHandle = 0;
-
-/** show() for ESP32
-Call this function instead of FastLED.show(). It signals core 0 to issue a show,
-then waits for a notification that it is done.
-*/
-void FastLEDshowESP32()
-{
-	if (userTaskHandle == 0) {
-		// -- Store the handle of the current task, so that the show task can
-		//    notify it when it's done
-		userTaskHandle = xTaskGetCurrentTaskHandle();
-
-		// -- Trigger the show task
-		xTaskNotifyGive(FastLEDshowTaskHandle);
-
-		// -- Wait to be notified that it's done
-		const TickType_t xMaxBlockTime = pdMS_TO_TICKS(200);
-		ulTaskNotifyTake(pdTRUE, xMaxBlockTime);
-		userTaskHandle = 0;
-	}
-}
-
-/** show Task
-This function runs on core 0 and just waits for requests to call FastLED.show()
-*/
-void FastLEDshowTask(void *pvParameters)
-{
-	// -- Run forever...
-	for (;;) {
-		// -- Wait for the trigger
-		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-
-		// -- Do the show (synchronously)
-		FastLED.show();
-
-		// -- Notify the calling task
-		xTaskNotifyGive(userTaskHandle);
-	}
-}
-
-void createTasks()
-{
-
-	// Print the core the main code is running on.
-	// Make sure to change FASTLED_SHOW_CORE if it is the same as this one.
-	int core = xPortGetCoreID();
-	Serial.print("Main code running on core ");
-	Serial.println(core);
-
-	// -- Create the FastLED show task
-	xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
-
-}
 
 void setup() {
 
@@ -179,7 +119,7 @@ void setup() {
 
 	createTasks();
 	
-	displayMemory("after setup");
+	displayMemory(" after setup");
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
@@ -190,9 +130,9 @@ void setup() {
 
 void loop()
 {
-	debugCounter();
+
 	//handleWeb();	// Handles input from the web server.
-	//handleInputs();	// Handles input from physical controls.
+	handleInputs();	// Handles input from physical controls.
 
 	drawMenu();		// Displays menu on the built in display.
 
@@ -211,12 +151,15 @@ void loop()
 		strip[i]->UpdateStrip();
 	}
 	
-	EVERY_N_SECONDS(5)
+	EVERY_N_SECONDS(2)
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
 			strip[i]->AddAnimation();
 		}
+		
+		displayMemory(" after more Movers");
+		calcFPS();
 	}
 
 	// send the 'leds' array out to the actual LED strip
@@ -224,13 +167,10 @@ void loop()
 	FastLEDshowESP32();
 
 	newFrames++;
-	calcFPS();
-
 
 	// insert a delay to keep the framerate modest.
 	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
-	delay(1000 / FRAMES_PER_SECOND);
-
+	//delay(1000 / FRAMES_PER_SECOND);
 
 }

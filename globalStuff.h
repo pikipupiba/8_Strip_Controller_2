@@ -56,10 +56,10 @@
 #define NUM_LEDS			NUM_LEDS_PER_STRIP * NUM_STRIPS
 
 // Set the size of the animation array dedicated to each strip.
-#define NUM_ANIMATIONS_PER_STRIP	10
+#define NUM_ANIMATIONS_PER_STRIP	30
 
 #define MILLI_AMPS         60000 * NUM_STRIPS // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
-#define FRAMES_PER_SECOND  120
+#define FRAMES_PER_SECOND  1000
 
 // Define some enumerated values.
 enum class Shapes		{ Strip, Panel, Ring };		// The shape of a strip can effect how the animations are displayed.
@@ -71,7 +71,8 @@ enum class EndOfRanges	{ Continue, Bounce, Fade };	// This describes the behavio
 // -----------------------------------------------------------------------------------//
 // TODO Save and restore these settings from EEPROM.
 
-extern uint8_t gHue; // rotating "base color" used by many of the patterns
+extern uint32_t gHue; // rotating "base color" used by many of the patterns
+extern int gHueSpeed;
 
 // Define our master array of LEDs.
 extern CRGBArray<NUM_LEDS> leds;
@@ -81,7 +82,7 @@ extern bool gPower;
 extern uint32_t gBrightness;
 extern int gSpeed;
 
-extern unsigned long frameTime;
+extern uint32_t frameTime;
 extern unsigned long lastFrameTime;
 extern uint32_t newFrames;
 extern uint32_t FPS;
@@ -89,5 +90,7 @@ extern uint32_t FPS;
 extern unsigned long sTime;
 extern unsigned long mTime;
 extern String functionName;
+
+extern uint32_t numObjects;
 
 #endif

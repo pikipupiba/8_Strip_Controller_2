@@ -25,142 +25,142 @@
 */
 
 String getPower() {
-  return String(power);
+  return String(gPower);
 }
 
 String setPower(String value) {
-  power = value.toInt();
-  power = power == 0 ? 0 : 1;
-  return String(power);
+  gPower = value.toInt();
+  gPower = gPower == 0 ? 0 : 1;
+  return String(gPower);
 }
 
 String getBrightness() {
-  return String(brightness);
+  return String(gBrightness);
 }
 
 String setBrightness(String value) {
-  brightness = value.toInt();
-  FastLED.setBrightness(brightness);
-  return String(brightness);
+  gBrightness = value.toInt();
+  FastLED.setBrightness(gBrightness);
+  return String(gBrightness);
 }
 
 String getPattern() {
-  return String(currentPatternIndex);
+	return "";// String(currentPatternIndex);
 }
 
 void setPattern(uint8_t value)
 {
-  if (value >= patternCount)
-    value = patternCount - 1;
+  //if (value >= patternCount)
+  //  value = patternCount - 1;
 
-  currentPatternIndex = value;
+  //currentPatternIndex = value;
 }
 
 String setPattern(String value) {
   setPattern(value.toInt());
-  return String(currentPatternIndex);
+  return "";// String(currentPatternIndex);
 }
 
 String getPatterns() {
   String json = "";
 
-  for (uint8_t i = 0; i < patternCount; i++) {
-    json += "\"" + patterns[i].name + "\"";
-    if (i < patternCount - 1)
-      json += ",";
-  }
+  //for (uint8_t i = 0; i < patternCount; i++) {
+  //  json += "\"" + patterns[i].name + "\"";
+  //  if (i < patternCount - 1)
+  //    json += ",";
+  //}
 
   return json;
 }
 
 String getPalette() {
-  return String(currentPaletteIndex);
+	return "";// String(currentPaletteIndex);
 }
 
 String setPalette(String value) {
-  currentPaletteIndex = value.toInt();
-  if (currentPaletteIndex < 0) currentPaletteIndex = 0;
-  else if (currentPaletteIndex >= paletteCount) currentPaletteIndex = paletteCount - 1;
-  targetPalette = palettes[currentPaletteIndex];
-  return String(currentPaletteIndex);
+  //currentPaletteIndex = value.toInt();
+  //if (currentPaletteIndex < 0) currentPaletteIndex = 0;
+  //else if (currentPaletteIndex >= paletteCount) currentPaletteIndex = paletteCount - 1;
+  //targetPalette = palettes[currentPaletteIndex];
+	return "";// String(currentPaletteIndex);
 }
 
 String getPalettes() {
   String json = "";
 
-  for (uint8_t i = 0; i < paletteCount; i++) {
-    json += "\"" + paletteNames[i] + "\"";
-    if (i < paletteCount - 1)
-      json += ",";
-  }
+  //for (uint8_t i = 0; i < paletteCount; i++) {
+  //  json += "\"" + paletteNames[i] + "\"";
+  //  if (i < paletteCount - 1)
+  //    json += ",";
+  //}
 
   return json;
 }
 
 String getSpeed() {
-  return String(speed);
+  return String(gSpeed);
 }
 
 String setSpeed(String value) {
-  speed = value.toInt();
-  return String(speed);
+  gSpeed = value.toInt();
+  return String(gSpeed);
 }
 
 String getAutoplay() {
-  return String(autoplay);
+	return "";// String(autoplay);
 }
 
 String setAutoplay(String value) {
-  autoplay = value.toInt();
-  autoplay = autoplay == 0 ? 0 : 1;
-  autoPlayTimeout = millis() + (autoplayDuration * 1000);
-  return String(autoplay);
+  //autoplay = value.toInt();
+  //autoplay = autoplay == 0 ? 0 : 1;
+  //autoPlayTimeout = millis() + (autoplayDuration * 1000);
+	return "";// String(autoplay);
 }
 
 String getAutoplayDuration() {
-  return String(autoplayDuration);
+	return "";// String(autoplayDuration);
 }
 
 String setAutoplayDuration(String value) {
-  autoplayDuration = value.toInt();
-  if (autoplayDuration < 1) autoplayDuration = 1;
-  else if (autoplayDuration > 255) autoplayDuration = 255;
-  autoPlayTimeout = millis() + (autoplayDuration * 1000);
-  return String(autoplayDuration);
+  //autoplayDuration = value.toInt();
+  //if (autoplayDuration < 1) autoplayDuration = 1;
+  //else if (autoplayDuration > 255) autoplayDuration = 255;
+  //autoPlayTimeout = millis() + (autoplayDuration * 1000);
+	return "";// String(autoplayDuration);
 }
 
 String getCyclePalettes() {
-  return String(cyclePalettes);
+	return "";// String(cyclePalettes);
 }
 
 String setCyclePalettes(String value) {
-  cyclePalettes = value.toInt();
-  cyclePalettes = cyclePalettes == 0 ? 0 : 1;
-  paletteTimeout = millis() + (paletteDuration * 1000);
-  return String(cyclePalettes);
+  //cyclePalettes = value.toInt();
+  //cyclePalettes = cyclePalettes == 0 ? 0 : 1;
+  //paletteTimeout = millis() + (paletteDuration * 1000);
+	return "";// String(cyclePalettes);
 }
 
 String getPaletteDuration() {
-  return String(paletteDuration);
+	return "";// String(paletteDuration);
 }
 
 String setPaletteDuration(String value) {
-  paletteDuration = value.toInt();
-  if (paletteDuration < 1) paletteDuration = 1;
-  else if (paletteDuration > 255) paletteDuration = 255;
-  paletteTimeout = millis() + (paletteDuration * 1000);
-  return String(paletteDuration);
+  //paletteDuration = value.toInt();
+  //if (paletteDuration < 1) paletteDuration = 1;
+  //else if (paletteDuration > 255) paletteDuration = 255;
+  //paletteTimeout = millis() + (paletteDuration * 1000);
+	return "";// String(paletteDuration);
 }
 
 String getSolidColor() {
-  return String(solidColor.r) + "," + String(solidColor.g) + "," + String(solidColor.b);
+	return "";// String(solidColor.r) + "," + String(solidColor.g) + "," + String(solidColor.b);
 }
 
 String setSolidColor(uint8_t r, uint8_t g, uint8_t b)
 {
-  solidColor = CRGB(r, g, b);
+  //solidColor = CRGB(r, g, b);
 
-  return "\"" + String(solidColor.r) + "," + String(solidColor.g) + "," + String(solidColor.b) + "\"";
+	return "";// "\"" + String(solidColor.r) + "," + String(solidColor.g) + "," + String(solidColor.b) + "\"";
 }
 
 String setSolidColor(CRGB color) {
@@ -174,57 +174,57 @@ String setSolidColor(String value) {
 }
 
 String getCooling() {
-  return String(cooling);
+	return "";// String(cooling);
 }
 
 String setCooling(String value) {
-  cooling = value.toInt();
-  return String(cooling);
+  //cooling = value.toInt();
+	return "";// String(cooling);
 }
 
 String getSparking() {
-  return String(sparking);
+	return "";// String(sparking);
 }
 
 String setSparking(String value) {
-  sparking = value.toInt();
-  return String(sparking);
+  //sparking = value.toInt();
+	return "";//String(sparking);
 }
 
 String getTwinkleSpeed() {
-  return String(twinkleSpeed);
+	return "";// String(twinkleSpeed);
 }
 
 String setTwinkleSpeed(String value) {
-  twinkleSpeed = value.toInt();
-  if (twinkleSpeed < 0) twinkleSpeed = 0;
-  else if (twinkleSpeed > 8) twinkleSpeed = 8;
-  return String(twinkleSpeed);
+  //twinkleSpeed = value.toInt();
+  //if (twinkleSpeed < 0) twinkleSpeed = 0;
+  //else if (twinkleSpeed > 8) twinkleSpeed = 8;
+	return "";// String(twinkleSpeed);
 }
 
 String getTwinkleDensity() {
-  return String(twinkleDensity);
+	return "";// String(twinkleDensity);
 }
 
 String setTwinkleDensity(String value) {
-  twinkleDensity = value.toInt();
-  if (twinkleDensity < 0) twinkleDensity = 0;
-  else if (twinkleDensity > 8) twinkleDensity = 8;
-  return String(twinkleDensity);
+  //twinkleDensity = value.toInt();
+  //if (twinkleDensity < 0) twinkleDensity = 0;
+  //else if (twinkleDensity > 8) twinkleDensity = 8;
+	return "";// String(twinkleDensity);
 }
 
 FieldList fields = {
-  { "power", "Power", BooleanFieldType, 0, 1, getPower, NULL, setPower },
-  { "brightness", "Brightness", NumberFieldType, 1, 255, getBrightness, NULL, setBrightness },
+  { "gPower", "Power", BooleanFieldType, 0, 1, getPower, NULL, setPower },
+  { "gBrightness", "Brightness", NumberFieldType, 1, 255, getBrightness, NULL, setBrightness },
   { "speed", "Speed", NumberFieldType, 1, 255, getSpeed, NULL, setSpeed },
   
   { "patternSection", "Pattern", SectionFieldType },
-  { "pattern", "Pattern", SelectFieldType, 0, patternCount, getPattern, getPatterns, setPattern },
+  //{ "pattern", "Pattern", SelectFieldType, 0, patternCount, getPattern, getPatterns, setPattern },
   { "autoplay", "Cycle Patterns", BooleanFieldType, 0, 1, getAutoplay, NULL, setAutoplay },
   { "autoplayDuration", "Pattern Duration", NumberFieldType, 1, 255, getAutoplayDuration, NULL, setAutoplayDuration },
   
   { "paletteSection", "Palette", SectionFieldType },
-  { "palette", "Palette", SelectFieldType, 0, paletteCount, getPalette, getPalettes, setPalette },
+  //{ "palette", "Palette", SelectFieldType, 0, paletteCount, getPalette, getPalettes, setPalette },
   { "cyclePalettes", "Cycle Palettes", BooleanFieldType, 0, 1, getCyclePalettes, NULL, setCyclePalettes },
   { "paletteDuration", "Palette Duration", NumberFieldType, 1, 255, getPaletteDuration, NULL, setPaletteDuration },
   
