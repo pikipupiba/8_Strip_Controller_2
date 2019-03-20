@@ -177,4 +177,4 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/chipsets.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\globalStuff.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h \
- C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\thing.h
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\normalizeValues.h

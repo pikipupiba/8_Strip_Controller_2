@@ -381,6 +381,7 @@ void drawMenu()
 	// TODO Switch between IP Address and the host network SSID every few seconds.
 	// TODO Display "Manual Control Only!" if no connection has been made.
 	display.drawString(2, 50, "IP: " + WiFi.localIP().toString());
+	Serial.println(WiFi.localIP().toString());
 
 	// BOTTOM RIGHT CORNER
 	// Display the current power state of the lights.
