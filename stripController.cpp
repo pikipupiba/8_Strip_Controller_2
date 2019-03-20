@@ -36,42 +36,42 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shap
 	if (stripIndex == 0)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 1)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 2)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 3)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 4)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 5)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 6)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 7)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 
 }

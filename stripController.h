@@ -8,7 +8,7 @@
 
 #include "globalStuff.h"
 
-extern CRGBArray<2400> leds;
+extern CRGBArray<NUM_LEDS> leds;
 
 // HELP!
 // Is my whole paradigm of using strip controller objects to combine animation objects onto a strip a good one?
@@ -28,7 +28,7 @@ class StripController
 	 uint32_t stripNumLEDs;
 
 	 // The CRGBSet containing the number of LEDs on this strip.
-	 struct CRGB stripLEDs[300];
+	 CRGBSet stripLEDs;
 
 	 //Shapes stripShape;					// The default shape of animations created on this strip.
 	 //Textures stripTexture;				// A modifier applied to the strip after values are calculated.
