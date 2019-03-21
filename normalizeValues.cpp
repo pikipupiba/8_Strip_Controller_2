@@ -2,7 +2,12 @@
 
 float uint32_to_float(uint32_t val, int min, int max)
 {
-	return val / uINT32_RANGE * (max - min) + min;
+	//Serial.println(val);
+	//Serial.println(min);
+	//Serial.println(max);
+	//Serial.println(val / uINT32_RANGE * (max - min) + min);
+
+	return ((float)val / (float)uINT32_RANGE) * ((float)max - (float)min) + (float)min;
 }
 
 float int32_to_float(int val, int min, int max)
@@ -12,7 +17,7 @@ float int32_to_float(int val, int min, int max)
 
 uint32_t uint32_to_uint32(uint32_t val, uint32_t min, uint32_t max)
 {
-	return val / uINT32_RANGE * (max - min) + min;
+	return ((float)val / (float)uINT32_RANGE) * (max - min) + min;
 }
 
 // Undo the normalization of a number. This probably loses information so watch out.

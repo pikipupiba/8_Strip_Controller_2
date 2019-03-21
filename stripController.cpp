@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stripController.h"
-
+#include "display.h"
 
 
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
@@ -36,42 +36,42 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shap
 	if (stripIndex == 0)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);// = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 1)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 2)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 3)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 4)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 5)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 6)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 	else if (stripIndex == 7)
 	{
 		FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
+		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
 	}
 
 }
@@ -79,13 +79,27 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shap
 void StripController::UpdateStrip()
 {
 
-	for (Animations* i : animation)
+	/*for (Animations* i : animation)
 	{
+		debugCounter();
 		i->Update();
 
 		for (int j = 0; j < 100; j++)
 		{
 			//stripLEDs[j] += i->animationLEDs[j];
+		}
+	}*/
+
+	for (int i = 0; i < numAnimations; i++)
+	{
+		/*debugCounter();
+		Serial.print("i= ");
+		Serial.println(i);*/
+		animation[i]->Update();
+
+		for (int j = 0; j < stripNumLEDs; j++)
+		{
+			leds[stripIndex * 300 + j] += animation[i]->animationLEDs[j];
 		}
 	}
 
@@ -136,7 +150,6 @@ void StripController::AddAnimation()
 {
 	if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
 	{
-		numAnimations++;
 		
 		// TODO Figure out how to initialize an animation object like this.
 		// This has not been worked on at all yet.
@@ -145,5 +158,17 @@ void StripController::AddAnimation()
 		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
 		animation[numAnimations] = new Mover();
+
+		numAnimations++;
 	}
+}
+
+void StripController::PrintStripInfo()
+{
+	Serial.print("Strip Index #: ");
+	Serial.println(stripIndex);
+	Serial.print("Number of LEDs: ");
+	Serial.println(stripNumLEDs);
+	Serial.print("Num Animations: ");
+	Serial.println(numAnimations);
 }

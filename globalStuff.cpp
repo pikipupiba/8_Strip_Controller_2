@@ -5,12 +5,12 @@ CRGBArray<NUM_LEDS> leds;
 
 // Set the master variables to their starting values.
 
-uint32_t gHue = 0;
-int gHueSpeed = 1;
+float gHue = 0;
+float gHueSpeed = 1;
 
 bool gPower = true;
 
-uint32_t gBrightness = 128;
+float gBrightness = 128;
 
 int gSpeed = 0;
 

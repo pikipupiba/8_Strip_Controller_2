@@ -28,7 +28,7 @@ class StripController
 	 uint32_t stripNumLEDs;
 
 	 // The CRGBSet containing the number of LEDs on this strip.
-	 CRGBSet stripLEDs;
+	 struct CRGB stripLEDs[300];
 
 	 //Shapes stripShape;					// The default shape of animations created on this strip.
 	 //Textures stripTexture;				// A modifier applied to the strip after values are calculated.
@@ -67,6 +67,8 @@ class StripController
 	 void NextPalette();	// Advances the palette being used by animations on the strip.
 
 	 void AddAnimation(); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
+
+	 void PrintStripInfo();
 
 	 //void StackAnimations();// Combine all animation CRGB[]s into the strip's CRGBSet.
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Animations.h"
-
+#include "display.h"
 
 
 Animations::Animations()
@@ -14,39 +14,49 @@ Animations::~Animations()
 
 void Animations::UpdatePosition()
 {
+
 	hue += hueSpeed;
 	hueSpeed += hueAcceleration;
 
 	position += speed;
 	speed += acceleration;
 
-	//switch (animationEndOfRange)
-	//{
-	//case Bounce:
+	end1 = position - featureSize / 2;
+	end2 = position + featureSize / 2;
 
-	//	if (position < rangeEnd && position > rangeStart)
-	//	{}
-	//	else if (position > rangeEnd)
-	//	{
-	//		position = rangeEnd;
-	//		speed = -speed;
-	//		if (acceleration > 0)
-	//		{
-	//			acceleration = -acceleration;
-	//		}
-	//	}
-	//	else if (position < rangeStart)
-	//	{
-	//		position = rangeStart;
-	//		speed = -speed;
-	//		if (acceleration < 0)
-	//		{
-	//			acceleration = -acceleration;
-	//		}
-	//	}
-	//	break;
-	//
-	//case Continue:
+	switch (animationEndOfRange)
+	{
+	case EndOfRanges::Bounce:
+
+		if (end2 < rangeEnd && end1 > rangeStart)
+		{}
+		else if (end2 > rangeEnd)
+		{
+			position = rangeEnd - featureSize / 2;
+			if (speed > 0)
+			{
+				speed = -speed;
+			}
+			if (acceleration > 0)
+			{
+				acceleration = -acceleration;
+			}
+		}
+		else if (end1 < rangeStart)
+		{
+			position = rangeStart + featureSize / 2;
+			if (speed < 0)
+			{
+				speed = -speed;
+			}
+			if (acceleration < 0)
+			{
+				acceleration = -acceleration;
+			}
+		}
+		break;
+	
+	case EndOfRanges::Continue:
 
 		if (position > rangeEnd)
 		{
@@ -56,8 +66,8 @@ void Animations::UpdatePosition()
 		{
 			position += rangeSize;
 		}
-//		break;
-//	}
+		break;
+	}
 
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;
@@ -66,17 +76,16 @@ void Animations::UpdatePosition()
 	{
 		end2 -= rangeSize;
 	}
-
-	if (end1 < rangeStart)
+	else if (end1 < rangeStart)
 	{
 		end1 += rangeSize;
 	}
 }
 
-void Animations::Update()
+/*void Animations::Update()
 {
 }
 
 void Animations::Draw()
 {
-}
+}*/

@@ -50,31 +50,31 @@ public:
 	Textures animationTexture;			// A modifier applied to the animation after values are calculated.
 	EndOfRanges animationEndOfRange;	// How an animation acts when it approaches the end of its range.
 
-	uint32_t brightness;
-	uint32_t hue;			// Hue is the starting value used to calculate the various colors in an animation step.
-	int hueSpeed;			// Hue speed is how much hue changes each step.
-	int hueAcceleration;	// Hue acceleration is how much hue speed changes each step.
+	float brightness;
+	float hue;			// Hue is the starting value used to calculate the various colors in an animation step.
+	float hueSpeed;			// Hue speed is how much hue changes each step.
+	float hueAcceleration;	// Hue acceleration is how much hue speed changes each step.
 
-	uint32_t position;		// Position can either be where an object is in its range or the current step in a sequence it is on.
-	int speed;				// How much position changes each step.
-	int acceleration;		// How much speed changes each step.
+	float position;		// Position can either be where an object is in its range or the current step in a sequence it is on.
+	float speed;				// How much position changes each step.
+	float acceleration;		// How much speed changes each step.
 
-	uint32_t featureSize;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
-	uint32_t end1;			// Keeps track of one end of a "feature."
-	uint32_t end2;			// Keeps track of the other end of a "feature."
+	float featureSize;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
+	float end1;			// Keeps track of one end of a "feature."
+	float end2;			// Keeps track of the other end of a "feature."
 
-	uint32_t numRepeats;		// Used to copy a small animation to different positions in its range.
-	int repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
-	int repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
+	float numRepeats;		// Used to copy a small animation to different positions in its range.
+	float repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
+	float repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
 	
 
 	// Constructors and destructors.
 	Animations();
-	~Animations();
+	virtual ~Animations();
 
 	// Virtual functions that each child needs to implement to work.
 	void UpdatePosition();
-	void Update();	// Update the animation variables based on speeds, oscillators, etc.
-	void Draw();	// Draw the animation into it's CRGB[] based on its parameters. 
+	virtual void Update() = 0;	// Update the animation variables based on speeds, oscillators, etc.
+	virtual void Draw() = 0;	// Draw the animation into it's CRGB[] based on its parameters.
 
 };

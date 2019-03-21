@@ -130,7 +130,7 @@ void setup() {
 
 void loop()
 {
-
+	//debugCounter();
 	//handleWeb();	// Handles input from the web server.
 	handleInputs();	// Handles input from physical controls.
 
@@ -145,17 +145,26 @@ void loop()
 		FastLED.setBrightness(0);
 	}
 
+	leds.fadeToBlackBy(255);
+
 	// Update each strip.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
+		//debugCounter();
 		strip[i]->UpdateStrip();
 	}
 	
-	EVERY_N_SECONDS(2)
+	EVERY_N_SECONDS(10)
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
 			strip[i]->AddAnimation();
+			//strip[i]->PrintStripInfo();
+			//debugCounter();
+
+			//Serial.print("Should be 150: ");
+			//Serial.println(uint32_to_float(uINT32_MAX / 2, 0, 300));
+
 		}
 		
 		displayMemory(" after more Movers");

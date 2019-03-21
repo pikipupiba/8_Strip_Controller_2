@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mover.h"
+#include "display.h"
 
 
 
@@ -9,23 +10,25 @@ Mover::Mover()
 	numObjects++;
 
 	rangeStart = 0;
-	rangeEnd = uINT32_MAX;
+	rangeEnd = NUM_LEDS_PER_STRIP;
 	rangeSize = rangeEnd - rangeStart; // Automatically calculated rangeSize for easier to read code.
 
-	//animationShape = Strip;				// The shape of the strip the animation is playing on.
-	//animationTexture = None;			// A modifier applied to the animation after values are calculated.
-	//animationEndOfRange = Bounce;	// How an animation acts when it approaches the end of its range.
+	animationShape = Shapes::Strip;				// The shape of the strip the animation is playing on.
+	animationTexture = Textures::None;			// A modifier applied to the animation after values are calculated.
+	animationEndOfRange = EndOfRanges::Bounce;	// How an animation acts when it approaches the end of its range.
 
-	brightness = uINT32_MAX;
+	brightness = 255;
 	hue = 0;			// Hue is the starting value used to calculate the various colors in an animation step.
-	hueSpeed = uINT32_MAX / 2000;			// Hue speed is how much hue changes each step.
+	hueSpeed = 0.5;			// Hue speed is how much hue changes each step.
 	hueAcceleration = 0;	// Hue acceleration is how much hue speed changes each step.
 
-	position = (rangeStart + rangeEnd) / 2;		// Position can either be where an object is in its range or the current step in a sequence it is on.
-	speed = 0;				// How much position changes each step.
+	featureSize = 10;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
+	position = rangeStart + featureSize / 2 + 2;		// Position can either be where an object is in its range or the current step in a sequence it is on.
+	speed = 0.2;				// How much position changes each step.
 	acceleration = 0;		// How much speed changes each step.
 
-	featureSize = rangeSize / 20;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
+
+	//featureSize = 10;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
 	end1 = position - featureSize / 2;			// Keeps track of one end of a "feature."
 	end2 = position + featureSize / 2;			// Keeps track of the other end of a "feature."
 
@@ -41,31 +44,71 @@ Mover::~Mover()
 
 void Mover::Update()
 {
+
 	UpdatePosition();
+
 	Draw();
+	
 }
 
 void Mover::Draw()
 {
-	float fEnd1 = uint32_to_float(end1, 0, 300);
-	float fEnd2 = uint32_to_float(end2, 0, 300);
+	/*float fEnd1 = uint32_to_float(end1, 0, NUM_LEDS_PER_STRIP);
+	float fEnd2 = uint32_to_float(end2, 0, NUM_LEDS_PER_STRIP);
+	//Serial.println(fEnd1);
+	//Serial.println(fEnd2);
 
 	int iEnd1 = (int)fEnd1;
 	int iEnd2 = (int)fEnd2;
+	//Serial.println(iEnd1);
+	//Serial.println(iEnd2);
 
-	animationLEDs[0, 300] = CRGB::Black;
+	uint32_t curHue = uint32_to_uint32(hue, 0, 255);
+	uint32_t curBrightness = uint32_to_uint32(brightness, 0, 255);*/
+
+	
+
+	int iEnd1 = (int)end1;
+	int iEnd2 = (int)end2;
+	int iHue = (int)hue;
+	int iBrightness = (int)brightness;
+
+	
+
+	for (int i = 0; i < NUM_LEDS_PER_STRIP; i++)
+	{
+		animationLEDs[i] = CRGB::Black;
+	}
+	//animationLEDs[0, 300] = CRGB::Black;
+	
 
 	if (end1 < end2)
 	{
-		animationLEDs[iEnd1, iEnd2] = hue;
+	
+		for (int i = iEnd1; i <= iEnd2; i++)
+		{
+			
+			animationLEDs[i] = CHSV(iHue,255,iBrightness);
+		}
+		//animationLEDs[iEnd1, iEnd2] = hue;
+		
 	}
 	else
 	{
-		animationLEDs[iEnd1, uint32_to_uint32(rangeEnd,0,300)];
-		animationLEDs[uint32_to_uint32(rangeStart, 0, 300), iEnd2];
+
+		for (int i = rangeStart; i <= iEnd2; i++)
+		{
+			animationLEDs[i] = CHSV(iHue, 255, iBrightness);
+		}
+		for (int i = iEnd1; i <= rangeEnd; i++)
+		{
+			animationLEDs[i] = CHSV(iHue, 255, iBrightness);
+		}
+		//animationLEDs[iEnd1, uint32_to_uint32(rangeEnd,0,300)];
+		//animationLEDs[uint32_to_uint32(rangeStart, 0, 300), iEnd2];
 	}
-
-	animationLEDs[(int)fEnd1] *= 1 - fEnd1 + iEnd1;
-	animationLEDs[(int)fEnd2] *= fEnd2 - iEnd2;
-
+	
+	animationLEDs[iEnd1] *= 1 - (end1 - iEnd1);
+	animationLEDs[iEnd2] *= end2 - iEnd2;
+	
 }
