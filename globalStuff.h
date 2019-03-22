@@ -13,7 +13,11 @@
 // -- The core to run FastLED.show()
 #define FASTLED_SHOW_CORE 1
 
+// Define a quick and easy ARRAY_SIZE function.
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
 // Define minimum and maximum values of some data types.
+// TODO If using floats is best then these probably aren't needed.
 #define uINT8_MIN	0
 #define uINT8_MAX	255
 
@@ -56,41 +60,44 @@
 #define NUM_LEDS			300 * NUM_STRIPS
 
 // Set the size of the animation array dedicated to each strip.
-#define NUM_ANIMATIONS_PER_STRIP	10
+#define NUM_ANIMATIONS_PER_STRIP	20
 
-#define MILLI_AMPS         60000 * NUM_STRIPS // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
+// IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
+#define MILLI_AMPS         60000 * NUM_STRIPS
+// TODO I might not need this as my code certainly never runs TOO fast.
 #define FRAMES_PER_SECOND  1000
 
-// Define some enumerated values.
-enum class Shapes		{ Strip, Panel, Ring };		// The shape of a strip can effect how the animations are displayed.
-enum class Textures		{ None, Dashed, Wavey, Strobe };	// Textures are modifications of some variable based on where on the strip a pixel is.
-enum class EndOfRanges	{ Continue, Bounce, Fade };	// This describes the behavior an animation will display when it reaches the end of its specified range.
+// Define some enumerated classes.
+enum class Shapes		{ Strip, Panel, Ring };			// The shape of a strip can effect how the animations are displayed.
+enum class Textures		{ None, Dashed, Wavey, Strobe };// Textures are modifications of some variable based on where on the strip a pixel is.
+enum class EndOfRanges	{ Continue, Bounce, Fade };		// This describes the behavior an animation will display when it reaches the end of its specified range.
 
 // -----------------------------------------------------------------------------------//
 // ----------------------------GLOBAL ANIMATION VARIABLES-----------------------------//
 // -----------------------------------------------------------------------------------//
 // TODO Save and restore these settings from EEPROM.
 
-extern float gHue; // rotating "base color" used by many of the patterns
-extern float gHueSpeed;
-
 // Define our master array of LEDs.
 extern CRGBArray<NUM_LEDS> leds;
 
-// Definitions for global variables.
-extern bool gPower;
-extern float gBrightness;
+extern float gHue; // rotating "base color" used by many of the patterns
+extern float gHueSpeed;
 extern int gSpeed;
 
-extern uint32_t frameTime;
+extern bool gPower;
+extern float gBrightness;
+
+// Variables used to calculate framerate and adjust animations accordingly.
+extern float frameTime;
 extern unsigned long lastFrameTime;
 extern uint32_t newFrames;
-extern uint32_t FPS;
+extern float FPS;
+extern float speedScaleFactor;
 
 extern unsigned long sTime;
-extern unsigned long mTime;
 extern String functionName;
 
+// Number of animations currently running. Used to measure performance.
 extern uint32_t numObjects;
 
 #endif

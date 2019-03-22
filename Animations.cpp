@@ -14,11 +14,10 @@ Animations::~Animations()
 
 void Animations::UpdatePosition()
 {
-
-	hue += hueSpeed;
+	hue += hueSpeed * speedScaleFactor;
 	hueSpeed += hueAcceleration;
 
-	position += speed;
+	position += speed * speedScaleFactor;
 	speed += acceleration;
 
 	end1 = position - featureSize / 2;
@@ -81,11 +80,3 @@ void Animations::UpdatePosition()
 		end1 += rangeSize;
 	}
 }
-
-/*void Animations::Update()
-{
-}
-
-void Animations::Draw()
-{
-}*/

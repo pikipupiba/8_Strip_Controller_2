@@ -35,8 +35,6 @@ WebServer webServer(80);
 #warning "Requires FastLED 3.1.8 or later; check github for latest code."
 #endif
 
-#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
-
 
 // WiFi Status led.
 // TODO No longer needed. REMOVE IT! Maybe?
@@ -150,21 +148,14 @@ void loop()
 	// Update each strip.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		//debugCounter();
 		strip[i]->UpdateStrip();
 	}
 	
-	EVERY_N_SECONDS(10)
+	EVERY_N_SECONDS(15)
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
 			strip[i]->AddAnimation();
-			//strip[i]->PrintStripInfo();
-			//debugCounter();
-
-			//Serial.print("Should be 150: ");
-			//Serial.println(uint32_to_float(uINT32_MAX / 2, 0, 300));
-
 		}
 		
 		displayMemory(" after more Movers");
@@ -177,7 +168,7 @@ void loop()
 
 	newFrames++;
 
-	// insert a delay to keep the framerate modest.
+	// Removed the delay because it was cutting my framerate in half at the lowest setting.
 	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
 	//delay(1000 / FRAMES_PER_SECOND);

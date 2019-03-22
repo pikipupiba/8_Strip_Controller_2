@@ -63,12 +63,14 @@ void setupDisplay()
 // Draws the menu onto the OLED display.
 // TODO Implement a more rigourous menu structure that uses a rotary encoder for navigation.
 // TODO Come up with some icons to easily communicate certain information.
+// TODO The last Heltec WiFi Kit 32 I used showed weird behavior before I broke it. Investigate on new display.
 void drawMenu()
 {
+	static unsigned long mTime = millis();
+
+	// Only refresh the menu 10 times per second.
 	if (millis() - mTime > 100)
 	{
-
-		//startTime("Draw Menu");
 		// Clear the display for updating.
 		display.clear();
 
@@ -96,6 +98,7 @@ void drawMenu()
 		}
 		else
 		{
+			// TODO Why can I not output these strings!?!?
 			display.drawString(70, 40, "Hmmm");// String(frameTime) + " ms");
 			String sHue = String(gHue);
 			//display.drawString(90, 50, sHue);// String(FPS));
@@ -104,9 +107,6 @@ void drawMenu()
 		display.display();
 
 		mTime = millis();
-
-		//endTime();
-
 	}
 }
 
@@ -115,7 +115,7 @@ void displayMemory(String label = "")
 	Serial.print("Memory remaining" + label + ": ");
 	Serial.print(ESP.getFreeHeap()/1000);
 	Serial.println(" KB");
-	Serial.print("Number of Objects: ");
+	Serial.print("Number of Animations: ");
 	Serial.println(numObjects);
 }
 
@@ -124,17 +124,21 @@ void calcFPS()
 
 	if (newFrames > 0)
 	{
-		frameTime = (millis() - lastFrameTime) / newFrames;
+		frameTime = (float)(millis() - lastFrameTime) / (float)newFrames;
 
 		FPS = 1000 / frameTime;
 
 		lastFrameTime = millis();
 		newFrames = 0;
 
+		speedScaleFactor = (float)100 / (float)FPS;
+
 		Serial.print("Frame Time: ");
 		Serial.println(frameTime);
 		Serial.print("FPS: ");
 		Serial.println(FPS);
+		Serial.print("Speed Scale Factor : ");
+		Serial.println(speedScaleFactor);
 	}
 	
 }

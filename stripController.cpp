@@ -7,8 +7,6 @@
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
 StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shapes newShape)
 {
-	numObjects++;
-
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
 
