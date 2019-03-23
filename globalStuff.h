@@ -60,7 +60,7 @@
 #define NUM_LEDS			300 * NUM_STRIPS
 
 // Set the size of the animation array dedicated to each strip.
-#define NUM_ANIMATIONS_PER_STRIP	20
+#define NUM_ANIMATIONS_PER_STRIP	30
 
 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define MILLI_AMPS         60000 * NUM_STRIPS
@@ -70,7 +70,7 @@
 // Define some enumerated classes.
 enum class Shapes		{ Strip, Panel, Ring };			// The shape of a strip can effect how the animations are displayed.
 enum class Textures		{ None, Dashed, Wavey, Strobe };// Textures are modifications of some variable based on where on the strip a pixel is.
-enum class EndOfRanges	{ Continue, Bounce, Fade };		// This describes the behavior an animation will display when it reaches the end of its specified range.
+enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the behavior an animation will display when it reaches the end of its specified range.
 
 // -----------------------------------------------------------------------------------//
 // ----------------------------GLOBAL ANIMATION VARIABLES-----------------------------//

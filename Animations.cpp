@@ -6,6 +6,7 @@
 
 Animations::Animations()
 {
+	
 }
 
 Animations::~Animations()
@@ -55,7 +56,7 @@ void Animations::UpdatePosition()
 		}
 		break;
 	
-	case EndOfRanges::Continue:
+	case EndOfRanges::Loop:
 
 		if (position > rangeEnd)
 		{
@@ -79,4 +80,14 @@ void Animations::UpdatePosition()
 	{
 		end1 += rangeSize;
 	}
+}
+
+void Animations::Update()
+{
+	// TODO Implement ErasePrevFrame() so only the pixels used are modified. Speed bonus x1000 I'll bet.
+	Draw(-1);
+	UpdatePosition();
+	Draw();
+
+
 }

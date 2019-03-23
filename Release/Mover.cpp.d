@@ -177,10 +177,11 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/chipsets.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\globalStuff.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h \
- C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\normalizeValues.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\tasks.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\display.h \
  C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/SSD1306.h \
  C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/SSD1306Wire.h \
  C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/OLEDDisplay.h \
  C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/OLEDDisplayFonts.h \
- C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\Wire\src/Wire.h
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\Wire\src/Wire.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\stripController.h

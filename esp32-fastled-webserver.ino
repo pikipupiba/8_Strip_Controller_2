@@ -151,7 +151,7 @@ void loop()
 		strip[i]->UpdateStrip();
 	}
 	
-	EVERY_N_SECONDS(15)
+	EVERY_N_SECONDS(2)
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{

@@ -1,16 +1,15 @@
 #pragma once
 #include "Animations.h"
 #include "globalStuff.h"
-#include "normalizeValues.h"
+
 class Mover :
 	public Animations
 {
 public:
-	Mover();
+	Mover(StripController* newStrip);
 	~Mover();
 
-	void Update();
-	void Draw();
+	void Draw(int scaleValues);
 
 };
 

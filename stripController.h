@@ -7,6 +7,7 @@
 #include "Mover.h"
 
 #include "globalStuff.h"
+#include "tasks.h"
 
 extern CRGBArray<NUM_LEDS> leds;
 
@@ -18,9 +19,15 @@ extern CRGBArray<NUM_LEDS> leds;
 // by each animatioin playing on it, and an array of animations currently running on the strip.
 class StripController
 {
- protected:
+protected:
+	
+ public:
+
 	 // The index of the strip determines its output pin.
 	 uint32_t stripIndex;
+	 // The strip's physical location within the master array of LEDs.
+	 uint32_t stripRangeStart;
+	 uint32_t stripRangeEnd;
 
 	 // The real number of LEDs contained by the strip.
 	 // There are 300 reserved LEDs in the CRGBArray leds for each strip regaurdless of actual size.
@@ -28,17 +35,17 @@ class StripController
 	 uint32_t stripNumLEDs;
 
 	 // The CRGBSet containing the number of LEDs on this strip.
-	 struct CRGB stripLEDs[300];
+	 //struct CRGB stripLEDs[300];
 
-	 //Shapes stripShape;					// The default shape of animations created on this strip.
-	 //Textures stripTexture;				// A modifier applied to the strip after values are calculated.
-	 //EndOfRanges stripEndOfRange;		// The default behavior of animations created on this strip.
+	 Shapes stripShape;					// The default shape of animations created on this strip.
+	 Textures stripTexture;				// A modifier applied to the strip after values are calculated.
+	 EndOfRanges stripEndOfRange;		// The default behavior of animations created on this strip.
 
 	 bool stripPower;					// If FALSE then the strip brightness is temporarily set to 0.
 	 float stripBrightness;				// The strip brightness is adjusted to this value after LEDs are written, maintaining relative animation brightnesses.
 
-	 // HELP!
-	 // Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
+										// HELP!
+										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
 	 Animations* animation[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
 	 uint32_t numAnimations;			// Current number of animations active on this strip.
 
@@ -54,8 +61,6 @@ class StripController
 	 uint8_t curPaletteIndex;
 	 CRGBPalette16 curPalette;
 	 CRGBPalette16 tarPalette;
-
- public:
 
 	 // Constructor specifies strip index, number of LEDs, and shape of strip.
 	 StripController(uint32_t newIndex, uint32_t newNumLEDs);//, Shapes newShape);

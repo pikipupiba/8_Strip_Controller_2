@@ -10,6 +10,9 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shap
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
 
+	stripRangeStart = stripIndex * NUM_LEDS_PER_STRIP;
+	stripRangeEnd = stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs;
+
 	//stripShape = newShape;
 
 	// Default values used for the rest of the strip variables.
@@ -95,11 +98,9 @@ void StripController::UpdateStrip()
 		Serial.println(i);*/
 		animation[i]->Update();
 
-		for (int j = 0; j < stripNumLEDs; j++)
-		{
-			leds[stripIndex * 300 + j] += animation[i]->animationLEDs[j];
-		}
 	}
+
+	//FastLEDshowESP32();
 
 	// Call the current pattern function once, updating the 'leds[index]' array
 	//patterns[curPattern].pattern(index);
@@ -155,7 +156,7 @@ void StripController::AddAnimation()
 		// typedef void(*SimplePatternList[])();
 		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
-		animation[numAnimations] = new Mover();
+		animation[numAnimations] = new Mover(this);
 
 		numAnimations++;
 	}

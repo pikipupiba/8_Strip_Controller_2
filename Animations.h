@@ -3,6 +3,9 @@
 
 #include <FastLED.h>
 #include "globalStuff.h"
+class StripController;
+
+#include "tasks.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "arduino.h"
@@ -18,7 +21,7 @@ protected:
 	
 public:	// Public variables allow effect functions to be written easier and with less overhead.
 
-	struct CRGB animationLEDs[300];	// The array of pixel values currently being used by the animation.
+	StripController* strip;
 
 	uint32_t indexPosition;	// The index position helps layer different animations together in the final step.
 
@@ -54,6 +57,6 @@ public:	// Public variables allow effect functions to be written easier and with
 
 	// Virtual functions that each child needs to implement to work.
 	void UpdatePosition();
-	virtual void Update() = 0;	// Update the animation variables based on speeds, oscillators, etc.
-	virtual void Draw() = 0;	// Draw the animation into it's CRGB[] based on its parameters.
+	virtual void Update();	// Update the animation variables based on speeds, oscillators, etc.
+	virtual void Draw(int scaleValues = 1) = 0;	// Draw the animation into it's CRGB[] based on its parameters.
 };
