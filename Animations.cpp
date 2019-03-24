@@ -15,7 +15,7 @@ Animations::~Animations()
 
 void Animations::UpdatePosition()
 {
-	hue += hueSpeed * speedScaleFactor;
+	hue += (hueSpeed * speedScaleFactor) % 255;
 	hueSpeed += hueAcceleration;
 
 	position += speed * speedScaleFactor;
