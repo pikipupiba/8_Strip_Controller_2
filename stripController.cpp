@@ -20,7 +20,7 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 	stripBrightness = 255;
 
 	autoplay = false;
-	autoplayDuration = 10;
+	autoplayDuration = 11;
 
 	cyclePalettes = false;
 	paletteDuration = 10;
