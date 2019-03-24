@@ -15,7 +15,7 @@ Animations::~Animations()
 
 void Animations::UpdatePosition()
 {
-	hue += (hueSpeed * speedScaleFactor) % 255;
+	hue += (hueSpeed * speedScaleFactor);
 	hueSpeed += hueAcceleration;
 
 	position += speed * speedScaleFactor;
@@ -29,43 +29,41 @@ void Animations::UpdatePosition()
 	case EndOfRanges::Bounce:
 
 		if (end2 < rangeEnd && end1 > rangeStart)
-		{}
+		{ /* Put the most common occurance as the first
+		  option even though it doesn't do anything*/}
+
 		else if (end2 > rangeEnd)
 		{
 			position = rangeEnd - featureSize / 2;
+
 			if (speed > 0)
-			{
-				speed = -speed;
-			}
-			if (acceleration > 0)
-			{
-				acceleration = -acceleration;
-			}
+			{ speed = -speed; }
+
+			// Maybe if I don't reverse the acceleration 
+			// on a bounce I can make a bounceing ball.
+			//if (acceleration > 0)
+			//{ acceleration = -acceleration; }
 		}
 		else if (end1 < rangeStart)
 		{
 			position = rangeStart + featureSize / 2;
+
 			if (speed < 0)
-			{
-				speed = -speed;
-			}
+			{ speed = -speed; }
+
 			if (acceleration < 0)
-			{
-				acceleration = -acceleration;
-			}
+			{ acceleration = -acceleration; }
 		}
 		break;
 	
 	case EndOfRanges::Loop:
 
 		if (position > rangeEnd)
-		{
-			position -= rangeSize;
-		}
+		{ position -= rangeSize; }
+
 		else if (position < rangeStart)
-		{
-			position += rangeSize;
-		}
+		{ position += rangeSize; }
+
 		break;
 	}
 
@@ -73,21 +71,37 @@ void Animations::UpdatePosition()
 	end2 = position + featureSize / 2;
 
 	if (end2 > rangeEnd)
-	{
-		end2 -= rangeSize;
-	}
+	{ end2 -= rangeSize; }
+
 	else if (end1 < rangeStart)
-	{
-		end1 += rangeSize;
-	}
+	{ end1 += rangeSize; }
 }
 
+/* Update an animation's pixel values. Each animation 
+should erase itself perfectly to work with the library. */
 void Animations::Update()
 {
-	// TODO Implement ErasePrevFrame() so only the pixels used are modified. Speed bonus x1000 I'll bet.
-	Draw(-1);
-	UpdatePosition();
-	Draw();
+	Draw(-1);			// Erase previous frame.
+	UpdatePosition();	// Update position and hue.
+	Draw();				// Draw the new frame.
+}
 
+void Animations::Change()
+{
+	//brightness = 255;
+	hue = random8();
+	hueSpeed = 500.0 / (float)random16(1, 1000);
+	//hueAcceleration = 0;
 
+	featureSize = rangeSize / (100.0 / random16(1, 1000));
+	//position = rangeStart + rangeSize / 2;
+	speed = 500.0 / (float)random16(1, 1000);;
+	//acceleration = 0;
+
+	end1 = position - featureSize / 2;
+	end2 = position + featureSize / 2;
+
+	//numRepeats = 0;
+	//repeatPositionOffset = 0;
+	//repeatHueOffset = 0;
 }

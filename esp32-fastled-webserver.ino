@@ -155,6 +155,10 @@ void loop()
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
+			for (int j = 0; j < strip[j]->numAnimations; j++)
+			{
+				strip[i]->animation[j]->Change();
+			}
 			strip[i]->AddAnimation();
 		}
 		

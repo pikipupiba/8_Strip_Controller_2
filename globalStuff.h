@@ -90,7 +90,7 @@ extern float gBrightness;
 // Variables used to calculate framerate and adjust animations accordingly.
 extern float frameTime;
 extern unsigned long lastFrameTime;
-extern uint32_t newFrames;
+extern int newFrames;
 extern float FPS;
 extern float speedScaleFactor;
 
@@ -98,6 +98,6 @@ extern unsigned long sTime;
 extern String functionName;
 
 // Number of animations currently running. Used to measure performance.
-extern uint32_t numObjects;
+extern int numObjects;
 
 #endif

@@ -5,7 +5,7 @@
 
 
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
-StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shapes newShape)
+StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShape)
 {
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
@@ -35,46 +35,28 @@ StripController::StripController(uint32_t newIndex, uint32_t newNumLEDs)//, Shap
 
 
 	if (stripIndex == 0)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);// = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 1)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 2)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 3)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 4)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 5)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 6)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
-	else if (stripIndex == 7)
-	{
-		FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
-		//stripLEDs = leds(stripIndex * NUM_LEDS_PER_STRIP, stripIndex * NUM_LEDS_PER_STRIP + stripNumLEDs);
-	}
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_0, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
 
+	else if (stripIndex == 1)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_1, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 2)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_2, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 3)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_3, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 4)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_4, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 5)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_5, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 6)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_6, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	else if (stripIndex == 7)
+	{ FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
 }
 
 void StripController::UpdateStrip()
@@ -93,11 +75,7 @@ void StripController::UpdateStrip()
 
 	for (int i = 0; i < numAnimations; i++)
 	{
-		/*debugCounter();
-		Serial.print("i= ");
-		Serial.println(i);*/
 		animation[i]->Update();
-
 	}
 
 	//FastLEDshowESP32();

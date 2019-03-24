@@ -93,9 +93,8 @@ void drawMenu()
 		// BOTTOM RIGHT CORNER
 		// Display the current power state of the lights.
 		if (gPower == 0)
-		{
-			display.drawString(100, 50, "OFF");
-		}
+		{ display.drawString(100, 50, "OFF"); }
+
 		else
 		{
 			// TODO Why can I not output these strings!?!?

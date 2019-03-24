@@ -24,15 +24,15 @@ protected:
  public:
 
 	 // The index of the strip determines its output pin.
-	 uint32_t stripIndex;
+	 int stripIndex;
 	 // The strip's physical location within the master array of LEDs.
-	 uint32_t stripRangeStart;
-	 uint32_t stripRangeEnd;
+	 int stripRangeStart;
+	 int stripRangeEnd;
 
 	 // The real number of LEDs contained by the strip.
 	 // There are 300 reserved LEDs in the CRGBArray leds for each strip regaurdless of actual size.
 	 // TODO Find our if I can change the master CRGBArray during excecution to only store the necessary number of LEDs.
-	 uint32_t stripNumLEDs;
+	 int stripNumLEDs;
 
 	 // The CRGBSet containing the number of LEDs on this strip.
 	 //struct CRGB stripLEDs[300];
@@ -47,14 +47,14 @@ protected:
 										// HELP!
 										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
 	 Animations* animation[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
-	 uint32_t numAnimations;			// Current number of animations active on this strip.
+	 int numAnimations;			// Current number of animations active on this strip.
 
 	 bool autoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
-	 uint32_t autoplayDuration;
+	 int autoplayDuration;
 	 unsigned long autoPlayTimeout;
 
 	 bool cyclePalettes;				// If TRUE then the current palette will change every paletteDuration seconds.
-	 uint32_t paletteDuration;
+	 int paletteDuration;
 	 unsigned long paletteTimeout;
 
 	 uint8_t curPattern;
@@ -63,7 +63,7 @@ protected:
 	 CRGBPalette16 tarPalette;
 
 	 // Constructor specifies strip index, number of LEDs, and shape of strip.
-	 StripController(uint32_t newIndex, uint32_t newNumLEDs);//, Shapes newShape);
+	 StripController(int newIndex, int newNumLEDs);//, Shapes newShape);
 
 	 void UpdateStrip();	// Updates each animation running on the strip and combines them to be displayed.
 	 void ResetTimeouts();	// Resets the timeouts for auto preset and palette rotation.

@@ -23,11 +23,11 @@ public:	// Public variables allow effect functions to be written easier and with
 
 	StripController* strip;
 
-	uint32_t indexPosition;	// The index position helps layer different animations together in the final step.
+	int indexPosition;	// The index position helps layer different animations together in the final step.
 
-	uint32_t rangeStart;	// Where on a strip an animation starts.
-	uint32_t rangeEnd;		// Where on a strip an animation ends.
-	uint32_t rangeSize;		// Automatically calculated rangeSize for easier to read code.
+	int rangeStart;	// Where on a strip an animation starts.
+	int rangeEnd;		// Where on a strip an animation ends.
+	int rangeSize;		// Automatically calculated rangeSize for easier to read code.
 
 	Shapes animationShape;			// The shape of the strip the animation is playing on.
 	Textures animationTexture;		// A modifier applied to the animation after values are calculated.
@@ -59,4 +59,6 @@ public:	// Public variables allow effect functions to be written easier and with
 	void UpdatePosition();
 	virtual void Update();	// Update the animation variables based on speeds, oscillators, etc.
 	virtual void Draw(int scaleValues = 1) = 0;	// Draw the animation into it's CRGB[] based on its parameters.
+
+	void Change();
 };
