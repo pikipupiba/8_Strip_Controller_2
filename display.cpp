@@ -5,6 +5,8 @@ SSD1306 display(0x3c, 4, 15);
 
 void setupDisplay()
 {
+	D( startTime("setupDisplay()"); )
+
 	// Get the display running.
 	// TODO Learn more about the display library.
 	pinMode(16, OUTPUT);
@@ -22,6 +24,8 @@ void setupDisplay()
 
 	drawMenu();
 	delay(2000);
+
+	D( endTime("setupDisplay()"); )
 }
 
 /*void drawMenu()
@@ -71,6 +75,8 @@ void drawMenu()
 	// Only refresh the menu 10 times per second.
 	if (millis() - mTime > 100)
 	{
+		D(startTime("drawMenu()"); )
+
 		// Clear the display for updating.
 		display.clear();
 
@@ -106,6 +112,8 @@ void drawMenu()
 		display.display();
 
 		mTime = millis();
+
+		D( endTime("drawMenu()"); )
 	}
 }
 
@@ -162,19 +170,19 @@ void startTime(String newFunctionName)
 	sTime = millis();
 }
 
-void middleTime()
+void middleTime(String newFunctionName)
 {
 	Serial.print("In the middle of ");
-	Serial.print(functionName);
+	Serial.print(newFunctionName);
 	Serial.print(" at ");
 	Serial.print(millis() - sTime);
 	Serial.println (" ms");
 }
 
-void endTime()
+void endTime(String newFunctionName)
 {
 	Serial.print("Finished ");
-	Serial.print(functionName);
+	Serial.print(newFunctionName);
 	Serial.print(" at ");
 	Serial.print(millis() - sTime);
 	Serial.println(" ms");

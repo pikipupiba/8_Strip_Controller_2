@@ -23,5 +23,5 @@ void calcFPS();
 // Print functions for debugging.
 void debugCounter();
 void startTime(String newFunctionName);
-void middleTime();
-void endTime();
+void middleTime(String newFunctionName);
+void endTime(String newFunctionName);

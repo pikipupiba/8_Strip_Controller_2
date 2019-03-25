@@ -5,6 +5,11 @@
 // The patterns will have access to the animation[] array of each strip and associated parameters.
 // I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
 
+#include "stripController.h"
+#include "Animations.h"
+#include "Mover.h"
+
+#include "display.h"
 
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
@@ -33,35 +38,35 @@
 void rainbow()
 {
 	// FastLED's built-in rainbow generator
-	fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
+	//fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
 }
 
 void addGlitter(fract8 chanceOfGlitter)
 {
-	if (random8() < chanceOfGlitter) {
+	/*if (random8() < chanceOfGlitter) {
 		leds[0][random16(NUM_LEDS)] += CRGB::White;
-	}
+	}*/
 }
 
 void rainbowWithGlitter()
 {
 	// built-in FastLED rainbow, plus some random sparkly glitter
-	rainbow();
-	addGlitter(80);
+	//rainbow();
+	//addGlitter(80);
 }
 
 void confetti()
 {
 	// random colored speckles that blink in and fade smoothly
-	fadeToBlackBy(leds[0], NUM_LEDS, 10);
+	/*fadeToBlackBy(leds[0], NUM_LEDS, 10);
 	int pos = random16(NUM_LEDS);
-	leds[0][pos] += CHSV(gHue + random8(64), 200, 255);
+	leds[0][pos] += CHSV(gHue + random8(64), 200, 255);*/
 }
 
 void sinelon()
 {
 	// a colored dot sweeping back and forth, with fading trails
-	fadeToBlackBy(leds[0], NUM_LEDS, 20);
+	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
 	int pos = beatsin16(speed/10, 0, NUM_LEDS_PER_STRIP - 1);
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
@@ -71,43 +76,43 @@ void sinelon()
 	else {
 		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
-	prevpos = pos;
+	prevpos = pos;*/
 }
 
 void bpm()
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-	uint8_t beat = beatsin8(speed/1.5, 64, 255);
+	/*uint8_t beat = beatsin8(speed/1.5, 64, 255);
 	CRGBPalette16 palette = palettes[currentPaletteIndex];
 	for (int i = 0; i < NUM_LEDS; i++) {
 		leds[0][i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
-	}
+	}*/
 }
 
 void juggle() {
 	// eight colored dots, weaving in and out of sync with each other
-	fadeToBlackBy(leds[0], NUM_LEDS, 20);
+	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
 	byte dothue = 0;
 	for (int i = 0; i < 8; i++) {
 		leds[0][beatsin16(i + speed/20, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
 		dothue += 32;
-	}
+	}*/
 }
 
 void showSolidColor()
 {
-	fill_solid(leds[0], NUM_LEDS, solidColor);
+	//fill_solid(leds[0], NUM_LEDS, solidColor);
 }
 
 void showSolidColorChanging()
 {
-	fill_solid(leds[0], NUM_LEDS, gHue);
+	//fill_solid(leds, gHue);
 }
 
 // based on FastLED example Fire2012WithPalette: https://github.com/FastLED/FastLED/blob/master/examples/Fire2012WithPalette/Fire2012WithPalette.ino
 void heatMap(CRGBPalette16 palette, bool up)
 {
-	fill_solid(leds[0], NUM_LEDS_PER_STRIP, CRGB::Black);
+	/*fill_solid(leds[0], NUM_LEDS_PER_STRIP, CRGB::Black);
 
 	// Add entropy to random number generator; we use a lot of it.
 	random16_add_entropy(random(256));
@@ -147,17 +152,17 @@ void heatMap(CRGBPalette16 palette, bool up)
 		else {
 			leds[0][(NUM_LEDS_PER_STRIP - 1) - j] = color;
 		}
-	}
+	}*/
 }
 
 void fire()
 {
-	heatMap(HeatColors_p, true);
+	//heatMap(HeatColors_p, true);
 }
 
 void water()
 {
-	heatMap(IceColors_p, false);
+	/*heatMap(IceColors_p, false);*/
 }
 
 // Pride2015 by Mark Kriegsman: https://gist.github.com/kriegsman/964de772d64c502760e5
@@ -165,6 +170,7 @@ void water()
 // widely-varying set of parameters.
 void pride()
 {
+	/*
 	static uint16_t sPseudotime = 0;
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
@@ -201,7 +207,7 @@ void pride()
 		pixelnumber = (NUM_LEDS - 1) - pixelnumber;
 
 		nblend(leds[0][pixelnumber], newcolor, 64);
-	}
+	}*/
 }
 
 // ColorWavesWithPalettes by Mark Kriegsman: https://gist.github.com/kriegsman/8281905786e8b2632aeb
@@ -209,7 +215,7 @@ void pride()
 // widely-varying set of parameters, using a color palette.
 void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 {
-	static uint16_t sPseudotime = 0;
+	/*static uint16_t sPseudotime = 0;
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
 
@@ -256,18 +262,18 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 		pixelnumber = (numleds - 1) - pixelnumber;
 
 		nblend(ledarray[pixelnumber], newcolor, 128);
-	}
+	}*/
 }
 
 void colorWaves()
 {
-	colorwaves(leds[0], NUM_LEDS, currentPalette);
+	/*colorwaves(leds[0], NUM_LEDS, currentPalette);*/
 }
 
 void colorWipe()
 {
 
-	int pos = beatsin16(speed/5, 0, NUM_LEDS_PER_STRIP - 1);
+	/*int pos = beatsin16(speed/5, 0, NUM_LEDS_PER_STRIP - 1);
 	
 	static int prevpos = 0;
 	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
@@ -277,11 +283,11 @@ void colorWipe()
 	else {
 		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
-	prevpos = pos;
+	prevpos = pos;*/
 }
 void continuousWipe()
 {
-	static int pos = 0;
+	/*static int pos = 0;
 	pos += speed / 10;
 
 	if (pos >= NUM_LEDS_PER_STRIP && copyStrip == 1)
@@ -298,28 +304,91 @@ void continuousWipe()
 
 	fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
 
-	prevpos = pos;
+	prevpos = pos;*/
 }
 
-typedef void(*Pattern)();
-typedef Pattern PatternList[];
+// -----------------------------------------------------------------------------------//
+// ---------------------THE BEGINNINGS OF MY ANINMATION LIBRARY-----------------------//
+// -----------------------------------------------------------------------------------//
+
+// I want the logistics of the animations to be handled in this file.
+void poopyWorm(StripController* strip)
+{
+	D(startTime("poopyWorm");)
+
+	static int stage = 0;
+
+	switch (stage)
+	{
+	case 0:
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			strip->AddAnimation("Mover", 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+		stage++;
+		break;
+
+	case 1:
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			delete strip->animation[i];
+
+			strip->animation[i] = NULL;
+
+			stage++;
+		}
+
+	case 2:
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			strip->AddAnimation("Mover", 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+		stage++;
+		break;
+
+	case 3:
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			delete strip->animation[i];
+
+			strip->animation[i] = NULL;
+
+		}
+
+		stage = 0;
+		poopyWorm(strip);
+		break;
+	}
+
+	D(endTime("poopyWorm");)
+}
+
+typedef void(*PatternList[])(StripController* strip);
+PatternList patterns = { poopyWorm };
+
+/*typedef Pattern PatternList[];
 typedef struct {
 	Pattern pattern;
 	String name;
 } PatternAndName;
-typedef PatternAndName PatternAndNameList[];
+typedef PatternAndName PatternAndNameList[];*/
 
-PatternAndNameList patterns = {
+/*PatternAndNameList patterns = {
 	// TODO Things to add to web list.
-	{ continuousWipe, "Continuous Wipe"},
-	{ colorWipe, "Color Wipe"},
+	{ poopyWorm,		"Poopy Worm"}
+	{ continuousWipe,	"Continuous Wipe"},
+	{ colorWipe,		"Color Wipe"},
 
 
-  { pride,                  "Pride" },
-  { colorWaves,             "Color Waves" },
+  { pride,              "Pride" },
+  { colorWaves,         "Color Waves" },
 
 	// TwinkleFOX patterns
-	{ drawTwinkles, "Twinkles" },
+	//{ drawTwinkles,		"Twinkles" },
 
 	// Fire & Water
 	{ fire, "Fire" },
@@ -334,6 +403,6 @@ PatternAndNameList patterns = {
 	{ bpm, "bpm" },
 
 	{ showSolidColor,         "Solid Color" }
-};
+};*/
 
 const uint8_t patternCount = ARRAY_SIZE(patterns);

@@ -7,6 +7,8 @@
 
 Mover::Mover(StripController* newStrip) // :Animations(newStrip) // TODO Figure out how initialization lists work.
 {
+	D(startTime("Mover::Mover(StripController* newStrip)");)
+
 	// Keep track of how many objects are currently running.
 	numObjects++;
 
@@ -21,7 +23,7 @@ Mover::Mover(StripController* newStrip) // :Animations(newStrip) // TODO Figure 
 	animationTexture = Textures::None;
 	animationEndOfRange = EndOfRanges::Bounce;
 
-	brightness = 255;
+	brightness = 128;
 	hue = 0;
 	hueSpeed = 0.5;
 	hueAcceleration = 0;
@@ -37,6 +39,50 @@ Mover::Mover(StripController* newStrip) // :Animations(newStrip) // TODO Figure 
 	numRepeats = 0;
 	repeatPositionOffset = 0;
 	repeatHueOffset = 0;
+
+	changing = 0;
+
+	D(endTime("Mover::Mover(StripController* newStrip)");)
+}
+
+Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
+{
+	D(startTime("Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, int newRangeStart, int newRangeEnd)");)
+
+		// Keep track of how many objects are currently running.
+	numObjects++;
+
+	strip = newStrip;
+
+	// Default Mover covers the whole strip.
+	rangeStart = strip->stripRangeStart + newRangeStart;
+	rangeEnd = strip->stripRangeStart + newRangeEnd;
+	rangeSize = rangeEnd - rangeStart;
+
+	animationShape = Shapes::Strip;
+	animationTexture = Textures::None;
+	animationEndOfRange = EndOfRanges::Bounce;
+
+	brightness = 128;
+	hue = newHue;
+	hueSpeed = 0.5;
+	hueAcceleration = 0;
+
+	featureSize = 10;
+	position = newPosition;
+	speed = newSpeed;
+	acceleration = 0;
+
+	end1 = position - featureSize / 2;
+	end2 = position + featureSize / 2;
+
+	numRepeats = 0;
+	repeatPositionOffset = 0;
+	repeatHueOffset = 0;
+
+	changing = 0;
+
+	D(endTime("Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, int newRangeStart, int newRangeEnd)");)
 }
 
 
@@ -45,8 +91,10 @@ Mover::~Mover()
 	numObjects--;
 }
 
-void Mover::Draw(int scaleValues = 1)
+void Mover::Draw()
 {
+	D(startTime("Mover::Draw()");)
+
 	// Extract integer values from floats.
 	static int iEnd1 = (int)end1;
 	static int iEnd2 = (int)end2;
@@ -57,22 +105,60 @@ void Mover::Draw(int scaleValues = 1)
 	iEnd2 = (int)end2;
 	iHue = (int)hue;
 	iBrightness = (int)brightness;
-	
+
 	// The Mover is is within it's designated range.
 	if (end1 < end2)
 	{
 		// Color in the Mover.
-		for (int i = iEnd1 + 1; i < iEnd2; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness) * scaleValues; }
+		for (int i = iEnd1 + 1; i < iEnd2; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness); }
 		//animationLEDs[iEnd1 + 1, iEnd2 - 1] = hue; // Use this when I figure out CRGBSets
 	}
 	// The Mover is split between the ends of its range.
 	else
 	{
-		for (int i = rangeStart; i < iEnd2; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness) * scaleValues; }
-		for (int i = iEnd1 + 1; i <= rangeEnd; i++)		{ leds[i] += CHSV(iHue, 255, iBrightness) * scaleValues; }
+		for (int i = rangeStart; i < iEnd2; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness); }
+		for (int i = iEnd1 + 1; i <= rangeEnd; i++)		{ leds[i] += CHSV(iHue, 255, iBrightness); }
 	}
 
 	// Draw the antialiased ends of the Mover.
-	leds[iEnd1] += CHSV(iHue, 255, iBrightness * (1 - (end1 - iEnd1))) * scaleValues;
-	leds[iEnd2] += CHSV(iHue, 255, iBrightness * (end2 - iEnd2)) * scaleValues;
+	leds[iEnd1] += CHSV(iHue, 255, iBrightness * (1 - (end1 - iEnd1)));
+	leds[iEnd2] += CHSV(iHue, 255, iBrightness * (end2 - iEnd2));
+
+	D(endTime("Mover::Draw()"));
+}
+
+void Mover::Erase()
+{
+	D(startTime("Mover::Erase()");)
+
+	// Extract integer values from floats.
+	static int iEnd1 = (int)end1;
+	static int iEnd2 = (int)end2;
+	static int iHue = (int)hue;
+	static int iBrightness = (int)brightness;
+
+	iEnd1 = (int)end1;
+	iEnd2 = (int)end2;
+	iHue = (int)hue;
+	iBrightness = (int)brightness;
+
+	// The Mover is is within it's designated range.
+	if (end1 < end2)
+	{
+		// Color in the Mover.
+		for (int i = iEnd1 + 1; i < iEnd2; i++) { leds[i] -= CHSV(iHue, 255, iBrightness); }
+		//animationLEDs[iEnd1 + 1, iEnd2 - 1] = hue; // Use this when I figure out CRGBSets
+	}
+	// The Mover is split between the ends of its range.
+	else
+	{
+		for (int i = rangeStart; i < iEnd2; i++) { leds[i] -= CHSV(iHue, 255, iBrightness); }
+		for (int i = iEnd1 + 1; i <= rangeEnd; i++) { leds[i] -= CHSV(iHue, 255, iBrightness); }
+	}
+
+	// Draw the antialiased ends of the Mover.
+	leds[iEnd1] -= CHSV(iHue, 255, iBrightness * (1 - (end1 - iEnd1)));
+	leds[iEnd2] -= CHSV(iHue, 255, iBrightness * (end2 - iEnd2));
+
+	D(endTime("Mover::Erase()"));
 }

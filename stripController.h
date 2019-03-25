@@ -72,6 +72,7 @@ protected:
 	 void NextPalette();	// Advances the palette being used by animations on the strip.
 
 	 void AddAnimation(); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
+	 void AddAnimation(String newAnimation, float position, float speed, float newHue, int rangeStart, int rangeEnd);
 
 	 void PrintStripInfo();
 

@@ -1,13 +1,20 @@
 #ifndef __GLOBAL_STUFF_H
 #define __GLOBAL_STUFF_H
 
+//#define DEBUG_US
 
+#if defined DEBUG_US
+#  define D(x) x
+#else
+#  define D(x)
+#endif // DEBUG
 
-#if defined(ARDUINO) && ARDUINO >= 100
+#if defined (ARDUINO) && ARDUINO >= 100
 #include "arduino.h"
 #else
 #include "WProgram.h"
 #endif
+
 #include<FastLED.h>
 
 // -- The core to run FastLED.show()
@@ -54,13 +61,13 @@
 
 // Set the maximum number of strips and leds per strip that might be used.
 #define NUM_STRIPS			8
-#define NUM_LEDS_PER_STRIP	240
+#define NUM_LEDS_PER_STRIP	236
 
 // Calculate the total size needed for the led array to store data for all strips.
 #define NUM_LEDS			300 * NUM_STRIPS
 
 // Set the size of the animation array dedicated to each strip.
-#define NUM_ANIMATIONS_PER_STRIP	30
+#define NUM_ANIMATIONS_PER_STRIP	10
 
 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define MILLI_AMPS         60000 * NUM_STRIPS
@@ -72,6 +79,7 @@ enum class Shapes		{ Strip, Panel, Ring };			// The shape of a strip can effect 
 enum class Textures		{ None, Dashed, Wavey, Strobe };// Textures are modifications of some variable based on where on the strip a pixel is.
 enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the behavior an animation will display when it reaches the end of its specified range.
 
+
 // -----------------------------------------------------------------------------------//
 // ----------------------------GLOBAL ANIMATION VARIABLES-----------------------------//
 // -----------------------------------------------------------------------------------//
@@ -79,6 +87,8 @@ enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the 
 
 // Define our master array of LEDs.
 extern CRGBArray<NUM_LEDS> leds;
+
+extern int currentPatternIndex;
 
 extern float gHue; // rotating "base color" used by many of the patterns
 extern float gHueSpeed;

@@ -7,9 +7,11 @@ class Mover :
 {
 public:
 	Mover(StripController* newStrip);
+	Mover(StripController* newStrip, float position, float speed, float newHue, int rangeStart, int rangeEnd);
 	~Mover();
 
-	void Draw(int scaleValues);
+	void Erase();
+	void Draw();
 
 };
 

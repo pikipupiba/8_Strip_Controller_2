@@ -3,6 +3,8 @@
 
 CRGBArray<NUM_LEDS> leds;
 
+int currentPatternIndex = 0;
+
 // Set the master variables to their starting values.
 
 float gHue = 0;

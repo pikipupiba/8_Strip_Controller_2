@@ -7,6 +7,8 @@
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
 StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShape)
 {
+	D(startTime("StripController::StripController(int newIndex, int newNumLEDs)");)
+
 	stripNumLEDs = newNumLEDs;
 	stripIndex = newIndex;
 
@@ -57,10 +59,13 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 
 	else if (stripIndex == 7)
 	{ FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	D(startTime("StripController::StripController(int newIndex, int newNumLEDs)");)
 }
 
 void StripController::UpdateStrip()
 {
+	D(startTime("StripController::UpdateStrip()");)
 
 	/*for (Animations* i : animation)
 	{
@@ -100,6 +105,8 @@ void StripController::UpdateStrip()
 	//	nextPalette();
 	//	paletteTimeout = millis() + (paletteDuration * 1000);
 	//}
+
+	D(endTime("StripController::UpdateStrip()");)
 }
 
 // Reset the timeouts for the strip when autoplay is turned on or after setup.
@@ -125,6 +132,8 @@ void StripController::NextPalette()
 
 void StripController::AddAnimation()
 {
+	D(startTime("StripController::AddAnimation()");)
+
 	if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
 	{
 		
@@ -138,14 +147,36 @@ void StripController::AddAnimation()
 
 		numAnimations++;
 	}
+
+	D(endTime("StripController::AddAnimation()");)
+}
+
+void StripController::AddAnimation(String newAnimation, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
+{
+	D(startTime("StripController::AddAnimation(int stufff)");)
+
+	if (newAnimation == "Mover")
+	{
+		if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
+		{
+			animation[numAnimations] = new Mover(this, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
+
+			numAnimations++;
+		}
+	}
+	D(endTime("StripController::AddAnimation(int stufff)");)
 }
 
 void StripController::PrintStripInfo()
 {
+	D(startTime("StripController::PrintStripInfo()");)
+
 	Serial.print("Strip Index #: ");
 	Serial.println(stripIndex);
 	Serial.print("Number of LEDs: ");
 	Serial.println(stripNumLEDs);
 	Serial.print("Num Animations: ");
 	Serial.println(numAnimations);
+
+	D(endTime("StripController::PrintStripInfo()");)
 }
