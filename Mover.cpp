@@ -129,6 +129,8 @@ void Mover::Draw()
 	D(endTime("Mover::Draw()"));
 }
 
+
+// The exact opposit of Draw()
 void Mover::Erase()
 {
 	D(startTime("Mover::Erase()");)

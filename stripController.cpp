@@ -63,14 +63,14 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 	else if (stripIndex == 7)
 	{ FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
 
-	D(startTime("StripController::StripController(int newIndex, int newNumLEDs)");)
+	D(endTime("StripController::StripController(int newIndex, int newNumLEDs)");)
 }
 
 void StripController::UpdateStrip()
 {
 	D(startTime("StripController::UpdateStrip()");)
 
-	/*for (Animations* i : animation)
+	/*for (Animations* i : animation
 	{
 		debugCounter();
 		i->Update();

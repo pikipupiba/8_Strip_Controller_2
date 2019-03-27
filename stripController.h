@@ -37,6 +37,7 @@ protected:
 	 // TODO Find our if I can change the master CRGBArray during excecution to only store the necessary number of LEDs.
 	 int stripNumLEDs;
 
+	// I just write animations directly onto the main array of LEDs now. Maybe I will use this in the future.
 	 // The CRGBSet containing the number of LEDs on this strip.
 	 //struct CRGB stripLEDs[300];
 
