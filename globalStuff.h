@@ -1,8 +1,12 @@
+// Contains all the global variables needed between all the files in the program.
+// TODO I probably dont want to use this many global variables. I think thats bad design but I dont know any better yet.
+
 #ifndef __GLOBAL_STUFF_H
 #define __GLOBAL_STUFF_H
 
 //#define DEBUG_US
 
+// if DEBUG_US is defined then activate all the D() blocks for debug purposes.
 #if defined DEBUG_US
 #  define D(x) x
 #else

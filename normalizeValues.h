@@ -1,10 +1,8 @@
 #pragma once
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
+// This file has been depricated ever since I started just using floats.
+// I think the conversions from ints to floats was happening every frame
+// anyway so just using floats is faster.
 
 // HELP!
 // Obviously this is not optimized, but once completed will this be faster than just using floats to track animation parameters?

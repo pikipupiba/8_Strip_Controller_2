@@ -27,5 +27,6 @@ public:
 	int Oscillator4();
 	
 	// Change the BPM smoothly maintaining the oscillator's current position.
+	// and maybe even the first derivative if I'm baller enough.
 	void ChangeBPM(uint32_t newBPM, uint32_t newChangeTime);
 };

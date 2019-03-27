@@ -101,6 +101,9 @@ void Animations::Update()
 	D(endTime("Animations::Update");)
 }
 
+
+// Use cubic-in-out easing to blend previous animation vals into target vals.
+// TODO make this time dependant instead of frame dependant.
 void Animations::Change()
 {
 
@@ -167,6 +170,7 @@ void Animations::Randomize()
 
 }
 
+// set current vals into previous values for changing
 void Animations::SetPrevVals()
 {
 	pBrightness = brightness;
