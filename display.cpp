@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "display.h"
 
 // Initialize the OLED display using Wire library
@@ -162,28 +164,35 @@ void debugCounter()
 
 void startTime(String newFunctionName)
 {
-	functionName = newFunctionName;
+	debugDepth++;
 
-	Serial.print("Starting ");
-	Serial.println(functionName);
+	for (int i = 0; i < debugDepth; i++)
+	{
+		Serial.print("	");
+	}
+	Serial.print(newFunctionName);
+	Serial.println(" Start ");
 
-	sTime = millis();
 }
 
 void middleTime(String newFunctionName)
 {
-	Serial.print("In the middle of ");
+	for (int i = 0; i < debugDepth; i++)
+	{
+		Serial.print("	");
+	}
 	Serial.print(newFunctionName);
-	Serial.print(" at ");
-	Serial.print(millis() - sTime);
-	Serial.println (" ms");
+	Serial.println(" Middle ");
 }
 
 void endTime(String newFunctionName)
 {
-	Serial.print("Finished ");
+	for (int i = 0; i < debugDepth; i++)
+	{
+		Serial.print("	");
+	}
 	Serial.print(newFunctionName);
-	Serial.print(" at ");
-	Serial.print(millis() - sTime);
-	Serial.println(" ms");
+	Serial.println(" End ");
+
+	debugDepth--;
 }

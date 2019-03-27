@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "tasks.h"
 
 // -- Task handles for use in the notifications

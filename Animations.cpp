@@ -1,8 +1,10 @@
+#include "stdafx.h"
+
 #pragma once
 
 #include "Animations.h"
 #include "display.h"
-
+#include "stripController.h"
 
 Animations::Animations()
 {
@@ -16,6 +18,8 @@ Animations::~Animations()
 void Animations::UpdatePosition()
 {
 	D(startTime("Animations::UpdatePostion()"); )
+
+	//GetBackToRange();
 
 	hue += (hueSpeed * speedScaleFactor);
 	hueSpeed += hueAcceleration;
@@ -115,7 +119,7 @@ void Animations::Change()
 	//hueAcceleration = 0;
 
 	featureSize = pFeatureSize + (tFeatureSize - pFeatureSize) * eased / 256;
-	//position = rangeStart + rangeSize / 2;
+	position = pPosition + (tPosition - pPosition) * eased / 256;
 
 	speed = pSpeed + (tSpeed - pSpeed) * eased / 256;
 	//acceleration = 0;
@@ -135,7 +139,7 @@ void Animations::Change()
 
 }
 
-void Animations::Randomize()
+/*void Animations::Randomize()
 {
 
 	D(startTime("Animations::Randomize()");)
@@ -165,16 +169,149 @@ void Animations::Randomize()
 
 	D(endTime("Animations::Randomize()");)
 
+}*/
+
+void Animations::Randomize(String var = "")
+{
+	D(startTime("Randomize()");)
+
+	if (var == "" || var == "brightness")
+	{
+		tBrightness = (float)random8(40, 200);
+	}
+	if (var == "" || var == "hue")
+	{
+		tHue = (float)random8();
+	}
+	if (var == "" || var == "hueSpeed")
+	{
+		tHueSpeed = (float)random16(0, 1000) / (float)500;
+	}
+	if (var == "" || var == "featureSize")
+	{
+		tFeatureSize = (float)rangeSize / ((float)10000 / (float)random16(1, 1000));
+	}
+	if (var == "" || var == "speed")
+	{
+		tSpeed = (float)random16(0, 1000) / (float)500 - 1;
+	}
+
+	D(endTime("Randomize()");)
 }
 
-void Animations::SetPrevVals()
+void Animations::SetPrevVals(String var = "")
 {
-	pBrightness = brightness;
-	pHue = hue;
-	pHueSpeed = hueSpeed;
-	pHueAcceleration = hueAcceleration;
-	pPosition = position;
-	pSpeed = speed;
-	pAcceleration = acceleration;
-	pFeatureSize = featureSize;
+	D(startTime("SetPrevVals()");)
+
+	if (var == "" || var == "brightness")
+	{
+		pBrightness = brightness;
+	}
+	if (var == "" || var == "hue")
+	{
+		pHue = hue;
+	}
+	if (var == "" || var == "hueSpeed")
+	{
+		pHueSpeed = hueSpeed;
+	}
+	if (var == "" || var == "hueAcceleration")
+	{
+		pHueAcceleration = hueAcceleration;
+	}
+	if (var == "" || var == "position")
+	{
+		pPosition = position;
+	}
+	if (var == "" || var == "speed")
+	{
+		pSpeed = speed;
+	}
+	if (var == "" || var == "acceleration")
+	{
+		pAcceleration = acceleration;
+	}
+	if (var == "" || var == "featureSize")
+	{
+		pFeatureSize = featureSize;
+	}
+
+	D(endTime("SetPrevVals()");)
+}
+
+void Animations::SetRangeAbsolute(int newRangeStart = 0, int newRangeEnd = 0)
+{
+	if (newRangeStart == 0 && newRangeEnd == 0)
+	{
+		rangeStart = strips[0]->stripRangeStart;
+		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd;
+	}
+	else if (newRangeEnd == 0)
+	{
+		rangeStart = strips[0]->stripRangeStart + newRangeStart;
+		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd;
+	}
+	else if (newRangeEnd > 0)
+	{
+		rangeStart = strips[0]->stripRangeStart + newRangeStart;
+		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeStart + newRangeEnd;
+	}
+	else if (newRangeEnd < 0)
+	{
+		rangeStart = strips[0]->stripRangeStart + newRangeStart;
+		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd - newRangeEnd;
+	}
+}
+
+void Animations::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
+{
+	D(startTime("SetRangeOnStrip()");)
+
+	if (newRangeStart == 0 && newRangeEnd == 0)
+	{
+		rangeStart = strip->stripRangeStart;
+		rangeEnd = strip->stripRangeEnd;
+	}
+	else if (newRangeEnd == 0)
+	{
+		rangeStart = strip->stripRangeStart + newRangeStart;
+		rangeEnd = strip->stripRangeEnd;
+	}
+	else if (newRangeEnd > 0)
+	{
+		rangeStart = strip->stripRangeStart + newRangeStart;
+		rangeEnd = strip->stripRangeStart + newRangeEnd;
+	}
+	else if (newRangeEnd < 0)
+	{
+		rangeStart = strip->stripRangeStart + newRangeStart;
+		rangeEnd = strip->stripRangeEnd - newRangeEnd;
+	}
+
+	D(endTime("SetRangeOnStrip()");)
+}
+
+void Animations::GetBackToRange()
+{
+	D(startTime("GetBackToRange()");)
+
+	if (changing == 0)
+	{
+		if (tPosition < rangeStart)
+		{
+			//tPosition = rangeStart;
+			tSpeed = abs(speed);
+		}
+		else if (position > rangeEnd)
+		{
+			//tPosition = rangeEnd;
+			tSpeed = -abs(speed);
+		}
+
+		SetPrevVals();
+
+		changing = 1;
+	}
+
+	D(endTime("GetBackToRange()");)
 }

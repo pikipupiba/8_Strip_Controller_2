@@ -1,12 +1,8 @@
+#include "stdafx.h"
+
 #pragma once
 
 // Animation presets store all the information required to pick an animation up right where it left off.
-
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
 
 #include "globalStuff.h"
 

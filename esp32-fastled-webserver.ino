@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 
 // Based largely on the ESP32 FastLED webserver example by Jason Coon.
 //
@@ -21,12 +23,6 @@
 // -----------------------------------------------------------------------------------//
 // --------------------------------OUTSIDE LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
-#include <FastLED.h>
-#include <WebServer.h>
-#include <WiFi.h>
-#include <FS.h>
-#include <SPIFFS.h>
-#include <EEPROM.h>
 
 // Define the WebServer object.
 WebServer webServer(80);
@@ -74,9 +70,7 @@ const int boardLedPin = 2;
 #include "Mover.h"
 #include "StripController.h"// A strip controller is created for each strip connected to the ESP32.
 
-
-// Create array of strips available to the program.
-StripController* strip[8];
+StripController* strips[8];
 
 void setup() {
 
@@ -107,7 +101,7 @@ void setup() {
 	// TODO Figure out how to change these things during execution.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strip[i] = new StripController(i, NUM_LEDS_PER_STRIP);// , Strip);
+		strips[i] = new StripController(i, NUM_LEDS_PER_STRIP);// , Strip);
 	}
 
 	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
@@ -117,14 +111,14 @@ void setup() {
 
 	createTasks();
 	
-	displayMemory(" after setup");
+	displayMemory(" after setup ");
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strip[i]->ResetTimeouts();
+		strips[i]->ResetTimeouts();
 	}
 
-	patterns[currentPatternIndex](strip[0]);
+	patterns[currentPatternIndex](strips[0]);
 
 }
 
@@ -148,7 +142,7 @@ void loop()
 	// Update each strip.
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strip[i]->UpdateStrip();
+		strips[i]->UpdateStrip();
 	}
 	
 	EVERY_N_MILLIS(250)
@@ -156,11 +150,11 @@ void loop()
 		
 		/*for (int i = 0; i < NUM_STRIPS; i++)
 		{
-			for (int j = 0; j < strip[i]->numAnimations; j++)
+			for (int j = 0; j < strips[i]->numAnimations; j++)
 			{
-				if (random8() < 255) { strip[i]->animation[j]->Randomize(); }
+				if (random8() < 255) { strips[i]->animation[j]->Randomize(); }
 			}
-			strip[i]->AddAnimation();
+			strips[i]->AddAnimation();
 		}*/
 		
 		displayMemory(" after more Movers");
@@ -169,7 +163,7 @@ void loop()
 
 	EVERY_N_SECONDS(30)
 	{
-		patterns[currentPatternIndex](strip[0]);
+		patterns[currentPatternIndex](strips[0]);
 	}
 
 	// send the 'leds' array out to the actual LED strip

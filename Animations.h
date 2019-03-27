@@ -1,17 +1,17 @@
+#include "stdafx.h"
+
 #pragma once
 
 
-#include <FastLED.h>
+
 #include "globalStuff.h"
 class StripController;
 
+//class StripController;
+
 #include "tasks.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
+extern StripController* strips[8];
 
 class Animations
 {
@@ -81,12 +81,20 @@ public:	// Public variables allow effect functions to be written easier and with
 	virtual ~Animations();
 
 	// Virtual functions that each child needs to implement to work.
-	void UpdatePosition();
+	virtual void Update();
 	virtual void Erase() = 0;
-	virtual void Update();	// Update the animation variables based on speeds, oscillators, etc.
-	virtual void Draw() = 0;	// Draw the animation into it's CRGB[] based on its parameters.
+	virtual void Draw() = 0;
 
+	void UpdatePosition();
 	void Change();
-	void Randomize();
-	void SetPrevVals();
+	//void Randomize();
+	void Randomize(String var);
+
+	//void SetPrevVals();
+	void SetPrevVals(String var);
+
+	void SetRangeAbsolute(int newRangeStart, int newRangeEnd);
+	void SetRangeOnStrip(int newRangeStart, int newRangeEnd);
+
+	void GetBackToRange();
 };

@@ -1,17 +1,11 @@
 C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Oscillators.cpp.o: \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Oscillators.cpp \
- C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Oscillators.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/FastLED.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\stdafx.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdint.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/machine/_default_types.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/features.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/_intsup.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/cpp_compat.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/FastLED.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/fastled_config.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/led_sysdefs.h \
- C:\Users\pikip\Documents\Arduino\libraries\FastLED/platforms/esp/32/led_sysdefs_esp32.h \
- C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Arduino.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdio.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/_ansi.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/newlib.h \
@@ -133,7 +127,14 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/IPAddress.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/HardwareSerial.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Esp.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Arduino.h \
  C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\variants\heltec_wifi_kit_32/pins_arduino.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/FastLED.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/cpp_compat.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/FastLED.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/fastled_config.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/led_sysdefs.h \
+ C:\Users\pikip\Documents\Arduino\libraries\FastLED/platforms/esp/32/led_sysdefs_esp32.h \
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/fastled_delay.h \
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/bitswap.h \
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/controller.h \
@@ -174,4 +175,66 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/fastspi.h \
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/fastspi_bitbang.h \
  C:\Users\pikip\Documents\Arduino\libraries\FastLED/chipsets.h \
- C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WebServer\src/WebServer.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFi.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Print.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/IPv6Address.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiType.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiSTA.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiGeneric.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_event_loop.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp_event/esp_event.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp_event/esp_event_base.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_event_legacy.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_wifi_types.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/rom/queue.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_interface.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/tcpip_adapter/tcpip_adapter.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/rom/queue.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_wifi_types.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/ip_addr.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/opt.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwipopts.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/time.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/fcntl.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/_default_fcntl.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/stat.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/vfs/sys/ioctl.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/select.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/esp32/esp_task.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/freertos/freertos/FreeRTOSConfig.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/netif/dhcp_state.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/debug.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/arch.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/arch/cc.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/errno.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/errno.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/arch/sys_arch.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/arch/vfs_lwip.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/def.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/ip4_addr.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/ip6_addr.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/lwip/def.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/lwip/dhcpserver/dhcpserver.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiAP.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiScan.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiClient.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Client.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiServer.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Server.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WiFi\src/WiFiUdp.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Udp.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/cbuf.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WebServer\src/HTTP_Method.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\WebServer\src/detail/RequestHandler.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\FS\src/FS.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\SPIFFS\src/SPIFFS.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\EEPROM/EEPROM.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/spi_flash/esp_partition.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/spi_flash/esp_spi_flash.h \
+ C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/SSD1306.h \
+ C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/SSD1306Wire.h \
+ C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/OLEDDisplay.h \
+ C:\Users\pikip\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/OLEDDisplayFonts.h \
+ C:\Users\pikip\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\Wire\src/Wire.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Oscillators.h

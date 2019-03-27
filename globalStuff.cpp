@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #pragma once
 #include "globalStuff.h"
 
@@ -27,3 +29,5 @@ unsigned long sTime = 0;
 String functionName = "";
 
 int numObjects = 0;
+
+int debugDepth = 0;

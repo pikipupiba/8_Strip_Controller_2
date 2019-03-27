@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #pragma once
 
 //  TwinkleFOX by Mark Kriegsman: https://gist.github.com/kriegsman/756ea6dcae8e30845b5a

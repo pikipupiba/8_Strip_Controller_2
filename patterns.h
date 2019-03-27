@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #pragma once
 
 // These patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
@@ -322,6 +324,8 @@ void poopyWorm(StripController* strip)
 	{
 	case 0:
 
+		D(middleTime("Poopy worm case 0");)
+
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
 			strip->AddAnimation("Mover", 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
@@ -330,6 +334,8 @@ void poopyWorm(StripController* strip)
 		break;
 
 	case 1:
+
+		D(middleTime("Poopy worm case 1");)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
@@ -342,6 +348,8 @@ void poopyWorm(StripController* strip)
 
 	case 2:
 
+		D(middleTime("Poopy worm case 2");)
+
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
 			strip->AddAnimation("Mover", 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
@@ -350,6 +358,8 @@ void poopyWorm(StripController* strip)
 		break;
 
 	case 3:
+
+		D(middleTime("Poopy worm case 3");)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{

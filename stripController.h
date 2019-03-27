@@ -1,15 +1,18 @@
+#include "stdafx.h"
+
 // stripController.h
 #pragma once
 //#include <stdint.h>
-#include <FastLED.h>
-//#include "defaultSettings.h"
-#include "Animations.h"
-#include "Mover.h"
+
+
+
+class Animations;
 
 #include "globalStuff.h"
 #include "tasks.h"
 
 extern CRGBArray<NUM_LEDS> leds;
+//extern StripController* strips[8];
 
 // HELP!
 // Is my whole paradigm of using strip controller objects to combine animation objects onto a strip a good one?
@@ -78,4 +81,8 @@ protected:
 
 	 //void StackAnimations();// Combine all animation CRGB[]s into the strip's CRGBSet.
 
+	 //void DivideEvenly();
+
+	 //void ClearAnimations();
+	 //void ClearAnimations(int newIndex);
 };

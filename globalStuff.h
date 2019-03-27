@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #ifndef __GLOBAL_STUFF_H
 #define __GLOBAL_STUFF_H
 
@@ -5,17 +7,13 @@
 
 #if defined DEBUG_US
 #  define D(x) x
+#  define N(x)
 #else
 #  define D(x)
+#  define N(x) x
 #endif // DEBUG
 
-#if defined (ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
-#include<FastLED.h>
+#include "stdafx.h"
 
 // -- The core to run FastLED.show()
 #define FASTLED_SHOW_CORE 1
@@ -109,5 +107,7 @@ extern String functionName;
 
 // Number of animations currently running. Used to measure performance.
 extern int numObjects;
+
+extern int debugDepth;
 
 #endif

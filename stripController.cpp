@@ -1,8 +1,11 @@
+#include "stdafx.h"
+
 #pragma once
 
 #include "stripController.h"
 #include "display.h"
-
+#include "Animations.h"
+#include "Mover.h"
 
 // This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
 StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShape)

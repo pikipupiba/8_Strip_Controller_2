@@ -1,10 +1,6 @@
-#pragma once
+#include "stdafx.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#pragma once
 
 // HELP!
 // Obviously this is not optimized, but once completed will this be faster than just using floats to track animation parameters?

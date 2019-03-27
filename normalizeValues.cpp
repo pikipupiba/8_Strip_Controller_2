@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "normalizeValues.h"
 
 float uint32_to_float(uint32_t val, int min, int max)
