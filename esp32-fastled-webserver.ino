@@ -49,7 +49,7 @@ const int boardLedPin = 2;
 #include "stripPresets.h"	// The location of presets for entire strips which can include multiple animation presets.
 #include "universePresets.h"// The location of presets for a collection of strips.
 
-#include "patterns.h"		// Patterns use various animation objects to create an effect.
+//#include "patterns.h"		// Patterns use various animation objects to create an effect.
 //#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
 
 #include "field.h"			// Gets field values from the web server.
@@ -118,8 +118,12 @@ void setup() {
 		strips[i]->ResetTimeouts();
 	}
 
-	patterns[currentPatternIndex](strips[0]);
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		patterns[currentPatternIndex](strips[i]);
+	}
 
+	prevPatternTimeOut = millis();
 	lastFrameTime = millis();
 
 }
@@ -150,14 +154,8 @@ void loop()
 	EVERY_N_MILLIS(5000)
 	{
 		displayMemory(" at time " + String(millis()));
-
 	}
 
-	EVERY_N_SECONDS(20)
-	{
-		nextPattern();
-		patterns[currentPatternIndex](strips[0]);
-	}
 
 	// send the 'leds' array out to the actual LED strip
 	// FastLED.show();
@@ -171,9 +169,4 @@ void loop()
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
 	//delay(1000 / FRAMES_PER_SECOND);
 
-}
-
-void nextPattern()
-{
-	currentPatternIndex = (currentPatternIndex + 1) % ARRAY_SIZE(patterns);
 }

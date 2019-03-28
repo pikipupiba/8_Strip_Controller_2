@@ -24,16 +24,16 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 	stripPower = true;
 	stripBrightness = 255;
 
-	autoplay = false;
-	autoplayDuration = 11;
+	stripAutoplay = false;
+	stripAutoplayDuration = 11;
 
-	cyclePalettes = false;
-	paletteDuration = 10;
+	stripCyclePalettes = false;
+	stripPaletteDuration = 10;
 
-	curPattern = 0;
-	curPaletteIndex = 0;
+	stripPatternIndex = 0;
+	stripPaletteIndex = 0;
 
-	numAnimations = 0;
+	stripNumAnimations = 0;
 
 	//curPalette = CRGBPalette16(CRGB::Black);
 	//tarPalette = palettes[0];
@@ -70,7 +70,7 @@ void StripController::UpdateStrip()
 {
 	D(startTime("StripController::UpdateStrip()");)
 
-	/*for (Animations* i : animation
+	/*for (Animations* i : animation)
 	{
 		debugCounter();
 		i->Update();
@@ -81,9 +81,9 @@ void StripController::UpdateStrip()
 		}
 	}*/
 
-	for (int i = 0; i < numAnimations; i++)
+	for (int i = 0; i < stripNumAnimations; i++)
 	{
-		animation[i]->Update();
+		stripAnimation[i]->Update();
 	}
 
 	//FastLEDshowESP32();
@@ -91,23 +91,22 @@ void StripController::UpdateStrip()
 	// Call the current pattern function once, updating the 'leds[index]' array
 	//patterns[curPattern].pattern(index);
 
-	//EVERY_N_MILLISECONDS(20) {
-	//	// slowly blend the current palette to the next
-	//	nblendPaletteTowardPalette(curPalette, tarPalette, 8);
-	//	curHue += hueSpeed;  // slowly cycle the "base color" through the rainbow
-	//}
+	EVERY_N_MILLISECONDS(20) {
+		// slowly blend the current palette to the next
+		nblendPaletteTowardPalette(stripPalette, stripTarPalette, 8);
+	}
 
 	// Advance the pattern and palette if applicable.
 	// TODO Should this only happen if POWER is on?
-	//if (autoplay && (millis() > autoPlayTimeout)) {
-	//	nextPattern();
-	//	autoPlayTimeout = millis() + (autoplayDuration * 1000);
-	//}
+	if (stripAutoplay && (millis() > stripAutoPlayTimeout)) {
+		NextPattern();
+		stripAutoPlayTimeout = millis() + (stripAutoplayDuration * 1000);
+	}
 
-	//if (cyclePalettes && (millis() > paletteTimeout)) {
-	//	nextPalette();
-	//	paletteTimeout = millis() + (paletteDuration * 1000);
-	//}
+	if (stripCyclePalettes && (millis() > stripPaletteTimeout)) {
+		NextPalette();
+		stripPaletteTimeout = millis() + (stripPaletteDuration * 1000);
+	}
 
 	D(endTime("StripController::UpdateStrip()");)
 }
@@ -115,15 +114,14 @@ void StripController::UpdateStrip()
 // Reset the timeouts for the strip when autoplay is turned on or after setup.
 void StripController::ResetTimeouts()
 {
-	autoPlayTimeout = millis() + (autoplayDuration * 1000);
-	paletteTimeout = millis() + (paletteDuration * 1000);
+	stripAutoPlayTimeout = millis() + (stripAutoplayDuration * 1000);
+	stripPaletteTimeout = millis() + (stripPaletteDuration * 1000);
 }
 
 // TODO will make this cycle through presets instead of patterns.
 void StripController::NextPattern()
 {
-	// add one to the current pattern number and wrap around at the end
-	//curPattern = (curPattern + 1) % patternCount;
+	stripPatternIndex = (stripPatternIndex + 1) % ARRAY_SIZE(patterns);
 }
 
 void StripController::NextPalette()
@@ -137,7 +135,7 @@ void StripController::AddAnimation()
 {
 	D(startTime("StripController::AddAnimation()");)
 
-	if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
+	if (stripNumAnimations < NUM_ANIMATIONS_PER_STRIP)
 	{
 		
 		// TODO Figure out how to initialize an animation object like this.
@@ -146,9 +144,9 @@ void StripController::AddAnimation()
 		// typedef void(*SimplePatternList[])();
 		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
-		animation[numAnimations] = new Mover(this);
+		stripAnimation[stripNumAnimations] = new Mover(this);
 
-		numAnimations++;
+		stripNumAnimations++;
 	}
 
 	D(endTime("StripController::AddAnimation()");)
@@ -160,11 +158,11 @@ void StripController::AddAnimation(String newAnimation, float newPosition, float
 
 	if (newAnimation == "Mover")
 	{
-		if (numAnimations < NUM_ANIMATIONS_PER_STRIP)
+		if (stripNumAnimations < NUM_ANIMATIONS_PER_STRIP)
 		{
-			animation[numAnimations] = new Mover(this, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
+			stripAnimation[stripNumAnimations] = new Mover(this, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
 
-			numAnimations++;
+			stripNumAnimations++;
 		}
 	}
 	D(endTime("StripController::AddAnimation(int stufff)");)
@@ -179,7 +177,7 @@ void StripController::PrintStripInfo()
 	Serial.print("Number of LEDs: ");
 	Serial.println(stripNumLEDs);
 	Serial.print("Num Animations: ");
-	Serial.println(numAnimations);
+	Serial.println(stripNumAnimations);
 
 	D(endTime("StripController::PrintStripInfo()");)
 }
@@ -188,17 +186,17 @@ void StripController::ClearAnimations()
 {
 	D(startTime("StripController::ClearAnimations()");)
 
-	for (int i = numAnimations - 1; i >= 0; i--)
+	for (int i = stripNumAnimations - 1; i >= 0; i--)
 	{
-		if (animation[i] == NULL)
+		if (stripAnimation[i] == NULL)
 		{
 		}
 		else
 		{
-			delete animation[i];
-			animation[i] = NULL;
+			delete stripAnimation[i];
+			stripAnimation[i] = NULL;
 
-			numAnimations--;
+			stripNumAnimations--;
 		}
 	}
 

@@ -287,6 +287,7 @@ void colorWipe()
 	}
 	prevpos = pos;*/
 }
+
 void continuousWipe()
 {
 	/*static int pos = 0;
@@ -320,7 +321,6 @@ void poopyWorm1(StripController* strip)
 
 	static int stage = 0;
 
-
 	// TODO Move these to being time dependant like displaying the menu.
 	switch (stage)
 	{
@@ -332,7 +332,7 @@ void poopyWorm1(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", strip->stripRangeStart + 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		stage++;
 		break;
@@ -345,7 +345,7 @@ void poopyWorm1(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", strip->stripRangeEnd - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		stage = 0;
 		break;
@@ -360,6 +360,7 @@ void poopyWorm2(StripController* strip)
 
 		static int stage = 0;
 
+
 	switch (stage)
 	{
 	case 0:
@@ -370,11 +371,11 @@ void poopyWorm2(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
 		{
-			strip->AddAnimation("Mover", 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", strip->stripRangeStart + 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", strip->stripRangeEnd - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 
 		stage++;
@@ -388,11 +389,11 @@ void poopyWorm2(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
 		{
-			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP / 2, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", (strip->stripRangeStart + strip->stripRangeEnd)/ 2, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP / 2, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", (strip->stripRangeStart + strip->stripRangeEnd) / 2, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 
 		stage = 0;

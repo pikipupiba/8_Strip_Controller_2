@@ -9,9 +9,11 @@
 class Animations;
 
 #include "globalStuff.h"
-#include "tasks.h"
+//#include "tasks.h"
 
-extern CRGBArray<NUM_LEDS> leds;
+//extern CRGBArray<NUM_LEDS> leds;
+class PatternList;
+extern PatternList patterns;
 //extern StripController* strips[8];
 
 // HELP!
@@ -50,21 +52,21 @@ protected:
 
 										// HELP!
 										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
-	 Animations* animation[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
-	 int numAnimations;			// Current number of animations active on this strip.
+	 Animations* stripAnimation[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
+	 int stripNumAnimations;			// Current number of animations active on this strip.
 
-	 bool autoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
-	 int autoplayDuration;
-	 unsigned long autoPlayTimeout;
+	 bool stripAutoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
+	 int stripAutoplayDuration;
+	 unsigned long stripAutoPlayTimeout;
+	 int stripPatternIndex;
 
-	 bool cyclePalettes;				// If TRUE then the current palette will change every paletteDuration seconds.
-	 int paletteDuration;
-	 unsigned long paletteTimeout;
+	 bool stripCyclePalettes;				// If TRUE then the current palette will change every paletteDuration seconds.
+	 int stripPaletteDuration;
+	 unsigned long stripPaletteTimeout;
 
-	 uint8_t curPattern;
-	 uint8_t curPaletteIndex;
-	 CRGBPalette16 curPalette;
-	 CRGBPalette16 tarPalette;
+	 int stripPaletteIndex;
+	 CRGBPalette16 stripPalette;
+	 CRGBPalette16 stripTarPalette;
 
 	 // Constructor specifies strip index, number of LEDs, and shape of strip.
 	 StripController(int newIndex, int newNumLEDs);//, Shapes newShape);
@@ -82,7 +84,7 @@ protected:
 
 	 //void StackAnimations();// Combine all animation CRGB[]s into the strip's CRGBSet.
 
-	 //void DivideEvenly();
+	 //void DivideEvenly();	// Evenly divides the stripRange between all animations on the strip.
 
 	 void ClearAnimations();
 	 //void ClearAnimations(int newIndex);

@@ -87,6 +87,8 @@ enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the 
 extern CRGBArray<NUM_LEDS> leds;
 
 extern int currentPatternIndex;
+extern unsigned long prevPatternTimeOut;
+extern int patternTimeOut;
 
 extern float gHue; // rotating "base color" used by many of the patterns
 extern float gHueSpeed;
