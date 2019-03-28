@@ -92,7 +92,7 @@ void setup() {
 	// TODO Might actually need to save and restore from an SD card depending on implementation of presets.
 
 	//setupWifi();			// Try to connect to WiFi networks specified in secrets.h
-	//setupWeb();				// Put the contents of the SPIFFS onto the web server.
+	//setupWeb();			// Put the contents of the SPIFFS onto the web server.
 
 	// Initialize the strips connected to the ESP32.
 	// TODO I need to figure out how to adjust this based on settings. Users will probably have to save these values into
@@ -120,6 +120,8 @@ void setup() {
 
 	patterns[currentPatternIndex](strips[0]);
 
+	lastFrameTime = millis();
+
 }
 
 void loop()
@@ -145,7 +147,7 @@ void loop()
 		strips[i]->UpdateStrip();
 	}
 	
-	EVERY_N_MILLIS(250)
+	EVERY_N_MILLIS(5000)
 	{
 		
 		/*for (int i = 0; i < NUM_STRIPS; i++)
@@ -158,11 +160,12 @@ void loop()
 		}*/
 		
 		displayMemory(" after more Movers");
-		calcFPS();
+		//calcFPS();
 	}
 
-	EVERY_N_SECONDS(30)
+	EVERY_N_SECONDS(20)
 	{
+		nextPattern();
 		patterns[currentPatternIndex](strips[0]);
 	}
 
@@ -171,10 +174,16 @@ void loop()
 	FastLEDshowESP32();
 
 	newFrames++;
+	calcFPS();
 
 	// Removed the delay because it was cutting my framerate in half at the lowest setting.
 	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
 	// FastLED.delay(1000 / FRAMES_PER_SECOND);
 	//delay(1000 / FRAMES_PER_SECOND);
 
+}
+
+void nextPattern()
+{
+	currentPatternIndex = (currentPatternIndex + 1) % ARRAY_SIZE(patterns);
 }

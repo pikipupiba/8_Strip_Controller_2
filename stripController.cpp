@@ -183,3 +183,24 @@ void StripController::PrintStripInfo()
 
 	D(endTime("StripController::PrintStripInfo()");)
 }
+
+void StripController::ClearAnimations()
+{
+	D(startTime("StripController::ClearAnimations()");)
+
+	for (int i = numAnimations - 1; i >= 0; i--)
+	{
+		if (animation[i] == NULL)
+		{
+		}
+		else
+		{
+			delete animation[i];
+			animation[i] = NULL;
+
+			numAnimations--;
+		}
+	}
+
+	D(endTime("StripController::ClearAnimations()");)
+}

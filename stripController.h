@@ -84,6 +84,6 @@ protected:
 
 	 //void DivideEvenly();
 
-	 //void ClearAnimations();
+	 void ClearAnimations();
 	 //void ClearAnimations(int newIndex);
 };

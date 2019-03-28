@@ -142,12 +142,12 @@ void calcFPS()
 
 		speedScaleFactor = (float)100 / (float)FPS;
 
-		Serial.print("Frame Time: ");
-		Serial.println(frameTime);
-		Serial.print("FPS: ");
-		Serial.println(FPS);
-		Serial.print("Speed Scale Factor : ");
-		Serial.println(speedScaleFactor);
+		//Serial.print("Frame Time: ");
+		//Serial.println(frameTime);
+		//Serial.print("FPS: ");
+		//Serial.println(FPS);
+		//Serial.print("Speed Scale Factor : ");
+		//Serial.println(speedScaleFactor);
 	}
 	
 }

@@ -314,17 +314,21 @@ void continuousWipe()
 // -----------------------------------------------------------------------------------//
 
 // I want the logistics of the animations to be handled in this file.
-void poopyWorm(StripController* strip)
+void poopyWorm1(StripController* strip)
 {
-	D(startTime("poopyWorm");)
+	D(startTime("poopyWorm1");)
 
 	static int stage = 0;
 
+
+	// TODO Move these to being time dependant like displaying the menu.
 	switch (stage)
 	{
 	case 0:
 
-		D(middleTime("Poopy worm case 0");)
+		D(middleTime("Poopy worm 1 case 0");)
+
+			strip->ClearAnimations();
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
@@ -335,50 +339,71 @@ void poopyWorm(StripController* strip)
 
 	case 1:
 
-		D(middleTime("Poopy worm case 1");)
+		D(middleTime("Poopy worm 1 case 1");)
+
+			strip->ClearAnimations();
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			delete strip->animation[i];
-
-			strip->animation[i] = NULL;
-
-			stage++;
+			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
-
-	case 2:
-
-		D(middleTime("Poopy worm case 2");)
-
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
-		{
-			strip->AddAnimation("Mover", 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
-		}
-		stage++;
-		break;
-
-	case 3:
-
-		D(middleTime("Poopy worm case 3");)
-
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
-		{
-			delete strip->animation[i];
-
-			strip->animation[i] = NULL;
-
-		}
-
 		stage = 0;
-		poopyWorm(strip);
 		break;
 	}
 
-	D(endTime("poopyWorm");)
+	D(endTime("poopyWorm1");)
+}
+
+void poopyWorm2(StripController* strip)
+{
+	D(startTime("poopyWorm2");)
+
+		static int stage = 0;
+
+	switch (stage)
+	{
+	case 0:
+
+		D(middleTime("Poopy worm 2 case 0");)
+
+			strip->ClearAnimations();
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
+		{
+			strip->AddAnimation("Mover", 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+
+		stage++;
+		break;
+
+	case 1:
+
+		D(middleTime("Poopy worm 2 case 1");)
+
+			strip->ClearAnimations();
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
+		{
+			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP / 2, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		{
+			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP / 2, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+		}
+
+		stage = 0;
+		break;
+	}
+
+	D(endTime("poopyWorm2");)
 }
 
 typedef void(*PatternList[])(StripController* strip);
-PatternList patterns = { poopyWorm };
+PatternList patterns = { poopyWorm1, poopyWorm2 };
 
 /*typedef Pattern PatternList[];
 typedef struct {

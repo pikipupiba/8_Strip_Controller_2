@@ -90,6 +90,7 @@ Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, floa
 
 Mover::~Mover()
 {
+	Erase();
 	numObjects--;
 }
 
