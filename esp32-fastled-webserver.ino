@@ -149,18 +149,8 @@ void loop()
 	
 	EVERY_N_MILLIS(5000)
 	{
-		
-		/*for (int i = 0; i < NUM_STRIPS; i++)
-		{
-			for (int j = 0; j < strips[i]->numAnimations; j++)
-			{
-				if (random8() < 255) { strips[i]->animation[j]->Randomize(); }
-			}
-			strips[i]->AddAnimation();
-		}*/
-		
-		displayMemory(" after more Movers");
-		//calcFPS();
+		displayMemory(" at time " + String(millis()));
+
 	}
 
 	EVERY_N_SECONDS(20)

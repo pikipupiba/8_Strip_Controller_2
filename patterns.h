@@ -332,7 +332,7 @@ void poopyWorm1(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		stage++;
 		break;
@@ -345,7 +345,7 @@ void poopyWorm1(StripController* strip)
 
 		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
 		{
-			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			strip->AddAnimation("Mover", NUM_LEDS_PER_STRIP - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
 		}
 		stage = 0;
 		break;
