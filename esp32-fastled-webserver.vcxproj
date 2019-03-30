@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animationPresets.h" />
-    <ClInclude Include="Animations.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="field.h">
@@ -128,6 +128,7 @@
     <ClInclude Include="Mover.h" />
     <ClInclude Include="normalizeValues.h" />
     <ClInclude Include="Oscillators.h" />
+    <ClInclude Include="PatternClass.h" />
     <ClInclude Include="physicalInputs.h" />
     <ClInclude Include="palettes.h">
       <FileType>CppCode</FileType>
@@ -153,12 +154,13 @@
     <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="globalStuff.cpp" />
     <ClCompile Include="Mover.cpp" />
     <ClCompile Include="normalizeValues.cpp" />
     <ClCompile Include="Oscillators.cpp" />
+    <ClCompile Include="PatternClass.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

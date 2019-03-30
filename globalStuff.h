@@ -13,8 +13,6 @@
 #  define N(x) x
 #endif // DEBUG
 
-#include "stdafx.h"
-
 // -- The core to run FastLED.show()
 #define FASTLED_SHOW_CORE 1
 
@@ -59,7 +57,7 @@
 
 // Set the maximum number of strips and leds per strip that might be used.
 #define NUM_STRIPS			8
-#define NUM_LEDS_PER_STRIP	236
+#define NUM_LEDS_PER_STRIP	240
 
 // Calculate the total size needed for the led array to store data for all strips.
 #define NUM_LEDS			300 * NUM_STRIPS
@@ -78,6 +76,7 @@ enum class Textures		{ None, Dashed, Wavey, Strobe };// Textures are modificatio
 enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the behavior an animation will display when it reaches the end of its specified range.
 
 
+
 // -----------------------------------------------------------------------------------//
 // ----------------------------GLOBAL ANIMATION VARIABLES-----------------------------//
 // -----------------------------------------------------------------------------------//
@@ -85,10 +84,6 @@ enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the 
 
 // Define our master array of LEDs.
 extern CRGBArray<NUM_LEDS> leds;
-
-extern int currentPatternIndex;
-extern unsigned long prevPatternTimeOut;
-extern int patternTimeOut;
 
 extern float gHue; // rotating "base color" used by many of the patterns
 extern float gHueSpeed;
@@ -111,5 +106,7 @@ extern String functionName;
 extern int numObjects;
 
 extern int debugDepth;
+
+extern int patternIndex;
 
 #endif

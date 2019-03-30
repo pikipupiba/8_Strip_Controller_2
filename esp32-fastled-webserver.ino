@@ -49,7 +49,7 @@ const int boardLedPin = 2;
 #include "stripPresets.h"	// The location of presets for entire strips which can include multiple animation presets.
 #include "universePresets.h"// The location of presets for a collection of strips.
 
-//#include "patterns.h"		// Patterns use various animation objects to create an effect.
+#include "patterns.h"		// Patterns use various animation objects to create an effect.
 //#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
 
 #include "field.h"			// Gets field values from the web server.
@@ -66,9 +66,9 @@ const int boardLedPin = 2;
 // -----------------------------------------------------------------------------------//
 
 #include "Oscillators.h"	// A custom oscillator class for varying animation variables.
-#include "Animations.h"		// An interface class from which individual animations can inherit their base functionality.
+#include "Animation.h"		// An interface class from which individual animations can inherit their base functionality.
 #include "Mover.h"
-#include "StripController.h"// A strip controller is created for each strip connected to the ESP32.
+#include "stripController.h"// A strip controller is created for each strip connected to the ESP32.
 
 StripController* strips[8];
 
@@ -78,7 +78,7 @@ void setup() {
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	//setupInputs();			// Setup the physical inputs.
+	//setupInputs();		// Setup the physical inputs.
 
 	setupDisplay();			// Setup the built in display.
 	
@@ -94,38 +94,30 @@ void setup() {
 	//setupWifi();			// Try to connect to WiFi networks specified in secrets.h
 	//setupWeb();			// Put the contents of the SPIFFS onto the web server.
 
+	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
+	FastLED.setBrightness(gBrightness);
+
+	createTasks();
+
 	// Initialize the strips connected to the ESP32.
 	// TODO I need to figure out how to adjust this based on settings. Users will probably have to save these values into
 	// EEPROM and then restart the ESP32 to apply the new settings. Maybe you select a strip setup in this setup() function
 	// either by manually entering strip lengths or selecting a previously saved setup.
 	// TODO Figure out how to change these things during execution.
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i] = new StripController(i, NUM_LEDS_PER_STRIP);// , Strip);
-	}
+	{ strips[i] = new StripController(i, NUM_LEDS_PER_STRIP); }
 
-	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{ strips[i]->ResetTimeouts(); }
 
-	// set master brightness control
-	FastLED.setBrightness(gBrightness);
+	patterns[patternIndex](strips[0]);
 
-	createTasks();
-	
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{ strips[i]->UpdateStrip(); }
+
 	displayMemory(" after setup ");
 
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i]->ResetTimeouts();
-	}
-
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		patterns[currentPatternIndex](strips[i]);
-	}
-
-	prevPatternTimeOut = millis();
 	lastFrameTime = millis();
-
 }
 
 void loop()
@@ -137,36 +129,30 @@ void loop()
 	drawMenu();		// Displays menu on the built in display.
 
 	if (gPower)
-	{
-		FastLED.setBrightness(gBrightness);
-	}
+	{ FastLED.setBrightness(gBrightness); }
 	else
-	{
-		FastLED.setBrightness(0);
-	}
+	{ FastLED.setBrightness(0); }
 
 	// Update each strip.
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i]->UpdateStrip();
-	}
+	{ strips[i]->UpdateStrip(); }
 	
-	EVERY_N_MILLIS(5000)
+	EVERY_N_MILLIS(10000)
 	{
-		displayMemory(" at time " + String(millis()));
+		NextPattern();
+
+		patterns[patternIndex](strips[0]);
+
+		displayMemory(" at time " + String(millis())); 
 	}
 
-
-	// send the 'leds' array out to the actual LED strip
-	// FastLED.show();
 	FastLEDshowESP32();
 
 	newFrames++;
 	calcFPS();
+}
 
-	// Removed the delay because it was cutting my framerate in half at the lowest setting.
-	// TODO Learn more about why the FastLED.delay() doesn't work and if it can be used, use it.
-	// FastLED.delay(1000 / FRAMES_PER_SECOND);
-	//delay(1000 / FRAMES_PER_SECOND);
-
+void NextPattern()
+{
+	patternIndex = (patternIndex + 1) % ARRAY_SIZE(patterns);
 }

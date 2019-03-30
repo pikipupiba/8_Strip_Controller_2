@@ -13,13 +13,11 @@ class StripController;
 
 extern StripController* strips[8];
 
-class Animations
+class Animation
 {
 private:
 
 protected:
-	
-public:	// Public variables allow effect functions to be written easier and with less overhead.
 
 	StripController* strip;
 
@@ -44,7 +42,7 @@ public:	// Public variables allow effect functions to be written easier and with
 	float pHueSpeed;
 	float hueSpeed;			// Hue speed is how much hue changes each step.
 	float tHueSpeed;
-	
+
 	float pHueAcceleration;
 	float hueAcceleration;	// Hue acceleration is how much hue speed changes each step.
 	float tHueAcceleration;
@@ -64,7 +62,7 @@ public:	// Public variables allow effect functions to be written easier and with
 	float pFeatureSize;
 	float featureSize;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
 	float tFeatureSize;
-	
+
 	float end1;			// Keeps track of one end of a "feature."
 	float tEnd1;
 	float end2;			// Keeps track of the other end of a "feature."
@@ -73,12 +71,14 @@ public:	// Public variables allow effect functions to be written easier and with
 	float numRepeats;			// Used to copy a small animation to different positions in its range.
 	float repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
 	float repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
-	
+
 	float changing;
+	
+public:	// Public variables allow effect functions to be written easier and with less overhead.
 
 	// Constructors and destructors.
-	Animations();
-	virtual ~Animations();
+	Animation();
+	virtual ~Animation();
 
 	// Virtual functions that each child needs to implement to work.
 	virtual void Update();

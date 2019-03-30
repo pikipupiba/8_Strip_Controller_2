@@ -6,14 +6,19 @@
 
 
 
-class Animations;
+class Animation;
+
 
 #include "globalStuff.h"
 //#include "tasks.h"
 
+//class StripController;
+//typedef void (StripController::*PatternList[])();
+//PatternList patterns = { StripController::PoopyWorm1, StripController::PoopyWorm2 };
+
+
 //extern CRGBArray<NUM_LEDS> leds;
-class PatternList;
-extern PatternList patterns;
+
 //extern StripController* strips[8];
 
 // HELP!
@@ -24,52 +29,69 @@ extern PatternList patterns;
 // by each animatioin playing on it, and an array of animations currently running on the strip.
 class StripController
 {
+private:
+	// -----------------------------------------------------------------------------------//
+	// ---------------------------------Class Variables-----------------------------------//
+	// -----------------------------------------------------------------------------------//
+
+	//const uint8_t patternCount = ARRAY_SIZE(patterns);
+
+	// The index of the strip determines its output pin.
+	int stripIndex;
+	// The strip's physical location within the master array of LEDs.
+	int stripRangeStart;
+	int stripRangeEnd;
+
+	// The real number of LEDs contained by the strip.
+	// There are 300 reserved LEDs in the CRGBArray leds for each strip regaurdless of actual size.
+	// TODO Find our if I can change the master CRGBArray during excecution to only store the necessary number of LEDs.
+	int stripNumLEDs;
+
+	// I just write animations directly onto the main array of LEDs now. Maybe I will use this in the future.
+	// The CRGBSet containing the number of LEDs on this strip.
+	//struct CRGB stripLEDs[300];
+
+	Shapes stripShape;					// The default shape of animations created on this strip.
+	Textures stripTexture;				// A modifier applied to the strip after values are calculated.
+	EndOfRanges stripEndOfRange;		// The default behavior of animations created on this strip.
+
+	bool stripPower;					// If FALSE then the strip brightness is temporarily set to 0.
+	float stripBrightness;				// The strip brightness is adjusted to this value after LEDs are written, maintaining relative animation brightnesses.
+
+										// HELP!
+										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
+	Animation* stripAnimations[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
+	
+	int stripNumAnimations;			// Current number of animations active on this strip.
+
+	bool stripAutoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
+	int stripAutoplayDuration;
+	unsigned long stripAutoPlayTimeout;
+	int stripPatternIndex;
+
+	bool stripCyclePalettes;				// If TRUE then the current palette will change every paletteDuration seconds.
+	int stripPaletteDuration;
+	unsigned long stripPaletteTimeout;
+
+	int stripPaletteIndex;
+	CRGBPalette16 stripPalette;
+	CRGBPalette16 stripTarPalette;
+
+	friend class Animation;
+	friend class Mover;
+	friend class Pattern;
+
 protected:
 	
  public:
 
-	 // The index of the strip determines its output pin.
-	 int stripIndex;
-	 // The strip's physical location within the master array of LEDs.
-	 int stripRangeStart;
-	 int stripRangeEnd;
-
-	 // The real number of LEDs contained by the strip.
-	 // There are 300 reserved LEDs in the CRGBArray leds for each strip regaurdless of actual size.
-	 // TODO Find our if I can change the master CRGBArray during excecution to only store the necessary number of LEDs.
-	 int stripNumLEDs;
-
-	// I just write animations directly onto the main array of LEDs now. Maybe I will use this in the future.
-	 // The CRGBSet containing the number of LEDs on this strip.
-	 //struct CRGB stripLEDs[300];
-
-	 Shapes stripShape;					// The default shape of animations created on this strip.
-	 Textures stripTexture;				// A modifier applied to the strip after values are calculated.
-	 EndOfRanges stripEndOfRange;		// The default behavior of animations created on this strip.
-
-	 bool stripPower;					// If FALSE then the strip brightness is temporarily set to 0.
-	 float stripBrightness;				// The strip brightness is adjusted to this value after LEDs are written, maintaining relative animation brightnesses.
-
-										// HELP!
-										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
-	 Animations* stripAnimation[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
-	 int stripNumAnimations;			// Current number of animations active on this strip.
-
-	 bool stripAutoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
-	 int stripAutoplayDuration;
-	 unsigned long stripAutoPlayTimeout;
-	 int stripPatternIndex;
-
-	 bool stripCyclePalettes;				// If TRUE then the current palette will change every paletteDuration seconds.
-	 int stripPaletteDuration;
-	 unsigned long stripPaletteTimeout;
-
-	 int stripPaletteIndex;
-	 CRGBPalette16 stripPalette;
-	 CRGBPalette16 stripTarPalette;
+	 // -----------------------------------------------------------------------------------//
+	 // ----------------------------------Class Funtions-----------------------------------//
+	 // -----------------------------------------------------------------------------------//
 
 	 // Constructor specifies strip index, number of LEDs, and shape of strip.
 	 StripController(int newIndex, int newNumLEDs);//, Shapes newShape);
+	 ~StripController();
 
 	 void UpdateStrip();	// Updates each animation running on the strip and combines them to be displayed.
 	 void ResetTimeouts();	// Resets the timeouts for auto preset and palette rotation.
@@ -88,4 +110,12 @@ protected:
 
 	 void ClearAnimations();
 	 //void ClearAnimations(int newIndex);
+
+	 // -----------------------------------------------------------------------------------//
+	 // ---------------------------------Pattern Funtions----------------------------------//
+	 // -----------------------------------------------------------------------------------//
+
+	 //void PoopyWorm1();
+	 //void PoopyWorm2();
+
 };

@@ -8,8 +8,9 @@
 // I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
 
 #include "stripController.h"
-#include "Animations.h"
+#include "Animation.h"
 #include "Mover.h"
+#include "globalStuff.h"
 
 #include "display.h"
 
@@ -318,7 +319,7 @@ void continuousWipe()
 void poopyWorm1(StripController* strip)
 {
 	D(startTime("poopyWorm1");)
-
+/*
 	static int stage = 0;
 
 	// TODO Move these to being time dependant like displaying the menu.
@@ -349,16 +350,18 @@ void poopyWorm1(StripController* strip)
 		}
 		stage = 0;
 		break;
-	}
+	}*/
 
 	D(endTime("poopyWorm1");)
+
+	
 }
 
 void poopyWorm2(StripController* strip)
 {
 	D(startTime("poopyWorm2");)
 
-		static int stage = 0;
+	/*	static int stage = 0;
 
 
 	switch (stage)
@@ -401,6 +404,8 @@ void poopyWorm2(StripController* strip)
 	}
 
 	D(endTime("poopyWorm2");)
+	*/
+	
 }
 
 typedef void(*PatternList[])(StripController* strip);

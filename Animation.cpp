@@ -2,22 +2,22 @@
 
 #pragma once
 
-#include "Animations.h"
+#include "Animation.h"
 #include "display.h"
 #include "stripController.h"
 
-Animations::Animations()
+Animation::Animation()
 {
 	
 }
 
-Animations::~Animations()
+Animation::~Animation()
 {
 }
 
-void Animations::UpdatePosition()
+void Animation::UpdatePosition()
 {
-	D(startTime("Animations::UpdatePostion()"); )
+	D(startTime("Animation::UpdatePostion()"); )
 
 	//GetBackToRange();
 
@@ -86,14 +86,14 @@ void Animations::UpdatePosition()
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;
 
-	D(endTime("Animations::UpdatePostion()");)
+	D(endTime("Animation::UpdatePostion()");)
 }
 
 /* Update an animation's pixel values. Each animation 
 should erase itself perfectly to work with the library. */
-void Animations::Update()
+void Animation::Update()
 {
-	D(startTime("Animations::Update");)
+	D(startTime("Animation::Update");)
 
 	Erase();			// Erase previous frame.
 
@@ -102,13 +102,13 @@ void Animations::Update()
 	UpdatePosition();	// Update position and hue.
 	Draw();				// Draw the new frame.
 
-	D(endTime("Animations::Update");)
+	D(endTime("Animation::Update");)
 }
 
-void Animations::Change()
+void Animation::Change()
 {
 
-	D(startTime("Animations::Change()");)
+	D(startTime("Animation::Change()");)
 
 	fract8 eased = ease8InOutCubic((int)changing);
 
@@ -135,14 +135,14 @@ void Animations::Change()
 
 	if ((int)changing > 255) { changing = 0; }
 
-	D(endTime("Animations::Change()");)
+	D(endTime("Animation::Change()");)
 
 }
 
-/*void Animations::Randomize()
+/*void Animation::Randomize()
 {
 
-	D(startTime("Animations::Randomize()");)
+	D(startTime("Animation::Randomize()");)
 
 	SetPrevVals();
 
@@ -167,11 +167,11 @@ void Animations::Change()
 
 	changing = 1;
 
-	D(endTime("Animations::Randomize()");)
+	D(endTime("Animation::Randomize()");)
 
 }*/
 
-void Animations::Randomize(String var = "")
+void Animation::Randomize(String var = "")
 {
 	D(startTime("Randomize()");)
 
@@ -199,7 +199,7 @@ void Animations::Randomize(String var = "")
 	D(endTime("Randomize()");)
 }
 
-void Animations::SetPrevVals(String var = "")
+void Animation::SetPrevVals(String var = "")
 {
 	D(startTime("SetPrevVals()");)
 
@@ -239,7 +239,7 @@ void Animations::SetPrevVals(String var = "")
 	D(endTime("SetPrevVals()");)
 }
 
-void Animations::SetRangeAbsolute(int newRangeStart = 0, int newRangeEnd = 0)
+void Animation::SetRangeAbsolute(int newRangeStart = 0, int newRangeEnd = 0)
 {
 	if (newRangeStart == 0 && newRangeEnd == 0)
 	{
@@ -263,7 +263,7 @@ void Animations::SetRangeAbsolute(int newRangeStart = 0, int newRangeEnd = 0)
 	}
 }
 
-void Animations::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
+void Animation::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
 {
 	D(startTime("SetRangeOnStrip()");)
 
@@ -291,7 +291,7 @@ void Animations::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
 	D(endTime("SetRangeOnStrip()");)
 }
 
-void Animations::GetBackToRange()
+void Animation::GetBackToRange()
 {
 	D(startTime("GetBackToRange()");)
 

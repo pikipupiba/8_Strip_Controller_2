@@ -5,11 +5,7 @@
 
 CRGBArray<NUM_LEDS> leds;
 
-int currentPatternIndex = 0;
-unsigned long prevPatternTimeOut = 0;
-int patternTimeOut = 20000;
-
-// Set the master variables to their starting values.
+// Set the global variables to their starting values.
 float gHue = 0;
 float gHueSpeed = 1;
 
@@ -32,3 +28,5 @@ String functionName = "";
 int numObjects = 0;
 
 int debugDepth = 0;
+
+int patternIndex = 0;

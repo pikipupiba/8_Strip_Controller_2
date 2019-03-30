@@ -57,9 +57,6 @@
     <ClInclude Include="stripController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Oscillators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,12 +84,15 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatternClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stripController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Animations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Oscillators.cpp">
@@ -114,6 +114,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatternClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
