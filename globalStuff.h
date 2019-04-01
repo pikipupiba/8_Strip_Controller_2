@@ -57,10 +57,10 @@
 
 // Set the maximum number of strips and leds per strip that might be used.
 #define NUM_STRIPS			8
-#define NUM_LEDS_PER_STRIP	240
+#define NUM_LEDS_PER_STRIP	300
 
 // Calculate the total size needed for the led array to store data for all strips.
-#define NUM_LEDS			300 * NUM_STRIPS
+#define NUM_LEDS			NUM_LEDS_PER_STRIP * NUM_STRIPS
 
 // Number of Paterns that can run on each strip
 #define NUM_PATTERNS_PER_STRIP 10

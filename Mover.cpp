@@ -57,8 +57,8 @@ Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, floa
 	strip = newStrip;
 
 	// Default Mover covers the whole strip.
-	rangeStart = strip->stripRangeStart + newRangeStart;
-	rangeEnd = strip->stripRangeStart + newRangeEnd;
+	rangeStart = newRangeStart;
+	rangeEnd = newRangeEnd;
 	rangeSize = rangeEnd - rangeStart;
 
 	animationShape = Shapes::Strip;

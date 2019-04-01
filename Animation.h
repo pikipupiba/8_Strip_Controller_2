@@ -154,4 +154,6 @@ public:	// Public variables allow effect functions to be written easier and with
 	void SetRangeOnStrip(int newRangeStart, int newRangeEnd);
 
 	void GetBackToRange();
+
+	void PrintAnimationInfo(String ID);
 };

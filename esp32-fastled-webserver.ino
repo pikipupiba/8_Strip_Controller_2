@@ -105,7 +105,7 @@ void setup() {
 	// either by manually entering strip lengths or selecting a previously saved setup.
 	// TODO Figure out how to change these things during execution.
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i] = new StripController(i, NUM_LEDS_PER_STRIP); }
+	{ strips[i] = new StripController(i, 240); }
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{ strips[i]->ResetTimeouts(); }
@@ -115,6 +115,11 @@ void setup() {
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{ strips[i]->AddPattern(); }
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->PrintStripInfo();
+	}
 
 	displayMemory(" after setup ");
 
@@ -140,8 +145,8 @@ void loop()
 	
 	EVERY_N_MILLIS(10000)
 	{
+		Serial.print("FPS: ");
 		Serial.println(FPS);
-		Serial.print("Speed Scale Factor : ");
 		displayMemory(" at time " + String(millis())); 
 	}
 

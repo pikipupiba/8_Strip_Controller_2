@@ -98,6 +98,8 @@ void PatternClass::AddAnimation(String newAnimation, float newPosition, float ne
 			{
 				patternAnimations[patternNumAnimations] = new Mover(strip, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
 
+				//patternAnimations[patternNumAnimations]->PrintAnimationInfo(String(patternNumAnimations));
+
 				patternNumAnimations++;
 			}
 		}
@@ -148,20 +150,19 @@ void PatternClass::PoopyWorm1()
 
 			for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
 			{
-				AddAnimation("Mover", strip->stripRangeStart + 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_PATTERN));
+				AddAnimation("Mover", strip->stripRangeStart + 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN));
 			}
 			break;
 
 		case 1:
 
 			D(middleTime("Poopy worm 1 case 1");)
-				Serial.println("Thing here");
 
 				ClearAnimations();
 
 			for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
 			{
-				AddAnimation("Mover", strip->stripRangeEnd - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_PATTERN));
+				AddAnimation("Mover", strip->stripRangeEnd - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN));
 			}
 			break;
 		}

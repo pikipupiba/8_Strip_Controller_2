@@ -315,3 +315,18 @@ void Animation::GetBackToRange()
 
 	D(endTime("GetBackToRange()");)
 }
+
+void Animation::PrintAnimationInfo(String ID = "")
+{
+	Serial.println();
+
+	Serial.print("Animation ID: ");
+	Serial.println(ID);
+
+	Serial.print("Animation Range Start: ");
+	Serial.println(rangeStart);
+	Serial.print("Animation Range End: ");
+	Serial.println(rangeEnd);
+
+	Serial.println();
+}

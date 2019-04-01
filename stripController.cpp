@@ -178,12 +178,22 @@ void StripController::PrintStripInfo()
 {
 	D(startTime("StripController::PrintStripInfo()");)
 
+		Serial.println();
+
 	Serial.print("Strip Index #: ");
 	Serial.println(stripIndex);
 	Serial.print("Number of LEDs: ");
 	Serial.println(stripNumLEDs);
+
+	Serial.print("Strip Range Start: ");
+	Serial.println(stripRangeStart);
+	Serial.print("Strip Range End: ");
+	Serial.println(stripRangeEnd);
+
 	Serial.print("Num Animations: ");
 	Serial.println(stripNumPatterns);
+
+	Serial.println();
 
 	D(endTime("StripController::PrintStripInfo()");)
 }
