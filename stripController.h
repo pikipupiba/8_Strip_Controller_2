@@ -7,7 +7,7 @@
 
 
 class Animation;
-
+#include "PatternClass.h"
 
 #include "globalStuff.h"
 //#include "tasks.h"
@@ -60,9 +60,9 @@ private:
 
 										// HELP!
 										// Is it necessary or wise to use a vector instead of this fixed size array for this purpose?
-	Animation* stripAnimations[NUM_ANIMATIONS_PER_STRIP];	// Array of animations currently active on this strip.
+	PatternClass* stripPatterns[NUM_PATTERNS_PER_STRIP];	// Array of animations currently active on this strip.
 	
-	int stripNumAnimations;			// Current number of animations active on this strip.
+	int stripNumPatterns;			// Current number of animations active on this strip.
 
 	bool stripAutoplay;						// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
 	int stripAutoplayDuration;
@@ -79,7 +79,7 @@ private:
 
 	friend class Animation;
 	friend class Mover;
-	friend class Pattern;
+	friend class PatternClass;
 
 protected:
 	
@@ -99,8 +99,8 @@ protected:
 	 void NextPattern();	// Advances the pattern playing on the strip. TODO replace with presets instead of simple patterns.
 	 void NextPalette();	// Advances the palette being used by animations on the strip.
 
-	 void AddAnimation(); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
-	 void AddAnimation(String newAnimation, float position, float speed, float newHue, int rangeStart, int rangeEnd);
+	 void AddPattern(); // Adds a new animation to start playing on the strip. Characteristics are set via preset.
+	 void AddPattern(String newAnimation, float position, float speed, float newHue, int rangeStart, int rangeEnd);
 
 	 void PrintStripInfo();
 
@@ -108,7 +108,7 @@ protected:
 
 	 //void DivideEvenly();	// Evenly divides the stripRange between all animations on the strip.
 
-	 void ClearAnimations();
+	 void ClearPatterns();
 	 //void ClearAnimations(int newIndex);
 
 	 // -----------------------------------------------------------------------------------//

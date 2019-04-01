@@ -49,7 +49,7 @@ Mover::Mover(StripController* newStrip) // :Animations(newStrip) // TODO Figure 
 
 Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
 {
-	D(startTime("Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, int newRangeStart, int newRangeEnd)");)
+	D(startTime("Mover::Mover(int stufff)");)
 
 		// Keep track of how many objects are currently running.
 	numObjects++;
@@ -70,7 +70,7 @@ Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, floa
 	hueSpeed = 0.5;
 	hueAcceleration = 0;
 
-	featureSize = 10;
+	featureSize = 3;
 	position = newPosition;
 	speed = newSpeed;
 	acceleration = 0;
@@ -84,7 +84,7 @@ Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, floa
 
 	changing = 0;
 
-	D(endTime("Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, int newRangeStart, int newRangeEnd)");)
+	D(endTime("Mover::Mover(int stufff)");)
 }
 
 
@@ -120,7 +120,7 @@ void Mover::Draw()
 	else
 	{
 		for (int i = rangeStart; i < iEnd2; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness); }
-		for (int i = iEnd1 + 1; i <= rangeEnd; i++)		{ leds[i] += CHSV(iHue, 255, iBrightness); }
+		for (int i = iEnd1 + 1; i <= rangeEnd; i++)	{ leds[i] += CHSV(iHue, 255, iBrightness); }
 	}
 
 	// Draw the antialiased ends of the Mover.

@@ -33,7 +33,7 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 	stripPatternIndex = 0;
 	stripPaletteIndex = 0;
 
-	stripNumAnimations = 0;
+	stripNumPatterns = 0;
 
 	//curPalette = CRGBPalette16(CRGB::Black);
 	//tarPalette = palettes[0];
@@ -87,9 +87,9 @@ void StripController::UpdateStrip()
 
 		//stripPatternList[stripCurPattern](int preset);
 
-	for (int i = 0; i < stripNumAnimations; i++)
+	for (int i = 0; i < stripNumPatterns; i++)
 	{
-		stripAnimations[i]->Update();
+		stripPatterns[i]->Update();
 	}
 
 	//FastLEDshowESP32();
@@ -137,11 +137,11 @@ void StripController::NextPalette()
 	//tarPalette = palettes[curPaletteIndex];
 }
 
-void StripController::AddAnimation()
+void StripController::AddPattern()
 {
 	D(startTime("StripController::AddAnimation()");)
 
-	if (stripNumAnimations < NUM_ANIMATIONS_PER_STRIP)
+	if (stripNumPatterns < NUM_PATTERNS_PER_STRIP)
 	{
 		
 		// TODO Figure out how to initialize an animation object like this.
@@ -150,25 +150,25 @@ void StripController::AddAnimation()
 		// typedef void(*SimplePatternList[])();
 		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
 
-		stripAnimations[stripNumAnimations] = new Mover(this);
+		stripPatterns[stripNumPatterns] = new PatternClass(this, "Poopy Worm 1");
 
-		stripNumAnimations++;
+		stripNumPatterns++;
 	}
 
 	D(endTime("StripController::AddAnimation()");)
 }
 
-void StripController::AddAnimation(String newAnimation, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
+void StripController::AddPattern(String newAnimation, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
 {
 	D(startTime("StripController::AddAnimation(int stufff)");)
 
 	if (newAnimation == "Mover")
 	{
-		if (stripNumAnimations < NUM_ANIMATIONS_PER_STRIP)
+		if (stripNumPatterns < NUM_PATTERNS_PER_STRIP)
 		{
-			stripAnimations[stripNumAnimations] = new Mover(this, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
+			//stripPatterns[stripNumPatterns] = new Mover(this, newPosition, newSpeed, newHue, newRangeStart, newRangeEnd);
 
-			stripNumAnimations++;
+			stripNumPatterns++;
 		}
 	}
 	D(endTime("StripController::AddAnimation(int stufff)");)
@@ -183,30 +183,30 @@ void StripController::PrintStripInfo()
 	Serial.print("Number of LEDs: ");
 	Serial.println(stripNumLEDs);
 	Serial.print("Num Animations: ");
-	Serial.println(stripNumAnimations);
+	Serial.println(stripNumPatterns);
 
 	D(endTime("StripController::PrintStripInfo()");)
 }
 
-void StripController::ClearAnimations()
+void StripController::ClearPatterns()
 {
-	D(startTime("StripController::ClearAnimations()");)
+	D(startTime("StripController::ClearPatterns()");)
 
-	for (int i = stripNumAnimations - 1; i >= 0; i--)
+	for (int i = stripNumPatterns - 1; i >= 0; i--)
 	{
-		if (stripAnimations[i] == NULL)
+		if (stripPatterns[i] == NULL)
 		{
 		}
 		else
 		{
-			delete stripAnimations[i];
-			stripAnimations[i] = NULL;
+			delete stripPatterns[i];
+			stripPatterns[i] = NULL;
 
-			stripNumAnimations--;
+			stripNumPatterns--;
 		}
 	}
 
-	D(endTime("StripController::ClearAnimations()");)
+	D(endTime("StripController::ClearPatterns()");)
 }
 
 /*void StripController::PoopyWorm1()
@@ -224,9 +224,9 @@ void StripController::ClearAnimations()
 
 			ClearAnimations();
 
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		for (int i = 0; i < NUM_PATTERNS_PER_STRIP; i++)
 		{
-			AddAnimation("Mover", stripRangeStart + 5, 0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", stripRangeStart + 5, 0.2, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
 		stage++;
 		break;
@@ -237,9 +237,9 @@ void StripController::ClearAnimations()
 
 			ClearAnimations();
 
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		for (int i = 0; i < NUM_PATTERNS_PER_STRIP; i++)
 		{
-			AddAnimation("Mover", stripRangeEnd - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", stripRangeEnd - 5, -0.2, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
 		stage = 0;
 		break;
@@ -263,13 +263,13 @@ void StripController::PoopyWorm2()
 
 			ClearAnimations();
 
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
+		for (int i = 0; i < NUM_PATTERNS_PER_STRIP / 2; i++)
 		{
-			AddAnimation("Mover", stripRangeStart + 5, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", stripRangeStart + 5, 0.1, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
-		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		for (int i = NUM_PATTERNS_PER_STRIP / 2; i < NUM_PATTERNS_PER_STRIP; i++)
 		{
-			AddAnimation("Mover", stripRangeEnd - 5, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", stripRangeEnd - 5, -0.1, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
 
 		stage++;
@@ -281,13 +281,13 @@ void StripController::PoopyWorm2()
 
 			ClearAnimations();
 
-		for (int i = 0; i < NUM_ANIMATIONS_PER_STRIP / 2; i++)
+		for (int i = 0; i < NUM_PATTERNS_PER_STRIP / 2; i++)
 		{
-			AddAnimation("Mover", (stripRangeStart + stripRangeEnd) / 2, -0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", (stripRangeStart + stripRangeEnd) / 2, -0.1, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
-		for (int i = NUM_ANIMATIONS_PER_STRIP / 2; i < NUM_ANIMATIONS_PER_STRIP; i++)
+		for (int i = NUM_PATTERNS_PER_STRIP / 2; i < NUM_PATTERNS_PER_STRIP; i++)
 		{
-			AddAnimation("Mover", (stripRangeStart + stripRangeEnd) / 2, 0.1, i * (255 / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_ANIMATIONS_PER_STRIP));
+			AddAnimation("Mover", (stripRangeStart + stripRangeEnd) / 2, 0.1, i * (255 / NUM_PATTERNS_PER_STRIP), stripRangeStart + i * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP), stripRangeStart + (i + 1) * (NUM_LEDS_PER_STRIP / NUM_PATTERNS_PER_STRIP));
 		}
 
 		stage = 0;

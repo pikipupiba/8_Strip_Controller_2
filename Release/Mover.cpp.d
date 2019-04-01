@@ -242,4 +242,5 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\globalStuff.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\tasks.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\display.h \
- C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\stripController.h
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\stripController.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\PatternClass.h

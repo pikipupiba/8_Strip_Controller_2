@@ -62,8 +62,11 @@
 // Calculate the total size needed for the led array to store data for all strips.
 #define NUM_LEDS			300 * NUM_STRIPS
 
-// Set the size of the animation array dedicated to each strip.
-#define NUM_ANIMATIONS_PER_STRIP	10
+// Number of Paterns that can run on each strip
+#define NUM_PATTERNS_PER_STRIP 10
+
+// Set the size of the animation array dedicated to each pattern.
+#define NUM_ANIMATIONS_PER_PATTERN	20
 
 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define MILLI_AMPS         60000 * NUM_STRIPS
@@ -107,6 +110,5 @@ extern int numObjects;
 
 extern int debugDepth;
 
-extern int patternIndex;
 
 #endif

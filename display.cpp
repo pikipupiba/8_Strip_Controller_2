@@ -144,8 +144,8 @@ void calcFPS()
 
 		//Serial.print("Frame Time: ");
 		//Serial.println(frameTime);
-		Serial.print("FPS: ");
-		Serial.println(FPS);
+		//Serial.print("FPS: ");
+		//Serial.println(FPS);
 		//Serial.print("Speed Scale Factor : ");
 		//Serial.println(speedScaleFactor);
 	}

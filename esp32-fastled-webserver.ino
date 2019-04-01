@@ -110,10 +110,11 @@ void setup() {
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{ strips[i]->ResetTimeouts(); }
 
-	patterns[patternIndex](strips[0]);
-
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{ strips[i]->UpdateStrip(); }
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{ strips[i]->AddPattern(); }
 
 	displayMemory(" after setup ");
 
@@ -139,10 +140,8 @@ void loop()
 	
 	EVERY_N_MILLIS(10000)
 	{
-		NextPattern();
-
-		patterns[patternIndex](strips[0]);
-
+		Serial.println(FPS);
+		Serial.print("Speed Scale Factor : ");
 		displayMemory(" at time " + String(millis())); 
 	}
 
@@ -150,9 +149,4 @@ void loop()
 
 	newFrames++;
 	calcFPS();
-}
-
-void NextPattern()
-{
-	patternIndex = (patternIndex + 1) % ARRAY_SIZE(patterns);
 }
