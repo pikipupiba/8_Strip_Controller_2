@@ -162,7 +162,12 @@ void PatternClass::PoopyWorm1()
 
 			for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
 			{
-				AddAnimation("Mover", strip->stripRangeEnd - 5, -0.2, i * (255 / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN), strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN));
+				AddAnimation("Mover",
+							strip->stripRangeEnd - 5,
+							-0.2,
+							i * (255 / NUM_ANIMATIONS_PER_PATTERN),
+							strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN),
+							strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN));
 			}
 			break;
 		}
