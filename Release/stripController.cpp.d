@@ -243,4 +243,5 @@ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\display.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Animation.h \
  C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\tasks.h \
- C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Mover.h
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Mover.h \
+ C:\Users\pikip\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\ColorWave.h

@@ -135,12 +135,12 @@ void calcFPS()
 	{
 		frameTime = (float)(millis() - lastFrameTime) / (float)newFrames;
 
-		FPS = 1000 / frameTime;
+		FPS = ((FPS * 9) + (1000 / frameTime)) / 10;
 
 		lastFrameTime = millis();
 		newFrames = 0;
 
-		speedScaleFactor = (float)100 / (float)FPS;
+		speedScaleFactor = frameTime / (float)10;
 
 		//Serial.print("Frame Time: ");
 		//Serial.println(frameTime);

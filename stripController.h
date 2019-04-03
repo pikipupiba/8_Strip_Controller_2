@@ -79,6 +79,7 @@ private:
 
 	friend class Animation;
 	friend class Mover;
+	friend class ColorWave;
 	friend class PatternClass;
 
 protected:
@@ -110,12 +111,5 @@ protected:
 
 	 void ClearPatterns();
 	 //void ClearAnimations(int newIndex);
-
-	 // -----------------------------------------------------------------------------------//
-	 // ---------------------------------Pattern Funtions----------------------------------//
-	 // -----------------------------------------------------------------------------------//
-
-	 //void PoopyWorm1();
-	 //void PoopyWorm2();
 
 };

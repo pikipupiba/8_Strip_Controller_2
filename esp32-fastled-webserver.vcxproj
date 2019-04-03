@@ -114,6 +114,7 @@
   <ItemGroup>
     <ClInclude Include="animationPresets.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="ColorWave.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="globalStuff.h" />
     <ClInclude Include="field.h">
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="ColorWave.cpp" />
     <ClCompile Include="display.cpp" />
     <ClCompile Include="globalStuff.cpp" />
     <ClCompile Include="Mover.cpp" />

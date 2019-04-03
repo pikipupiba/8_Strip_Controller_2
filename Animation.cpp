@@ -8,11 +8,97 @@
 
 Animation::Animation()
 {
+	D(startTime("Animation::Animation()"); )
+
+	// Keep track of how many objects are currently running.
+	numObjects++;
+
+
+	animationShape = Shapes::Strip;
+	animationTexture = Textures::None;
+	animationEndOfRange = EndOfRanges::Bounce;
+
+	brightness = 128;
+	hue = 0;
+	hueSpeed = 0.5;
+	hueAcceleration = 0;
+
+	featureSize = 3;
 	
+	speed = 0.2;
+	acceleration = 0;
+
+	
+
+	numRepeats = 0;
+	repeatPositionOffset = 0;
+	repeatHueOffset = 0;
+
+	changing = 0;
+
+	
+
+	D(endTime("Animation::Animation()"); )
 }
 
 Animation::~Animation()
 {
+}
+
+void Animation::AssignVals(aniArg aniArgs[])
+{
+	D(startTime("Animation::AssignVals(aniArg aniArgs[])"); )
+
+		int i = 0;
+
+	while(aniArgs[i].name != "")
+	{
+		//debugCounter();
+		if (aniArgs[i].name == "rangeStart")
+		{
+			rangeStart = aniArgs[i].val;	// Where on a strip an animation starts.
+		}
+		else if (aniArgs[i].name == "rangeEnd")
+		{
+			rangeEnd = aniArgs[i].val;		// Where on a strip an animation ends.
+		}
+		else if (aniArgs[i].name == "brightness")
+		{
+			brightness = aniArgs[i].val;		// The brightness of an animation before being scaled by strip and global brightness.
+		}
+		else if (aniArgs[i].name == "hue")
+		{
+			hue = aniArgs[i].val;				// Hue is the starting value used to calculate the various colors in an animation step.
+		}
+		else if (aniArgs[i].name == "hueSpeed")
+		{
+			hueSpeed = aniArgs[i].val;			// Hue speed is how much hue changes each step.
+		}
+		else if (aniArgs[i].name == "hueAcceleration")
+		{
+			hueAcceleration = aniArgs[i].val;	// Hue acceleration is how much hue speed changes each step.
+		}
+		else if (aniArgs[i].name == "position")
+		{
+			position = aniArgs[i].val;		// Position can either be where an object is in its range or the current step in a sequence it is on.
+		}
+		else if (aniArgs[i].name == "speed")
+		{
+			speed = aniArgs[i].val;		// How much position changes each step.
+		}
+		else if (aniArgs[i].name == "acceleration")
+		{
+			acceleration = aniArgs[i].val;	// How much speed changes each step.
+		}
+		else if (aniArgs[i].name == "featureSize")
+		{
+			featureSize = aniArgs[i].val;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
+		}
+
+		i++;
+	}
+
+	D(endTime("Animation::AssignVals(aniArg aniArgs[])"); )
 }
 
 void Animation::UpdatePosition()

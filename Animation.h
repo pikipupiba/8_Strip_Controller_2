@@ -13,6 +13,13 @@ class StripController;
 
 extern StripController* strips[8];
 
+typedef struct {
+	String name;
+	float val;
+} aniArg;
+
+typedef aniArg aniArgs[];
+
 /*typedef struct {
 
 	int rangeStart;	// Where on a strip an animation starts.
@@ -136,6 +143,8 @@ public:	// Public variables allow effect functions to be written easier and with
 	// Constructors and destructors.
 	Animation();
 	virtual ~Animation();
+
+	void AssignVals(aniArg aniArgs[]);
 
 	// Virtual functions that each child needs to implement to work.
 	virtual void Update();

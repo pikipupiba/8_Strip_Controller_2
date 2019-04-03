@@ -7,6 +7,7 @@
 class StripController;
 #include "Animation.h"
 #include "Mover.h"
+#include "ColorWave.h"
 
 class PatternClass
 {
@@ -25,12 +26,14 @@ private:
 
 	PatternList patterns = {
 		{ "Poopy Worm 1", &PatternClass::PoopyWorm1 },
-		{ "Poopy Worm 2", &PatternClass::PoopyWorm2 }
+		{ "Color Waves", &PatternClass::ColorWaves }
 	};
 	
 
 
 	StripController* strip;
+
+	int index;
 
 	Animation* patternAnimations[NUM_ANIMATIONS_PER_PATTERN];
 	int patternNumAnimations;
@@ -51,10 +54,14 @@ public:
 	int NextStage();
 
 	void AddAnimation();
-	void AddAnimation(String newAnimation, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd);
+	void AddAnimation(String newAnimation, aniArg newAniArgs[]);
 
 	void ClearAnimations();
 
+	void PrintPatternInfo();
+
 	void PoopyWorm1();
 	void PoopyWorm2();
+
+	void ColorWaves();
 };

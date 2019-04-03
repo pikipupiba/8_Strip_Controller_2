@@ -47,42 +47,23 @@ Mover::Mover(StripController* newStrip) // :Animations(newStrip) // TODO Figure 
 	D(endTime("Mover::Mover(StripController* newStrip)");)
 }
 
-Mover::Mover(StripController * newStrip, float newPosition, float newSpeed, float newHue, int newRangeStart, int newRangeEnd)
+Mover::Mover(StripController * newStrip, aniArg newAniArgs[])
 {
 	D(startTime("Mover::Mover(int stufff)");)
 
-		// Keep track of how many objects are currently running.
-	numObjects++;
-
-	strip = newStrip;
+		strip = newStrip;
 
 	// Default Mover covers the whole strip.
-	rangeStart = newRangeStart;
-	rangeEnd = newRangeEnd;
+	rangeStart = strip->stripRangeStart;
+	rangeEnd = strip->stripRangeEnd;
 	rangeSize = rangeEnd - rangeStart;
 
-	animationShape = Shapes::Strip;
-	animationTexture = Textures::None;
-	animationEndOfRange = EndOfRanges::Bounce;
-
-	brightness = 128;
-	hue = newHue;
-	hueSpeed = 0.5;
-	hueAcceleration = 0;
-
-	featureSize = 3;
-	position = newPosition;
-	speed = newSpeed;
-	acceleration = 0;
-
+		position = rangeStart + rangeSize / 2;
+	
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;
 
-	numRepeats = 0;
-	repeatPositionOffset = 0;
-	repeatHueOffset = 0;
-
-	changing = 0;
+	AssignVals(newAniArgs);
 
 	D(endTime("Mover::Mover(int stufff)");)
 }

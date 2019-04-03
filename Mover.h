@@ -12,7 +12,7 @@ class Mover :
 {
 public:
 	Mover(StripController* newStrip);
-	Mover(StripController* newStrip, float position, float speed, float newHue, int rangeStart, int rangeEnd);
+	Mover(StripController* newStrip, aniArg newAniArgs[]);
 	~Mover();
 
 	void Erase();
