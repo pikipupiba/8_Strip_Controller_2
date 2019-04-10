@@ -1,3 +1,12 @@
+#include <FastLED.h>
+#include <WebServer.h>
+#include <WiFi.h>
+#include <FS.h>
+#include <SPIFFS.h>
+#include <EEPROM.h>
+#include <SSD1306.h>
+#include <Wire.h>
+
 #include "stdafx.h"
 
 
@@ -65,7 +74,7 @@ const int boardLedPin = 2;
 // ---------------------------------PROJECT CLASSES-----------------------------------//
 // -----------------------------------------------------------------------------------//
 
-#include "Oscillators.h"	// A custom oscillator class for varying animation variables.
+#include "Oscillator.h"	// A custom oscillator class for varying animation variables.
 #include "Animation.h"		// An interface class from which individual animations can inherit their base functionality.
 #include "Mover.h"
 #include "stripController.h"// A strip controller is created for each strip connected to the ESP32.
@@ -78,10 +87,12 @@ void setup() {
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
+	lastFrameTime = millis();
+
 	//setupInputs();		// Setup the physical inputs.
 
 	setupDisplay();			// Setup the built in display.
-	
+
 	// Start the SPIFFS? (whatever that means) and list the contents.
 	// TODO Learn about SPIFFS
 	//SPIFFS.begin();
@@ -104,17 +115,21 @@ void setup() {
 	// EEPROM and then restart the ESP32 to apply the new settings. Maybe you select a strip setup in this setup() function
 	// either by manually entering strip lengths or selecting a previously saved setup.
 	// TODO Figure out how to change these things during execution.
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i] = new StripController(i, 240); }
 
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i]->ResetTimeouts(); }
+	{
+		strips[i] = new StripController(i, 240);
+	}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i]->UpdateStrip(); }
+	{
+		strips[i]->ResetTimeouts();
+	}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i]->AddPattern(); }
+	{
+		strips[i]->UpdateStrip();
+	}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
@@ -123,7 +138,9 @@ void setup() {
 
 	displayMemory(" after setup ");
 
-	lastFrameTime = millis();
+	newFrames++;
+
+	calcFPS();
 }
 
 void loop()
@@ -143,15 +160,20 @@ void loop()
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{ strips[i]->UpdateStrip(); }
 	
-	EVERY_N_MILLIS(10000)
+	EVERY_N_MILLIS(5000)
 	{
 		Serial.print("FPS: ");
 		Serial.println(FPS);
-		displayMemory(" at time " + String(millis())); 
+		displayMemory(" at time " + String(millis()));
 	}
 
 	FastLEDshowESP32();
 
 	newFrames++;
-	calcFPS();
+
+	EVERY_N_MILLIS(150)
+	{
+		calcFPS();
+	}
+
 }

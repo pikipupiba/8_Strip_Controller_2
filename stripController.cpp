@@ -25,7 +25,7 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 	stripBrightness = 255;
 
 	stripAutoplay = false;
-	stripAutoplayDuration = 11;
+	stripAutoplayDuration = 20000;
 
 	stripCyclePalettes = false;
 	stripPaletteDuration = 10;
@@ -62,6 +62,8 @@ StripController::StripController(int newIndex, int newNumLEDs)//, Shapes newShap
 
 	else if (stripIndex == 7)
 	{ FastLED.addLeds<LED_TYPE, DATA_PIN_7, COLOR_ORDER>(leds, stripIndex * NUM_LEDS_PER_STRIP, NUM_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip); }
+
+	AddPattern();
 
 	D(endTime("StripController::StripController(int newIndex, int newNumLEDs)");)
 }
@@ -105,7 +107,7 @@ void StripController::UpdateStrip()
 	// Advance the pattern and palette if applicable.
 	// TODO Should this only happen if POWER is on?
 	if (stripAutoplay && (millis() > stripAutoPlayTimeout)) {
-		NextPattern();
+		stripPatterns[0]->NextPattern();
 		stripAutoPlayTimeout = millis() + (stripAutoplayDuration);
 	}
 
@@ -139,18 +141,11 @@ void StripController::NextPalette()
 
 void StripController::AddPattern()
 {
-	D(startTime("StripController::AddAnimation()");)
+	D(startTime("StripController::AddPattern()");)
 
 	if (stripNumPatterns < NUM_PATTERNS_PER_STRIP)
 	{
-		
-		// TODO Figure out how to initialize an animation object like this.
-		// This has not been worked on at all yet.
-		// Will probably use a similar system to the following taken from my AnimationClassTest.ino at line 42.
-		// typedef void(*SimplePatternList[])();
-		// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
-
-		stripPatterns[stripNumPatterns] = new PatternClass(this, "Color Waves");
+		stripPatterns[stripNumPatterns] = new PatternClass(this, "Color Waves With Movers");
 
 		stripNumPatterns++;
 	}

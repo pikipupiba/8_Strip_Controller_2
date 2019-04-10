@@ -14,15 +14,20 @@ PatternClass::PatternClass(StripController* newStrip, String newPattern)
 	{
 		if (x.name == newPattern)
 		{
-			curPatternMeth = x.patternMeth;
+			curPattern = x;
+			stage = 100;
+			started = 0;
 		}
 	}
 
 	patternNumAnimations = 0;
 
 	stage = 100;
+	started = 0;
 
 	nextStageTime = millis();
+
+	Update();
 
 	D(endTime("PatternClass::PatternClass()");)
 }
@@ -36,7 +41,7 @@ void PatternClass::Update()
 {
 	D(startTime("PatternClass::Update()");)
 
-	(this->*curPatternMeth)();
+	(this->*curPattern.patternMeth)();
 
 	for (int i = 0; i < patternNumAnimations; i++)
 	{
@@ -69,28 +74,7 @@ int PatternClass::NextStage()
 
 }
 
-void PatternClass::AddAnimation()
-{
-	D(startTime("PatternClass::AddAnimation()");)
-
-		if (patternNumAnimations < NUM_PATTERNS_PER_STRIP)
-		{
-
-			// TODO Figure out how to initialize an animation object like this.
-			// This has not been worked on at all yet.
-			// Will probably use a similar system to the following taken from my AnimationClassTest.ino at line 42.
-			// typedef void(*SimplePatternList[])();
-			// SimplePatternList gPatterns = { pattern1, pattern2, pattern3};
-
-			patternAnimations[patternNumAnimations] = new Mover(strip);
-
-			patternNumAnimations++;
-		}
-
-	D(endTime("PatternClass::AddAnimation()");)
-}
-
-void PatternClass::AddAnimation(String newAnimation, aniArg newAniArgs[])
+bool PatternClass::AddAnimation(String newAnimation)
 {
 	D(startTime("PatternClass::AddAnimation(int stufff)");)
 
@@ -99,7 +83,7 @@ void PatternClass::AddAnimation(String newAnimation, aniArg newAniArgs[])
 			if (newAnimation == "Mover")
 			{
 
-				patternAnimations[patternNumAnimations] = new Mover(strip, newAniArgs);
+				patternAnimations[patternNumAnimations] = new Mover(strip);
 
 				//patternAnimations[patternNumAnimations]->PrintAnimationInfo(String(strip->stripIndex) + "-" + String(patternNumAnimations));
 
@@ -107,16 +91,32 @@ void PatternClass::AddAnimation(String newAnimation, aniArg newAniArgs[])
 			else if (newAnimation == "Color Wave")
 			{
 
-				patternAnimations[patternNumAnimations] = new ColorWave(strip, newAniArgs);
+				patternAnimations[patternNumAnimations] = new ColorWave(strip);
 
 				//patternAnimations[patternNumAnimations]->PrintAnimationInfo(String(strip->stripIndex) + "-" + String(patternNumAnimations));
 
 			}
 
 			patternNumAnimations++;
+
+			return 1;
+		}
+		else {
+			return 0;
 		}
 
 	D(endTime("PatternClass::AddAnimation(int stufff)");)
+}
+
+void PatternClass::NextPattern()
+{
+	int newIndex = (curPattern.index + 1) % numPatterns;
+
+	curPattern = patterns[newIndex];
+
+	stage = 100;
+	started = 0;
+
 }
 
 void PatternClass::ClearAnimations()
@@ -162,6 +162,7 @@ void PatternClass::PoopyWorm1()
 
 	numStages = 1;
 	stageTime = 15000;
+	static int numMovers = 10;
 	static int prevStage = 100;
 	
 	if (NextStage())
@@ -171,24 +172,21 @@ void PatternClass::PoopyWorm1()
 		switch (stage)
 		{
 		case 0:
-			//debugCounter();
 
 			D(middleTime("Poopy worm 1 case 0");)
 
-				ClearAnimations();
+			ClearAnimations();
 
-			for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
+			for (int i = 0; i < numMovers; i++)
 			{
-				aniArg newAniArgs[] = {
-					{ "position", strip->stripRangeStart + 5 },
-					{ "speed", 0.2 },
-					{ "hue", i * (255 / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "rangeStart", strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "rangeEnd", strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "", 0}
-				};
-
-				AddAnimation("Mover", newAniArgs);
+				if (AddAnimation("Mover"))
+				{
+					patternAnimations[patternNumAnimations - 1]->position = strip->stripRangeStart + 5;
+					patternAnimations[patternNumAnimations - 1]->speed = 0.2;
+					patternAnimations[patternNumAnimations - 1]->hue = i * (255 / numMovers);
+					patternAnimations[patternNumAnimations - 1]->rangeStart = strip->stripRangeStart + i * (strip->stripNumLEDs / numMovers);
+					patternAnimations[patternNumAnimations - 1]->rangeEnd = strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / numMovers);
+				}
 			}
 
 			break;
@@ -197,21 +195,18 @@ void PatternClass::PoopyWorm1()
 			//debugCounter();
 			D(middleTime("Poopy worm 1 case 1");)
 
-				ClearAnimations();
+			ClearAnimations();
 
-			for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
+			for (int i = 0; i < numMovers; i++)
 			{
-				aniArg newAniArgs[] = {
-					{ "position", strip->stripRangeEnd - 5 },
-					{ "speed", -0.2 },
-					{ "hue", i * (255 / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "rangeStart", strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "rangeEnd", strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
-					{ "", 0 }
-				};
-
-				AddAnimation("Mover", newAniArgs);
-				
+				if (AddAnimation("Mover"))
+				{
+					patternAnimations[patternNumAnimations - 1]->position = strip->stripRangeEnd - 5;
+					patternAnimations[patternNumAnimations - 1]->speed = -0.2;
+					patternAnimations[patternNumAnimations - 1]->hue = i * (255 / numMovers);
+					patternAnimations[patternNumAnimations - 1]->rangeStart = strip->stripRangeStart + i * (strip->stripNumLEDs / numMovers);
+					patternAnimations[patternNumAnimations - 1]->rangeEnd = strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / numMovers);
+				}
 			}
 
 			break;
@@ -274,24 +269,156 @@ void PatternClass::ColorWaves()
 {
 	D(startTime("PatternClass::ColorWaves");)
 
-		static int started = 0;
+	static int started = 0;
 
 	if (started == 0)
 	{
 		ClearAnimations();
+
+		if (AddAnimation("Color Wave"))
+		{
+			patternAnimations[patternNumAnimations - 1]->hueSpeed = 1;
+			patternAnimations[patternNumAnimations - 1]->featureSize = 20;
+		}
+
 		started = 1;
 	}
 
-	for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
+	D(endTime("PatternClass::ColorWaves");)
+}
+
+void PatternClass::ColorWavesWithMovers()
+{
+	static int started = 0;
+	static int numMovers = 10;
+
+	if (started == 0)
 	{
+		ClearAnimations();
+
+		if (AddAnimation("Color Wave"))
+		{
+			patternAnimations[patternNumAnimations - 1]->hueSpeed = 1;
+			patternAnimations[patternNumAnimations - 1]->featureSize = 20;
+		}
+
+
+		for (int i = 0; i < numMovers; i++)
+		{
+			if (AddAnimation("Mover"))
+			{
+				patternAnimations[patternNumAnimations - 1]->speed = -0.2;
+				patternAnimations[patternNumAnimations - 1]->hue = i * (255 / numMovers);
+				patternAnimations[patternNumAnimations - 1]->rangeStart = strip->stripRangeStart + i * (strip->stripNumLEDs / numMovers);
+				patternAnimations[patternNumAnimations - 1]->rangeEnd = strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / numMovers);
+			}
+
+		}
+
+		started = 1;
+	}
+}
+
+void PatternClass::ColorPulses()
+{
+	D(startTime("PatternClass::ColorPulses");)
+
+		static Oscillator o = Oscillator(10, -0.02, 0.02);
+	static Oscillator o2 = Oscillator(1, strip->stripRangeStart, strip->stripRangeEnd);
+
+	static Oscillator o3 = Oscillator(3, -0.3, 0.3);
+	static Oscillator o4 = Oscillator(3, 3, 10);
+
+	if (started == 0)
+	{
+		ClearAnimations();
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
+		{
+			aniArg newAniArgs2[] = {
+				{ "speed", 0.1 }, // *((i % 2) ? -1 : 1) },
+				{ "hue", i * 7 * (255 / NUM_ANIMATIONS_PER_PATTERN) },
+				//{ "position", strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
+				//{ "rangeStart", strip->stripRangeStart + i * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
+				//{ "rangeEnd", strip->stripRangeStart + (i + 1) * (strip->stripNumLEDs / NUM_ANIMATIONS_PER_PATTERN) },
+				{ "", 0 }
+			};
+
+			AddAnimation("Mover", newAniArgs2);
+
+		}
+
+		started = 1;
+	}
+	else
+	{
+
+		for (int i = 0; i < NUM_ANIMATIONS_PER_PATTERN; i++)
+		{
+			aniArg newAniArgs2[] = {
+				{ "speed",	o3.O4(2500 * i) },
+				{ "featureSize", o4.O4(2500 * i) },
+				//{ "rangeStart",		o2.O4( i * 150) },
+				//{ "rangeEnd",		o2.O4( i * 500) },
+				{ "", 0 }
+			};
+
+			patternAnimations[i]->AssignVals(newAniArgs2);
+
+			patternAnimations[i]->BounceOffOther();
+		}
+	}
+
+	D(endTime("PatternClass::ColorPulses");)
+}
+
+void PatternClass::FunkyMover()
+{
+	static Oscillator oSpeed = Oscillator(4, -0.8, 0.8);
+	static Oscillator oHue = Oscillator(1, 0, 510);
+	static Oscillator o5 = Oscillator(1, (strip->stripRangeEnd - strip->stripRangeStart) / 2 + 10, strip->stripRangeEnd);
+
+
+	static Oscillator o3 = Oscillator(6, -0.3, 1.5);
+	static Oscillator oSize = Oscillator(10, 3, 100);
+
+	if (started == 0)
+	{
+		ClearAnimations();
+
+		for (int i = 0; i < 2; i++)
+		{
+			if (AddAnimation("Mover"))
+			{
+				patternAnimations[patternNumAnimations - 1]->speed = 0;
+			}
+		}
+
+		started = 1;
+	}
+	else
+	{
+
 		aniArg newAniArgs[] = {
-			{ "speed", 0.2 },
-			{ "featureSize", 20 },
+			{ "speed",	oSpeed.O4(0) },
+			{ "featureSize", oSize.O4(0) },
+			{ "hue",		oHue.O4(150) },
+			//{ "rangeEnd",		o5.O4(i * 500) },
 			{ "", 0 }
 		};
 
-		AddAnimation("Color Wave", newAniArgs);
-	}
+		patternAnimations[0]->AssignVals(newAniArgs);
 
-	D(endTime("PatternClass::ColorWaves");)
+		aniArg newAniArgs2[] = {
+			{ "position",	strip->stripRangeEnd + 1 - ((int)patternAnimations[0]->position - strip->stripRangeStart) },
+			{ "featureSize", patternAnimations[0]->featureSize },
+			{ "hue",		oHue.O4(37000) },
+			//{ "rangeEnd",		o5.O4(i * 500) },
+			{ "", 0 }
+		};
+
+		patternAnimations[1]->AssignVals(newAniArgs2);
+
+
+	}
 }

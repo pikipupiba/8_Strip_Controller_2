@@ -36,14 +36,22 @@ ColorWave::ColorWave(StripController * newStrip, aniArg newAniArgs[])
 
 ColorWave::~ColorWave()
 {
+	Erase();
+	numObjects--;
 }
 
 void ColorWave::Erase()
 {
-	for (int i = (int)rangeStart; i < (int)rangeEnd; i++) { leds[i] -= CHSV((int)hue + i, 255, (int)brightness); }
+	for (int i = (int)rangeStart; i < (int)rangeEnd; i++)
+	{
+		leds[i] -= CHSV(((int)((eHue + i) * eFeatureSize)) % 255, 255, (int)eBrightness);
+	}
 }
 
 void ColorWave::Draw()
 {
-	for (int i = (int)rangeStart; i < (int)rangeEnd; i++) { leds[i] += CHSV((int)hue + i, 255, (int)brightness); }
+	for (int i = (int)rangeStart; i < (int)rangeEnd; i++) 
+	{
+		leds[i] += CHSV( ( (int)((hue + i) * featureSize) ) % 255, 255, (int)brightness);
+	}
 }

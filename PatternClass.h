@@ -3,11 +3,14 @@
 #pragma once
 #include "globalStuff.h"
 #include "display.h"
+#include "Oscillator.h"
 
 class StripController;
 #include "Animation.h"
 #include "Mover.h"
 #include "ColorWave.h"
+
+const int numPatterns = 5;
 
 class PatternClass
 {
@@ -15,18 +18,23 @@ private:
 
 	typedef void(PatternClass::*PatternMeth)();
 
-	PatternMeth curPatternMeth;
 
 	typedef struct {
+		int index;
 		String name;
 		PatternMeth patternMeth;
 	} Pattern;
 
-	typedef Pattern PatternList[2];
+	Pattern curPattern;
+
+	typedef Pattern PatternList[numPatterns];
 
 	PatternList patterns = {
-		{ "Poopy Worm 1", &PatternClass::PoopyWorm1 },
-		{ "Color Waves", &PatternClass::ColorWaves }
+		{ 0, "Poopy Worm 1", &PatternClass::PoopyWorm1 },
+		{ 1, "Color Waves", &PatternClass::ColorWaves },
+		{ 2, "Color Waves With Movers", &PatternClass::ColorWavesWithMovers },
+		{ 3, "Color Pulses", &PatternClass::ColorPulses },
+		{ 4, "Funky Mover", &PatternClass::FunkyMover }
 	};
 	
 
@@ -41,6 +49,9 @@ private:
 	unsigned long stageTime;
 	unsigned long nextStageTime;
 
+	int patternNumber;
+
+	int started;
 	int stage;
 	int numStages;
 	//std::list<Animation*> animations;
@@ -53,8 +64,9 @@ public:
 	void Update();
 	int NextStage();
 
-	void AddAnimation();
-	void AddAnimation(String newAnimation, aniArg newAniArgs[]);
+	bool AddAnimation(String newAnimation);
+
+	void NextPattern();
 
 	void ClearAnimations();
 
@@ -64,4 +76,8 @@ public:
 	void PoopyWorm2();
 
 	void ColorWaves();
+	void ColorWavesWithMovers();
+
+	void ColorPulses();
+	void FunkyMover();
 };

@@ -39,7 +39,7 @@ typedef struct
 	int repeatPositionOffset;	// How much the position of each repeat is offset from the previous one.
 	int repeatHueOffset;		// How much the hue of each repeat is offset from the previous one.
 
-	//Oscillators* curOscillators[];
+	//Oscillator* curOscillators[];
 
 }AnimationPreset;
 

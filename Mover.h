@@ -12,7 +12,6 @@ class Mover :
 {
 public:
 	Mover(StripController* newStrip);
-	Mover(StripController* newStrip, aniArg newAniArgs[]);
 	~Mover();
 
 	void Erase();

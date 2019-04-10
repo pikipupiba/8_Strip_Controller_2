@@ -6,6 +6,18 @@
 #include "display.h"
 #include "stripController.h"
 
+float KeepDirection(float curVal, float newVal)
+{
+	if ((curVal > 0 && newVal > 0) || (curVal < 0 && newVal < 0))
+	{
+		return newVal;
+	}
+	else
+	{
+		return -newVal;
+	}
+}
+
 Animation::Animation()
 {
 	D(startTime("Animation::Animation()"); )
@@ -84,7 +96,7 @@ void Animation::AssignVals(aniArg aniArgs[])
 		}
 		else if (aniArgs[i].name == "speed")
 		{
-			speed = aniArgs[i].val;		// How much position changes each step.
+			speed = KeepDirection(speed, aniArgs[i].val);
 		}
 		else if (aniArgs[i].name == "acceleration")
 		{
@@ -105,8 +117,6 @@ void Animation::UpdatePosition()
 {
 	D(startTime("Animation::UpdatePostion()"); )
 
-	//GetBackToRange();
-
 	hue += (hueSpeed * speedScaleFactor);
 	hueSpeed += hueAcceleration;
 
@@ -116,63 +126,114 @@ void Animation::UpdatePosition()
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;
 
+	CheckRange();
+
+	D(endTime("Animation::UpdatePostion()");)
+}
+
+void Animation::Bounce( Direction dir = Direction::None)
+{
+
+	if (end2 > rangeEnd || dir == Direction::Reverse)
+	{
+		//position = rangeEnd - featureSize / 2;
+
+		if (speed > 0)
+		{
+			speed = -speed;
+		}
+		if (tSpeed > 0)
+		{
+			tSpeed = -tSpeed;
+		}
+
+		// Maybe if I don't reverse the acceleration 
+		// on a bounce I can make a bounceing ball.
+		//if (acceleration > 0)
+		//{
+		//	acceleration = -acceleration;
+		//}
+	}
+	else if (end1 < rangeStart || dir == Direction::Forward)
+	{
+		//position = rangeStart + featureSize / 2;
+
+		if (speed < 0)
+		{
+			speed = -speed;
+		}
+		if (tSpeed < 0)
+		{
+			tSpeed = -tSpeed;
+		}
+
+		//if (acceleration < 0)
+		//{
+		//	acceleration = -acceleration;
+		//}
+	}
+}
+
+void Animation::BounceOffOther()
+{
+	if (leds[(int)end1] != CRGB(0, 0, 0) && leds[(int)end2] != CRGB(0, 0, 0))
+	{
+	}
+	else if (leds[(int)end1] != CRGB(0, 0, 0))
+	{
+		Bounce(Direction::Forward);
+	}
+	else if (leds[(int)end2] != CRGB(0, 0, 0))
+	{
+		Bounce(Direction::Reverse);
+	}
+}
+
+void Animation::Loop()
+{
+}
+
+void Animation::CheckRange()
+{
 	switch (animationEndOfRange)
 	{
 	case EndOfRanges::Bounce:
 
-		if (end2 < rangeEnd && end1 > rangeStart)
+		if (end2 <= rangeEnd && end1 >= rangeStart)
 		{ /* Put the most common occurance as the first
-		  option even though it doesn't do anything*/}
-
-		else if (end2 > rangeEnd)
-		{
-			//position = rangeEnd - featureSize / 2;
-
-			if (speed > 0)
-			{ speed = -speed; }
-			if (tSpeed > 0)
-			{ tSpeed = -tSpeed; }
-
-			// Maybe if I don't reverse the acceleration 
-			// on a bounce I can make a bounceing ball.
-			//if (acceleration > 0)
-			//{ acceleration = -acceleration; }
+		  option even though it doesn't do anything*/
 		}
-		else if (end1 < rangeStart)
+		else
 		{
-			//position = rangeStart + featureSize / 2;
-
-			if (speed < 0)
-			{ speed = -speed; }
-			if (tSpeed < 0)
-			{ tSpeed = -tSpeed; }
-
-			if (acceleration < 0)
-			{ acceleration = -acceleration; }
+			Bounce();
 		}
+
 		break;
-	
+
 	case EndOfRanges::Loop:
 
 		if (position > rangeEnd)
-		{ position -= rangeSize; }
+		{
+			position -= rangeSize;
+		}
 
 		else if (position < rangeStart)
-		{ position += rangeSize; }
+		{
+			position += rangeSize;
+		}
 
 		if (end2 > rangeEnd)
-		{ end2 -= rangeSize; }
+		{
+			end2 -= rangeSize;
+		}
 
 		else if (end1 < rangeStart)
-		{ end1 += rangeSize; }
+		{
+			end1 += rangeSize;
+		}
 
 		break;
 	}
-
-	end1 = position - featureSize / 2;
-	end2 = position + featureSize / 2;
-
-	D(endTime("Animation::UpdatePostion()");)
 }
 
 /* Update an animation's pixel values. Each animation 
@@ -186,7 +247,10 @@ void Animation::Update()
 	if (changing != 0) { Change(); }
 
 	UpdatePosition();	// Update position and hue.
+
 	Draw();				// Draw the new frame.
+
+	SetEraseVals();
 
 	D(endTime("Animation::Update");)
 }
@@ -283,6 +347,15 @@ void Animation::Randomize(String var = "")
 	}
 
 	D(endTime("Randomize()");)
+}
+
+void Animation::SetEraseVals()
+{
+	eBrightness = brightness;
+	eHue = hue;
+	eFeatureSize = featureSize;
+	eEnd1 = end1;
+	eEnd2 = end2;
 }
 
 void Animation::SetPrevVals(String var = "")

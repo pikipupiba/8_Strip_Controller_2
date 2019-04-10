@@ -83,6 +83,8 @@ private:
 
 protected:
 
+public:	// Public variables allow effect functions to be written easier and with less overhead.
+
 	int rangeStart;	// Where on a strip an animation starts.
 	int rangeEnd;		// Where on a strip an animation ends.
 	int rangeSize;		// Automatically calculated rangeSize for easier to read code.
@@ -92,10 +94,12 @@ protected:
 	EndOfRanges animationEndOfRange;// How an animation acts when it approaches the end of its range.
 
 	float pBrightness;
+	float eBrightness;
 	float brightness;		// The brightness of an animation before being scaled by strip and global brightness.
 	float tBrightness;
 
 	float pHue;
+	float eHue;
 	float hue;				// Hue is the starting value used to calculate the various colors in an animation step.
 	float tHue;
 
@@ -108,6 +112,7 @@ protected:
 	float tHueAcceleration;
 
 	float pPosition;
+	float ePosition;
 	float position;		// Position can either be where an object is in its range or the current step in a sequence it is on.
 	float tPosition;
 
@@ -120,11 +125,15 @@ protected:
 	float tAcceleration;
 
 	float pFeatureSize;
+	float eFeatureSize;
 	float featureSize;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
 	float tFeatureSize;
 
+	float eEnd1;
 	float end1;			// Keeps track of one end of a "feature."
 	float tEnd1;
+
+	float eEnd2;
 	float end2;			// Keeps track of the other end of a "feature."
 	float tEnd2;
 
@@ -135,10 +144,6 @@ protected:
 	float changing;
 
 	StripController* strip;
-
-	
-	
-public:	// Public variables allow effect functions to be written easier and with less overhead.
 
 	// Constructors and destructors.
 	Animation();
@@ -152,10 +157,18 @@ public:	// Public variables allow effect functions to be written easier and with
 	virtual void Draw() = 0;
 
 	void UpdatePosition();
+
+	void Bounce(Direction dir);
+	void BounceOffOther();
+	void Loop();
+
+	void CheckRange();
+
 	void Change();
 	//void Randomize();
 	void Randomize(String var);
 
+	void SetEraseVals();
 	//void SetPrevVals();
 	void SetPrevVals(String var);
 

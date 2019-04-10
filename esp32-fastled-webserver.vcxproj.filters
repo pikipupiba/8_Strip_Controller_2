@@ -42,9 +42,6 @@
     <ClInclude Include="secrets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="wifi_changed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,9 +52,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stripController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Oscillators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="normalizeValues.h">
@@ -93,12 +87,15 @@
     <ClInclude Include="ColorWave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Oscillator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stripController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Oscillators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mover.cpp">
@@ -126,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColorWave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Oscillator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -26,7 +26,6 @@ unsigned long sTime = 0;
 String functionName = "";
 
 int numObjects = 0;
+int numOscillators = 0;
 
 int debugDepth = 0;
-
-int patternIndex = 0;

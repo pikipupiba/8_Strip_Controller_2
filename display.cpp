@@ -124,8 +124,10 @@ void displayMemory(String label = "")
 	Serial.print("Memory remaining" + label + ": ");
 	Serial.print(ESP.getFreeHeap()/1000);
 	Serial.println(" KB");
-	Serial.print("Number of Animations: ");
+	Serial.print("	Number of Animations: ");
 	Serial.println(numObjects);
+	Serial.print("	Number of Oscillators: ");
+	Serial.println(numOscillators);
 }
 
 void calcFPS()
@@ -135,7 +137,7 @@ void calcFPS()
 	{
 		frameTime = (float)(millis() - lastFrameTime) / (float)newFrames;
 
-		FPS = ((FPS * 9) + (1000 / frameTime)) / 10;
+		FPS = (1000 / frameTime);
 
 		lastFrameTime = millis();
 		newFrames = 0;

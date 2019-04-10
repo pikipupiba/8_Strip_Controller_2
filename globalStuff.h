@@ -77,7 +77,7 @@
 enum class Shapes		{ Strip, Panel, Ring };			// The shape of a strip can effect how the animations are displayed.
 enum class Textures		{ None, Dashed, Wavey, Strobe };// Textures are modifications of some variable based on where on the strip a pixel is.
 enum class EndOfRanges	{ Continue, Bounce, Fade, Loop };		// This describes the behavior an animation will display when it reaches the end of its specified range.
-
+enum class Direction	{ None, Forward, Reverse };
 
 
 // -----------------------------------------------------------------------------------//
@@ -107,6 +107,7 @@ extern String functionName;
 
 // Number of animations currently running. Used to measure performance.
 extern int numObjects;
+extern int numOscillators;
 
 extern int debugDepth;
 
