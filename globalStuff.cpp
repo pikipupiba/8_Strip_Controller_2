@@ -32,7 +32,7 @@ int debugDepth = 0;
 
 // Supporting general function -------------------------------------------------------------------------------------------
 
-void showfps() {                                                                // Show rames per seocond on the serial monitor.
+/*void showfps() {                                                                // Show rames per seocond on the serial monitor.
 
 // Temporary local variable  
 	uint32_t currentMillis;
@@ -88,4 +88,4 @@ void addGlitter(fract8 chanceOfGlitter) {                                      /
 		leds[random16(NUM_LEDS)] += CRGB::White;
 	}
 
-} // addGlitter()
+} // addGlitter()*/

@@ -237,6 +237,7 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_he
  C:\Users\pikipupiba\Documents\Arduino\libraries\ESP8266_and_ESP32_Oled_Driver_for_SSD1306_display\src/OLEDDisplayFonts.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\libraries\Wire\src/Wire.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\stdafx.h \
+ c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\pnjvqy5x.ql4\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\tasks.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\globalStuff.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\display.h \

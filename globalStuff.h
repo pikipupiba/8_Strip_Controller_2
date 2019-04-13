@@ -116,9 +116,9 @@ extern int numOscillators;
 
 extern int debugDepth;
 
-void showfps();
+/*void showfps();
 void lineit();
 void waveit();
-void addGlitter(fract8 chanceOfGlitter);
+void addGlitter(fract8 chanceOfGlitter);*/
 
 #endif

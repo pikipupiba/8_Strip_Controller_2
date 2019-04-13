@@ -425,6 +425,7 @@ void PatternClass::FunkyMover()
 
 void PatternClass::Plasma()
 {
+	/*
 	// Persistent local variables
 	static int16_t thisphase = 0;                                                 // Phase of a cubicwave8.
 	static int16_t thatphase = 0;                                                 // Phase of the cos8.
@@ -448,5 +449,5 @@ void PatternClass::Plasma()
 	}
 
 	addGlitter(sampleavg / 2);                                                      // Add glitter based on sampleavg.
-
+	*/
 }
