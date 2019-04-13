@@ -10,7 +10,7 @@ class StripController;
 #include "Mover.h"
 #include "ColorWave.h"
 
-const int numPatterns = 5;
+const int numPatterns = 6;
 
 class PatternClass
 {
@@ -34,7 +34,8 @@ private:
 		{ 1, "Color Waves", &PatternClass::ColorWaves },
 		{ 2, "Color Waves With Movers", &PatternClass::ColorWavesWithMovers },
 		{ 3, "Color Pulses", &PatternClass::ColorPulses },
-		{ 4, "Funky Mover", &PatternClass::FunkyMover }
+		{ 4, "Funky Mover", &PatternClass::FunkyMover },
+		{ 5, "Plasma", &PatternClass::Plasma }
 	};
 	
 
@@ -80,4 +81,6 @@ public:
 
 	void ColorPulses();
 	void FunkyMover();
+
+	void Plasma();
 };
