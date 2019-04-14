@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PatternClass.h"
+#include "Patterns.h"
 
 //class StripController;
 //typedef void (StripController::*PatternList[])();
@@ -25,7 +25,7 @@ protected:
  public:
 
 	 // Constructor simply passes in the pointer to the CRGBSet assigned to this object.
-	 LEDStrip(CRGBSet* leds);//, Shapes newShape);
+	 LEDStrip(CRGBSet leds);//, Shapes newShape);
 	 ~LEDStrip();
 
 	 void UpdateStrip();	// Updates each animation running on the strip and combines them to be displayed.

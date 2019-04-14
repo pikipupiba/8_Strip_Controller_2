@@ -177,7 +177,8 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_he
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\tasks.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\physicalInputs.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\debug.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Oscillator.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\Universe.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\universeSettings.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\PatternClass.h \
  c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\pnjvqy5x.ql4\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h

@@ -15,8 +15,9 @@
 // -----------------------------------------------------------------------------------//
 // ---------------------------------PROJECT CLASSES-----------------------------------//
 // -----------------------------------------------------------------------------------//
-#include "Oscillator.h"	// A custom oscillator class for varying animation variables.
-#include "LEDStrip.h"// A strip controller is created for each strip connected to the ESP32.
+#include "Universe.h"
+
+Universe universe;
 
 void setup() {
 
@@ -29,18 +30,16 @@ void setup() {
 
 	createTasks();
 
-	displayMemory(" after setup ");
+	universe = *Universe::CreateUniverse();
+
+	displayMemory(" after setup");
 }
 
 void loop()
 {
-	//debugCounter();
-	//handleWeb();	// Handles input from the web server.
 	handleInputs();	// Handles input from physical controls.
 
-
-	//Universe->Update();
+	universe.Update();
 	
 	FastLEDshowESP32();
-
 }

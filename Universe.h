@@ -21,4 +21,8 @@ public:
 	~Universe();
 
 	static Universe* CreateUniverse();
+
+	void Update();
+
+	void PrintInfo();
 };

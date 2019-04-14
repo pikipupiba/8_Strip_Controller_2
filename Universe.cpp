@@ -56,6 +56,8 @@ Universe::Universe()
 			numLedsSoFar += NUM_LEDS_STRIP_7;
 		}
 
+		strips[i] = new LEDStrip( gLeds(gNumLeds, numLedsSoFar) );
+
 		gNumLeds = numLedsSoFar;
 	}
 
@@ -69,4 +71,27 @@ Universe::~Universe()
 Universe* Universe::CreateUniverse()
 {
 	return new Universe();
+}
+
+void Universe::Update()
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->UpdateStrip();
+	}
+}
+
+void Universe::PrintInfo()
+{
+	Serial.println();
+
+	Serial.println("Universe Information:");
+	Serial.println();
+
+	Serial.print(NUM_STRIPS);
+	Serial.println(" Strips");
+	Serial.print(gNumLeds);
+	Serial.println(" LEDs");
+
+	Serial.println();
 }

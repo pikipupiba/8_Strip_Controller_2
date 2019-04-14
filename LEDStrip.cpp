@@ -3,10 +3,9 @@
 #include "LEDStrip.h"
 
 
-// This constructor assumes WS2812B LEDs and bases the data pin on the strip index and ESP32 controller.
-LEDStrip::LEDStrip(CRGBSet* leds)//, Shapes newShape)
+LEDStrip::LEDStrip(CRGBSet leds)
 {
-	numLEDs = leds->len;
+	numLEDs = leds.len;
 
 	power = true;
 

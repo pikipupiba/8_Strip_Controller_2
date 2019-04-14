@@ -1,52 +1,18 @@
-#include "PatternClass.h"
-
-PatternClass::PatternClass(CRGBSet* leds)
-{
-	PatternClass::leds = leds;
-}
+#include "patterns.h"
 
 
-PatternClass::~PatternClass()
-{
-}
-
-void PatternClass::Update()
-{
-	
-}
-
-void PatternClass::Next()
-{
-	
-}
-
-void PatternClass::PrintPatternInfo()
-{
-	Serial.println();
-
-	Serial.print("Pattern ID: ");
-
-	Serial.print("Pattern Range Start: ");
-	//Serial.println(strip->stripRangeStart);
-	Serial.print("Pattern Range End: ");
-	//Serial.println(strip->stripRangeEnd);
-
-	Serial.println();
-}
-
-
-void PatternClass::ColorWaves()
+void ColorWaves()
 {
 
 }
 	
 
-void PatternClass::ColorPulses()
+void ColorPulses()
 {
 
 }
 
-void PatternClass::Plasma()
+void Plasma()
 {
 	/*
 	// Persistent local variables
