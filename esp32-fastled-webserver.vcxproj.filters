@@ -45,6 +45,12 @@
     <ClInclude Include="LEDStrip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Universe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="universeSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tasks.cpp">
@@ -60,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LEDStrip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Universe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

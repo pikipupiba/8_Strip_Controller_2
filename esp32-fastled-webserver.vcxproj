@@ -128,6 +128,8 @@
     </ClInclude>
     <ClInclude Include="LEDStrip.h" />
     <ClInclude Include="tasks.h" />
+    <ClInclude Include="Universe.h" />
+    <ClInclude Include="universeSettings.h" />
     <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +138,7 @@
     <ClCompile Include="PatternClass.cpp" />
     <ClCompile Include="LEDStrip.cpp" />
     <ClCompile Include="tasks.cpp" />
+    <ClCompile Include="Universe.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
