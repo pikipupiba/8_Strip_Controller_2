@@ -25,7 +25,7 @@ Animation::Animation()
 	// Keep track of how many objects are currently running.
 	numObjects++;
 
-
+	// These are the default values for animation variables.
 	animationShape = Shapes::Strip;
 	animationTexture = Textures::None;
 	animationEndOfRange = EndOfRanges::Bounce;
@@ -40,59 +40,56 @@ Animation::Animation()
 	speed = 0.2;
 	acceleration = 0;
 
-	
-
 	numRepeats = 0;
 	repeatPositionOffset = 0;
 	repeatHueOffset = 0;
 
 	changing = 0;
 
-	
-
 	D(endTime("Animation::Animation()"); )
 }
 
 Animation::~Animation()
 {
+	numObjects--;
 }
 
+// Takes in an array of aniArgs and sets the animation variables accordingly.
 void Animation::AssignVals(aniArg aniArgs[])
 {
 	D(startTime("Animation::AssignVals(aniArg aniArgs[])"); )
 
-		int i = 0;
+	int i = 0;
 
 	while(aniArgs[i].name != "")
 	{
-		//debugCounter();
 		if (aniArgs[i].name == "rangeStart")
 		{
-			rangeStart = aniArgs[i].val;	// Where on a strip an animation starts.
+			rangeStart = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "rangeEnd")
 		{
-			rangeEnd = aniArgs[i].val;		// Where on a strip an animation ends.
+			rangeEnd = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "brightness")
 		{
-			brightness = aniArgs[i].val;		// The brightness of an animation before being scaled by strip and global brightness.
+			brightness = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "hue")
 		{
-			hue = aniArgs[i].val;				// Hue is the starting value used to calculate the various colors in an animation step.
+			hue = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "hueSpeed")
 		{
-			hueSpeed = aniArgs[i].val;			// Hue speed is how much hue changes each step.
+			hueSpeed = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "hueAcceleration")
 		{
-			hueAcceleration = aniArgs[i].val;	// Hue acceleration is how much hue speed changes each step.
+			hueAcceleration = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "position")
 		{
-			position = aniArgs[i].val;		// Position can either be where an object is in its range or the current step in a sequence it is on.
+			position = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "speed")
 		{
@@ -100,11 +97,11 @@ void Animation::AssignVals(aniArg aniArgs[])
 		}
 		else if (aniArgs[i].name == "acceleration")
 		{
-			acceleration = aniArgs[i].val;	// How much speed changes each step.
+			acceleration = aniArgs[i].val;
 		}
 		else if (aniArgs[i].name == "featureSize")
 		{
-			featureSize = aniArgs[i].val;	// Used to describe the size of a "feature" of the animation. Usually equals end2 - end1.
+			featureSize = aniArgs[i].val;
 		}
 
 		i++;
@@ -118,10 +115,10 @@ void Animation::UpdatePosition()
 	D(startTime("Animation::UpdatePostion()"); )
 
 	hue += (hueSpeed * speedScaleFactor);
-	hueSpeed += hueAcceleration;
+	hueSpeed += hueAcceleration * speedScaleFactor;
 
 	position += speed * speedScaleFactor;
-	speed += acceleration;
+	speed += acceleration * speedScaleFactor;
 
 	end1 = position - featureSize / 2;
 	end2 = position + featureSize / 2;
@@ -191,6 +188,7 @@ void Animation::BounceOffOther()
 
 void Animation::Loop()
 {
+	// This is what happens when we don't bounce at the end of the range.
 }
 
 void Animation::CheckRange()
@@ -199,7 +197,7 @@ void Animation::CheckRange()
 	{
 	case EndOfRanges::Bounce:
 
-		if (end2 <= rangeEnd && end1 >= rangeStart)
+		if (end2 < rangeEnd && end1 > rangeStart)
 		{ /* Put the most common occurance as the first
 		  option even though it doesn't do anything*/
 		}
@@ -321,6 +319,7 @@ void Animation::Change()
 
 }*/
 
+// Randomize a target variable value by passing in that varaiable's name or all variables by passing in an empty string.
 void Animation::Randomize(String var = "")
 {
 	D(startTime("Randomize()");)
@@ -349,6 +348,7 @@ void Animation::Randomize(String var = "")
 	D(endTime("Randomize()");)
 }
 
+// Set the erase variable values to their current values.
 void Animation::SetEraseVals()
 {
 	eBrightness = brightness;
@@ -358,6 +358,7 @@ void Animation::SetEraseVals()
 	eEnd2 = end2;
 }
 
+// Set a previous variable value to its current value or all variables with an empty string.
 void Animation::SetPrevVals(String var = "")
 {
 	D(startTime("SetPrevVals()");)
@@ -398,30 +399,52 @@ void Animation::SetPrevVals(String var = "")
 	D(endTime("SetPrevVals()");)
 }
 
+// Set an animation's range in relation to the whole LED array.
 void Animation::SetRangeAbsolute(int newRangeStart = 0, int newRangeEnd = 0)
 {
-	if (newRangeStart == 0 && newRangeEnd == 0)
+	if (newRangeStart == 0 && newRangeEnd == 0) // Nothing passed, set to biggest possible range.
 	{
 		rangeStart = strips[0]->stripRangeStart;
 		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd;
 	}
-	else if (newRangeEnd == 0)
+	else if (newRangeEnd == 0)	// Only passed a range start value.
 	{
 		rangeStart = strips[0]->stripRangeStart + newRangeStart;
 		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd;
 	}
-	else if (newRangeEnd > 0)
+	else if (newRangeEnd > 0)	// Passed 2 positive values, index from 0.
 	{
 		rangeStart = strips[0]->stripRangeStart + newRangeStart;
 		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeStart + newRangeEnd;
 	}
-	else if (newRangeEnd < 0)
+	else if (newRangeEnd < 0)	// If range end is negative, index from the end of the LED array.
 	{
 		rangeStart = strips[0]->stripRangeStart + newRangeStart;
 		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd - newRangeEnd;
 	}
+
+	// Check the ranges are within allowed values.
+	if (rangeEnd < rangeStart)
+	{
+		int temp = rangeEnd;
+
+		rangeEnd = rangeStart;
+		rangeStart = temp;
+	}
+
+	if (rangeStart < 0)
+	{
+		rangeStart = 0;
+	}
+
+	if (rangeEnd > strips[NUM_STRIPS - 1]->stripRangeEnd)
+	{
+		rangeEnd = strips[NUM_STRIPS - 1]->stripRangeEnd;
+	}
+
 }
 
+// Sets an animation's range on its assigned strip.
 void Animation::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
 {
 	D(startTime("SetRangeOnStrip()");)
@@ -447,9 +470,30 @@ void Animation::SetRangeOnStrip(int newRangeStart = 0, int newRangeEnd = 0)
 		rangeEnd = strip->stripRangeEnd - newRangeEnd;
 	}
 
+	// Check the ranges are within allowed values.
+	if (rangeEnd < rangeStart)
+	{
+		int temp = rangeEnd;
+
+		rangeEnd = rangeStart;
+		rangeStart = temp;
+	}
+
+	if (rangeStart < strip->stripRangeStart)
+	{
+		rangeStart = strip->stripRangeStart;
+	}
+
+	if (rangeEnd > strip->stripRangeEnd)
+	{
+		rangeEnd = strip->stripRangeEnd;
+	}
+
 	D(endTime("SetRangeOnStrip()");)
 }
 
+// Get the animation's position back within it's range if it's not already.
+// Doesn't work yet.
 void Animation::GetBackToRange()
 {
 	D(startTime("GetBackToRange()");)

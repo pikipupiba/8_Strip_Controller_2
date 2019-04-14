@@ -33,7 +33,6 @@ Mover::Mover(StripController* newStrip)
 Mover::~Mover()
 {
 	Erase();
-	numObjects--;
 }
 
 void Mover::Draw()
