@@ -1,7 +1,3 @@
-#include "stdafx.h"
-
-#include "globalStuff.h"
-#include "display.h"
 
 /** show() for ESP32
 Call this function instead of FastLED.show(). It signals core 0 to issue a show,

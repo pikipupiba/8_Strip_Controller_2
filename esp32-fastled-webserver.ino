@@ -1,15 +1,3 @@
-#include <FastLED.h>
-#include <WebServer.h>
-#include <WiFi.h>
-#include <FS.h>
-#include <SPIFFS.h>
-#include <EEPROM.h>
-#include <SSD1306.h>
-#include <Wire.h>
-
-#include "stdafx.h"
-
-
 // Based largely on the ESP32 FastLED webserver example by Jason Coon.
 //
 // The purpose of this project is to allow my DJ buddy to hook up various NeoPixel Fixtures
@@ -32,54 +20,24 @@
 // -----------------------------------------------------------------------------------//
 // --------------------------------OUTSIDE LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
-
-// Define the WebServer object.
-WebServer webServer(80);
-
-#if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001008)
-#warning "Requires FastLED 3.1.8 or later; check github for latest code."
-#endif
+#include <FastLED.h>
 
 
-// WiFi Status led.
-// TODO No longer needed. REMOVE IT! Maybe?
-const int boardLedPin = 2;
 
 // -----------------------------------------------------------------------------------//
 // --------------------------------PROJECT LIBRARIES----------------------------------//
 // -----------------------------------------------------------------------------------//
 
 #include "tasks.h"			// Functions related to interrupts.
-
-#include "globalStuff.h"
-#include "normalizeValues.h"// Contains the functions to compress signed and unsigned ints to more precise smaller ranges.
-
-#include "animationPresets.h"	// The location of presets used when initializing animation objects.
-#include "stripPresets.h"	// The location of presets for entire strips which can include multiple animation presets.
-#include "universePresets.h"// The location of presets for a collection of strips.
-
-#include "patterns.h"		// Patterns use various animation objects to create an effect.
-//#include "palettes.h"		// Palettes define specific selections of colors to be used by animations.
-
-#include "field.h"			// Gets field values from the web server.
-#include "fields.h"			// Causes field values to affect program.
-
-#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
-#include "wifi_changed.h"	// 
-#include "web.h"			// Sets up the web server and handles web input.
 #include "physicalInputs.h"	// Sets up and handles input from physical inputs.
-#include "display.h"	// Handles setting up and displaying to the built in display and serial output.
+#include "debug.h"	// Contains variables and functions for dubugging.
 
 // -----------------------------------------------------------------------------------//
 // ---------------------------------PROJECT CLASSES-----------------------------------//
 // -----------------------------------------------------------------------------------//
 
 #include "Oscillator.h"	// A custom oscillator class for varying animation variables.
-#include "Animation.h"		// An interface class from which individual animations can inherit their base functionality.
-#include "Mover.h"
-#include "stripController.h"// A strip controller is created for each strip connected to the ESP32.
-
-StripController* strips[8];
+#include "LEDStrip.h"// A strip controller is created for each strip connected to the ESP32.
 
 void setup() {
 
@@ -87,26 +45,9 @@ void setup() {
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	lastFrameTime = millis();
 
-	//setupInputs();		// Setup the physical inputs.
-
-	setupDisplay();			// Setup the built in display.
-
-	// Start the SPIFFS? (whatever that means) and list the contents.
-	// TODO Learn about SPIFFS
-	//SPIFFS.begin();
-	//listDir(SPIFFS, "/", 1);
-
-	// TODO Learn how to save and read settings to EEPROM and then implement!
-	//loadFieldsFromEEPROM(fields, fieldCount);
-	// TODO Might actually need to save and restore from an SD card depending on implementation of presets.
-
-	//setupWifi();			// Try to connect to WiFi networks specified in secrets.h
-	//setupWeb();			// Put the contents of the SPIFFS onto the web server.
-
-	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
-	FastLED.setBrightness(gBrightness);
+	//FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
+	//FastLED.setBrightness(gBrightness);
 
 	createTasks();
 
@@ -116,31 +57,8 @@ void setup() {
 	// either by manually entering strip lengths or selecting a previously saved setup.
 	// TODO Figure out how to change these things during execution.
 
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i] = new StripController(i, 240);
-	}
-
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i]->ResetTimeouts();
-	}
-
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i]->UpdateStrip();
-	}
-
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		strips[i]->PrintStripInfo();
-	}
 
 	displayMemory(" after setup ");
-
-	newFrames++;
-
-	calcFPS();
 }
 
 void loop()
@@ -149,31 +67,9 @@ void loop()
 	//handleWeb();	// Handles input from the web server.
 	handleInputs();	// Handles input from physical controls.
 
-	drawMenu();		// Displays menu on the built in display.
 
-	if (gPower)
-	{ FastLED.setBrightness(gBrightness); }
-	else
-	{ FastLED.setBrightness(0); }
-
-	// Update each strip.
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{ strips[i]->UpdateStrip(); }
+	//Universe->Update();
 	
-	EVERY_N_MILLIS(5000)
-	{
-		Serial.print("FPS: ");
-		Serial.println(FPS);
-		displayMemory(" at time " + String(millis()));
-	}
-
 	FastLEDshowESP32();
-
-	newFrames++;
-
-	EVERY_N_MILLIS(150)
-	{
-		calcFPS();
-	}
 
 }

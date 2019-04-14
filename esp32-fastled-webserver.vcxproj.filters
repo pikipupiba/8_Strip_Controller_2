@@ -18,31 +18,10 @@
     <None Include="esp32-fastled-webserver.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="field.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fields.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gradientPalettes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="palettes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="patterns.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="twinkleFox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="web.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="secrets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="wifi_changed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="physicalInputs.h">
@@ -51,40 +30,7 @@
     <ClInclude Include="tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stripController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="normalizeValues.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="animationPresets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stripPresets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="universePresets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mover.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="display.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="globalStuff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PatternClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorWave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Oscillator.h">
@@ -93,39 +39,27 @@
     <ClInclude Include="__vm\.esp32-fastled-webserver.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LEDStrip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stripController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mover.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="globalStuff.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="display.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tasks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="normalizeValues.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PatternClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorWave.cpp">
+    <ClCompile Include="Oscillator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Oscillator.cpp">
+    <ClCompile Include="debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LEDStrip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

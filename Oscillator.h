@@ -1,10 +1,7 @@
-#include "stdafx.h"
-
 #pragma once
 
-#include "globalStuff.h"
-//#include <stdint.h>
-
+#include <arduino.h>
+#include <FastLED.h>
 
 class Oscillator
 {

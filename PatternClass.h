@@ -1,26 +1,18 @@
-#include "stdafx.h"
-
 #pragma once
-#include "globalStuff.h"
-#include "display.h"
-#include "Oscillator.h"
 
-class StripController;
-#include "Animation.h"
-#include "Mover.h"
-#include "ColorWave.h"
+#include <arduino.h>
+#include <FastLED.h>
 
-const int numPatterns = 6;
+const int numPatterns = 3;
 
 class PatternClass
 {
 private:
 
+	// I need to get this code out of the class definition.
 	typedef void(PatternClass::*PatternMeth)();
 
-
 	typedef struct {
-		int index;
 		String name;
 		PatternMeth patternMeth;
 	} Pattern;
@@ -29,58 +21,28 @@ private:
 
 	typedef Pattern PatternList[numPatterns];
 
-	PatternList patterns = {
-		{ 0, "Poopy Worm 1", &PatternClass::PoopyWorm1 },
-		{ 1, "Color Waves", &PatternClass::ColorWaves },
-		{ 2, "Color Waves With Movers", &PatternClass::ColorWavesWithMovers },
-		{ 3, "Color Pulses", &PatternClass::ColorPulses },
-		{ 4, "Funky Mover", &PatternClass::FunkyMover },
-		{ 5, "Plasma", &PatternClass::Plasma }
+	PatternList patternList = {
+		{ "Color Waves", &PatternClass::ColorWaves },
+		{ "Color Pulses", &PatternClass::ColorPulses },
+		{ "Plasma", &PatternClass::Plasma }
 	};
 	
-
-
-	StripController* strip;
-
-	int index;
-
-	Animation* patternAnimations[NUM_ANIMATIONS_PER_PATTERN];
-	int patternNumAnimations;
-
-	unsigned long stageTime;
-	unsigned long nextStageTime;
-
-	int patternNumber;
-
-	int started;
-	int stage;
-	int numStages;
-	//std::list<Animation*> animations;
-	//std::list<Animation*>::iterator it;
+	CRGBSet* leds;
 
 public:
-	PatternClass(StripController* newStrip, String newPattern);
+	PatternClass(CRGBSet* leds);
 	~PatternClass();
 
 	void Update();
-	int NextStage();
 
-	bool AddAnimation(String newAnimation);
-
-	void NextPattern();
-
-	void ClearAnimations();
+	void Next();
 
 	void PrintPatternInfo();
 
-	void PoopyWorm1();
-	void PoopyWorm2();
-
+	// Pattern Methods!
 	void ColorWaves();
-	void ColorWavesWithMovers();
 
 	void ColorPulses();
-	void FunkyMover();
 
 	void Plasma();
 };

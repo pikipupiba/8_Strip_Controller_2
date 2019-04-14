@@ -14,7 +14,8 @@ typedef struct {
 	float val;
 } aniArg;
 
-
+// This is the parent class of all the animation objects.
+// I'm gonna try to find some relevant aspect of all animations to assign to the generic variable names here.
 class Animation
 {
 private:
@@ -87,7 +88,7 @@ public:	// Public variables allows PatternClass methods to be written easier and
 
 	float changing;		// changing = 0 means its not currently easing any values from previous to target.
 
-	StripController* strip;
+	StripController* strip;	// A pointer to the strip the animation is being displayed on.
 
 	// Constructors and destructors.
 	Animation();
@@ -104,7 +105,7 @@ public:	// Public variables allows PatternClass methods to be written easier and
 	void Update();
 	void UpdatePosition();
 
-	void Bounce(Direction dir);
+	void Bounce(Direction dir);	// Bounces the mover in a particular direction.
 	void BounceOffOther();		// Changes the sign of speed if one of the ends is touching a non black LED.
 	void Loop();				// Loops the position back to either the start or end of the range when it goes off the end.
 

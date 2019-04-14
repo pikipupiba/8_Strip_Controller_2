@@ -1,6 +1,9 @@
-#include "stdafx.h"
-
 #include "tasks.h"
+
+#include <arduino.h>
+#include <FastLED.h>
+
+#define FASTLED_SHOW_CORE 1
 
 // -- Task handles for use in the notifications
 static TaskHandle_t FastLEDshowTaskHandle = 0;
@@ -47,7 +50,7 @@ void FastLEDshowTask(void *pvParameters)
 
 void createTasks()
 {
-	D(startTime("createTasks()");)
+	
 
 	// Print the core the main code is running on.
 	// Make sure to change FASTLED_SHOW_CORE if it is the same as this one.
@@ -58,5 +61,5 @@ void createTasks()
 	// -- Create the FastLED show task
 	xTaskCreatePinnedToCore(FastLEDshowTask, "FastLEDshowTask", 2048, NULL, 2, &FastLEDshowTaskHandle, FASTLED_SHOW_CORE);
 
-	D(endTime("createTasks()");)
+	
 }

@@ -1,10 +1,9 @@
-#include "stdafx.h"
-
 #pragma once
 
 #include "Oscillator.h"
 
-
+#define uINT16_MIN 0
+#define uINT16_MAX 65536
 
 Oscillator::Oscillator(int newBPM, float newMin, float newMax)
 {
@@ -14,13 +13,12 @@ Oscillator::Oscillator(int newBPM, float newMin, float newMax)
 
 	range = max - min;
 
-	numOscillators++;
 }
 
 
 Oscillator::~Oscillator()
 {
-	numOscillators--;
+
 }
 
 float Oscillator::O1(uint16_t offset)
