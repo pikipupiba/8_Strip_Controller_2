@@ -2,35 +2,31 @@
 
 #include <arduino.h>
 #include <FastLED.h>
+#include "patterns.h"
 
-
-
-	// I need to get this code out of the class definition.
-	typedef void(PatternMeth)();
-
-	typedef struct {
-		String name;
-		PatternMeth patternMeth;
-	} PatternAndName;
-
-	PatternAndName patternAndNameList[] = {
-		{ "Color Waves", ColorWaves },
-		{ "Color Pulses", ColorPulses },
-		{ "Plasma", Plasma }
-	};
-
-	const int numPatterns = 3;
+class PatternClass
+{
+private:
 	
+	int curPattern;
+
+	float hue
+	float hueSpeed;
+	float position;
+	float speed;
+	float size;
+	
+	CRGBSet* leds;
+
+public:
+	
+	void PatternClass(CRGBSet* leds);
+	void ~PatternClass();
+		
 	void Update();
-
+	
+	void Prev();
 	void Next();
-
-	void PrintPatternInfo();
-
-	// Pattern Methods!
-	void ColorWaves();
-
-	void ColorPulses();
-
-	void Plasma();
+	
+	void SetPlaylist();
 };

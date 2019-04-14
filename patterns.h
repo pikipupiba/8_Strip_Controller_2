@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #pragma once
 
 // These patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
@@ -7,12 +5,25 @@
 // The patterns will have access to the animation[] array of each strip and associated parameters.
 // I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
 
-#include "stripController.h"
-#include "Animation.h"
-#include "Mover.h"
-#include "globalStuff.h"
+#include <FastLED.h>
 
-#include "display.h"
+typedef struct {
+
+	CRGBSet* leds;
+	
+	int curPattern;
+	
+	float brightness;
+	
+	float hue;
+	float hueSpeed;
+	
+	float position;
+	float speed;
+	
+	float size;
+	
+} PatternVars;
 
 /*
    ESP32 FastLED WebServer: https://github.com/jasoncoon/esp32-fastled-webserver
@@ -408,42 +419,47 @@ void poopyWorm2(StripController* strip)
 	
 }
 
-typedef void(*PatternList[])(StripController* strip);
+typedef void(*PatternList[])(PatternVars patternVars);
+
 PatternList patterns = { poopyWorm1, poopyWorm2 };
 
-/*typedef Pattern PatternList[];
+PatternList playlist1 = { 1, 2, 3 };
+PatternList playlist2 = { 3, 4, 5 };
+
+typedef Pattern PatternList[];
+
 typedef struct {
 	Pattern pattern;
 	String name;
 } PatternAndName;
-typedef PatternAndName PatternAndNameList[];*/
+typedef PatternAndName PatternAndNameList[];
 
-/*PatternAndNameList patterns = {
+PatternAndNameList patterns = {
 	// TODO Things to add to web list.
-	{ poopyWorm,		"Poopy Worm"}
-	{ continuousWipe,	"Continuous Wipe"},
-	{ colorWipe,		"Color Wipe"},
+	//{ poopyWorm,		"Poopy Worm"}
+	//{ continuousWipe,	"Continuous Wipe"},
+	//{ colorWipe,		"Color Wipe"},
 
 
-  { pride,              "Pride" },
-  { colorWaves,         "Color Waves" },
+  //{ pride,              "Pride" },
+  //{ colorWaves,         "Color Waves" },
 
 	// TwinkleFOX patterns
 	//{ drawTwinkles,		"Twinkles" },
 
 	// Fire & Water
-	{ fire, "Fire" },
-	{ water, "Water" },
+	//{ fire, "Fire" },
+	//{ water, "Water" },
 
 	// DemoReel100 patterns
-	{ rainbow, "rainbow" },
-	{ rainbowWithGlitter, "rainbowWithGlitter" },
-	{ confetti, "confetti" },
-	{ sinelon, "sinelon" },
-	{ juggle, "juggle" },
-	{ bpm, "bpm" },
+	//{ rainbow, "rainbow" },
+	//{ rainbowWithGlitter, "rainbowWithGlitter" },
+	//{ confetti, "confetti" },
+	//{ sinelon, "sinelon" },
+	//{ juggle, "juggle" },
+	//{ bpm, "bpm" },
 
-	{ showSolidColor,         "Solid Color" }
-};*/
+	//{ showSolidColor,         "Solid Color" }
+};
 
 const uint8_t patternCount = ARRAY_SIZE(patterns);
