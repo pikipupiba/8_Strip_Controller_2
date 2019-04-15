@@ -30,9 +30,6 @@
     <ClInclude Include="tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PatternClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Oscillator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,12 +48,12 @@
     <ClInclude Include="universeSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="patterns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tasks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PatternClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Oscillator.cpp">
@@ -69,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Universe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="patterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

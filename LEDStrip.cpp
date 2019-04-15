@@ -3,9 +3,20 @@
 #include "LEDStrip.h"
 
 
-LEDStrip::LEDStrip(CRGBSet leds)
+LEDStrip::LEDStrip(CRGBSet* leds)
 {
-	numLEDs = leds.len;
+	vars = {
+		leds,	// CRGBSet*
+		0,		// curPattern
+		255,	// brightness
+		0,		// hue
+		0,		// hueSpeed
+		0,		// position
+		0,		// speed
+		0		// size
+	};
+
+	numLEDs = leds->len;
 
 	power = true;
 
@@ -21,7 +32,7 @@ void LEDStrip::UpdateStrip()
 {
 	UpdatePatternVars();
 
-	patterns[patternVars.curPattern](patternVars);
+	patterns[vars.curPattern](vars);
 
 	if (stripAutoplay && (millis() > stripAutoPlayTimeout)) {
 		NextPattern();
@@ -31,11 +42,11 @@ void LEDStrip::UpdateStrip()
 
 void LEDStrip::UpdatePatternVars()
 {
-	with patternVars
+	/*with patternVars
 	{
 		hue += hueSpeed;
 		position += speed;
-	}
+	}*/
 }
 
 // Reset the timeouts for the strip when autoplay is turned on or after setup.
@@ -44,10 +55,9 @@ void LEDStrip::ResetTimeouts()
 	stripAutoPlayTimeout = millis() + (stripAutoplayDuration);
 }
 
-// TODO will make this cycle through presets instead of patterns.
 void LEDStrip::NextPattern()
 {
-	patternVars.curPattern = (patternVars.curPattern + 1) % numPatterns;
+	vars.curPattern = (vars.curPattern + 1) % patternCount;
 }
 
 void LEDStrip::PrintStripInfo()

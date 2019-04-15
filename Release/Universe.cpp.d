@@ -177,4 +177,4 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_he
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/chipsets.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\universeSettings.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\PatternClass.h
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\patterns.h

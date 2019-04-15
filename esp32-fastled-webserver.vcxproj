@@ -121,7 +121,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="Oscillator.h" />
-    <ClInclude Include="PatternClass.h" />
+    <ClInclude Include="patterns.h" />
     <ClInclude Include="physicalInputs.h" />
     <ClInclude Include="palettes.h">
       <FileType>CppCode</FileType>
@@ -135,8 +135,8 @@
   <ItemGroup>
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Oscillator.cpp" />
-    <ClCompile Include="PatternClass.cpp" />
     <ClCompile Include="LEDStrip.cpp" />
+    <ClCompile Include="patterns.cpp" />
     <ClCompile Include="tasks.cpp" />
     <ClCompile Include="Universe.cpp" />
   </ItemGroup>

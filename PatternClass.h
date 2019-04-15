@@ -10,7 +10,7 @@ private:
 	
 	int curPattern;
 
-	float hue
+	float hue;
 	float hueSpeed;
 	float position;
 	float speed;

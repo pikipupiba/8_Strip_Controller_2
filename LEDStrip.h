@@ -10,7 +10,7 @@ private:
 
 	bool power;					// If FALSE then the strip brightness is temporarily set to 0.
 
-	PatternVars patternVars;
+	PatternVars vars;
 
 	bool stripAutoplay;			// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
 	int stripAutoplayDuration;
@@ -18,10 +18,10 @@ private:
 
 protected:
 	
- public:
+public:
 
 	 // Constructor simply passes in the pointer to the CRGBSet assigned to this object.
-	 LEDStrip(CRGBSet leds);//, Shapes newShape);
+	 LEDStrip(CRGBSet* leds);//, Shapes newShape);
 	 ~LEDStrip();
 
 	 void UpdateStrip();
