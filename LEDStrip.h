@@ -21,7 +21,7 @@ protected:
 public:
 
 	 // Constructor simply passes in the pointer to the CRGBSet assigned to this object.
-	 LEDStrip(CRGBSet* leds);//, Shapes newShape);
+	 LEDStrip(CRGBSet leds);//, Shapes newShape);
 	 ~LEDStrip();
 
 	 void UpdateStrip();

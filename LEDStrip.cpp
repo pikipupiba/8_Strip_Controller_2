@@ -3,10 +3,10 @@
 #include "LEDStrip.h"
 
 
-LEDStrip::LEDStrip(CRGBSet* leds)
+LEDStrip::LEDStrip(CRGBSet leds)
 {
 	vars = {
-		leds,	// CRGBSet*
+		&leds,	// CRGBSet*
 		0,		// curPattern
 		255,	// brightness
 		0,		// hue
@@ -16,7 +16,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 		0		// size
 	};
 
-	numLEDs = leds->len;
+	numLEDs = leds.len;
 
 	power = true;
 
