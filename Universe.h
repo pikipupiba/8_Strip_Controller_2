@@ -3,6 +3,7 @@
 #include <arduino.h>
 #include <FastLED.h>
 
+#include "debug.h"
 #include "universeSettings.h"
 #include "LEDStrip.h"
 
@@ -13,6 +14,7 @@ private:
 	int gNumLeds;
 
 	CRGBArray<NUM_LEDS> gLeds;
+	CRGBSet* ledSets[NUM_STRIPS];
 	LEDStrip* strips[NUM_STRIPS];
 
 public:

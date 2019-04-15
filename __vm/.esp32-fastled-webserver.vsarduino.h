@@ -107,6 +107,6 @@ typedef long __PTRDIFF_TYPE__;
 #define interrupts() sei()
 #define noInterrupts() cli()
 
-#include "esp32-fastled-webserver.ino"
+#include "8_Strip_Controller.ino"
 #endif
 #endif

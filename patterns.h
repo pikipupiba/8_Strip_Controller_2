@@ -11,6 +11,7 @@
 typedef struct {
 
 	CRGBSet* leds;
+	int numLeds;
 
 	int curPattern;
 
@@ -26,26 +27,26 @@ typedef struct {
 
 } PatternVars;
 
-void rainbow			(PatternVars vars);
+void rainbow			(PatternVars &vars);
 void addGlitter			(fract8 chanceOfGlitter);
-void rainbowWithGlitter	(PatternVars vars);
-void confetti			(PatternVars vars);
-void sinelon			(PatternVars vars);
-void bpm				(PatternVars vars);
-void juggle				(PatternVars vars);
-void showSolidColor		(PatternVars vars);
-void showSolidColorChanging(PatternVars vars);
+void rainbowWithGlitter	(PatternVars &vars);
+void confetti			(PatternVars &vars);
+void sinelon			(PatternVars &vars);
+void bpm				(PatternVars &vars);
+void juggle				(PatternVars &vars);
+void showSolidColor		(PatternVars &vars);
+void showSolidColorChanging(PatternVars &vars);
 void heatMap			(CRGBPalette16 palette, bool up);
-void fire				(PatternVars vars);
-void water				(PatternVars vars);
-void pride				(PatternVars vars);
+void fire				(PatternVars &vars);
+void water				(PatternVars &vars);
+void pride				(PatternVars &vars);
 void colorwaves			(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette);
-void colorWaves			(PatternVars vars);
-void colorWipe			(PatternVars vars);
-void continuousWipe		(PatternVars vars);
+void colorWaves			(PatternVars &vars);
+void colorWipe			(PatternVars &vars);
+void continuousWipe		(PatternVars &vars);
 
 
-typedef void(*Pattern)(PatternVars vars);
+typedef void(*Pattern)(PatternVars &vars);
 typedef Pattern PatternList[];
 
 extern PatternList patterns;

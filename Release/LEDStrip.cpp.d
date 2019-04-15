@@ -1,18 +1,12 @@
-C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp.o: \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\patterns.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \
+C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp.o: \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\debug.h \
+ C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdint.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/machine/_default_types.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/features.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/sys/_intsup.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/cpp_compat.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/fastled_config.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/led_sysdefs.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/platforms/esp/32/led_sysdefs_esp32.h \
- C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Arduino.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdio.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/_ansi.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/newlib.h \
@@ -134,7 +128,15 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_he
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/IPAddress.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/HardwareSerial.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Esp.h \
+ C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Arduino.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\variants\heltec_wifi_kit_32/pins_arduino.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\patterns.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/cpp_compat.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/fastled_config.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/led_sysdefs.h \
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/platforms/esp/32/led_sysdefs_esp32.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/fastled_delay.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/bitswap.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/controller.h \

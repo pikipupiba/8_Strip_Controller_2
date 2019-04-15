@@ -1,4 +1,4 @@
-C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\esp32-fastled-webserver\esp32_heltec_wifi_kit_32\Release\FastLED\lib8tion.cpp.o: \
+C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\FastLED\lib8tion.cpp.o: \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED\lib8tion.cpp \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdint.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/machine/_default_types.h \

@@ -5,11 +5,12 @@
 // The patterns will have access to the animation[] array of each strip and associated parameters.
 // I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
 
+#include "debug.h"
 #include "patterns.h"
 #include <FastLED.h>
 
 
-void rainbow(PatternVars vars)
+void rainbow(PatternVars &vars)
 {
 	// FastLED's built-in rainbow generator
 	//fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
@@ -22,14 +23,14 @@ void addGlitter(fract8 chanceOfGlitter)
 	}*/
 }
 
-void rainbowWithGlitter(PatternVars vars)
+void rainbowWithGlitter(PatternVars &vars)
 {
 	// built-in FastLED rainbow, plus some random sparkly glitter
 	//rainbow();
 	//addGlitter(80);
 }
 
-void confetti(PatternVars vars)
+void confetti(PatternVars &vars)
 {
 	// random colored speckles that blink in and fade smoothly
 	/*fadeToBlackBy(leds[0], NUM_LEDS, 10);
@@ -37,7 +38,7 @@ void confetti(PatternVars vars)
 	leds[0][pos] += CHSV(gHue + random8(64), 200, 255);*/
 }
 
-void sinelon(PatternVars vars)
+void sinelon(PatternVars &vars)
 {
 	// a colored dot sweeping back and forth, with fading trails
 	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
@@ -53,7 +54,7 @@ void sinelon(PatternVars vars)
 	prevpos = pos;*/
 }
 
-void bpm(PatternVars vars)
+void bpm(PatternVars &vars)
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
 	/*uint8_t beat = beatsin8(speed/1.5, 64, 255);
@@ -63,7 +64,7 @@ void bpm(PatternVars vars)
 	}*/
 }
 
-void juggle(PatternVars vars) {
+void juggle(PatternVars &vars) {
 	// eight colored dots, weaving in and out of sync with each other
 	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
 	byte dothue = 0;
@@ -73,12 +74,12 @@ void juggle(PatternVars vars) {
 	}*/
 }
 
-void showSolidColor(PatternVars vars)
+void showSolidColor(PatternVars &vars)
 {
 	//fill_solid(leds[0], NUM_LEDS, solidColor);
 }
 
-void showSolidColorChanging(PatternVars vars)
+void showSolidColorChanging(PatternVars &vars)
 {
 	//fill_solid(leds, gHue);
 }
@@ -129,12 +130,12 @@ void heatMap(CRGBPalette16 palette, bool up)
 	}*/
 }
 
-void fire(PatternVars vars)
+void fire(PatternVars &vars)
 {
 	//heatMap(HeatColors_p, true);
 }
 
-void water(PatternVars vars)
+void water(PatternVars &vars)
 {
 	/*heatMap(IceColors_p, false);*/
 }
@@ -142,9 +143,10 @@ void water(PatternVars vars)
 // Pride2015 by Mark Kriegsman: https://gist.github.com/kriegsman/964de772d64c502760e5
 // This function draws rainbows with an ever-changing,
 // widely-varying set of parameters.
-void pride(PatternVars vars)
+void pride(PatternVars &vars)
 {
-	/*
+	D(startTime("pride(PatternVars vars)");)
+
 	static uint16_t sPseudotime = 0;
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
@@ -164,7 +166,8 @@ void pride(PatternVars vars)
 	sHue16 += deltams * beatsin88(400, 5, 9);
 	uint16_t brightnesstheta16 = sPseudotime;
 
-	for (uint16_t i = 0; i < NUM_LEDS; i++) {
+	for (uint16_t i = 0; i < vars.numLeds; i++) {
+
 		hue16 += hueinc16;
 		uint8_t hue8 = hue16 / 256;
 
@@ -178,10 +181,19 @@ void pride(PatternVars vars)
 		CRGB newcolor = CHSV(hue8, sat8, bri8);
 
 		uint16_t pixelnumber = i;
-		pixelnumber = (NUM_LEDS - 1) - pixelnumber;
+		pixelnumber = (vars.numLeds - 1) - pixelnumber;
 
-		nblend(leds[0][pixelnumber], newcolor, 64);
-	}*/
+		D(middleTime("pride(PatternVars vars)");)
+
+			Serial.println(*vars.leds);
+			//Serial.println(vars.numLeds);
+
+		vars.leds[pixelnumber].nblend( newcolor, 64);
+
+		//nblend(vars.leds[0][pixelnumber], newcolor, 64);
+	}
+
+	D(endTime("pride(PatternVars vars)");)
 }
 
 // ColorWavesWithPalettes by Mark Kriegsman: https://gist.github.com/kriegsman/8281905786e8b2632aeb
@@ -239,12 +251,12 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 	}*/
 }
 
-void colorWaves(PatternVars vars)
+void colorWaves(PatternVars &vars)
 {
 	/*colorwaves(leds[0], NUM_LEDS, currentPalette);*/
 }
 
-void colorWipe(PatternVars vars)
+void colorWipe(PatternVars &vars)
 {
 
 	/*int pos = beatsin16(speed/5, 0, NUM_LEDS_PER_STRIP - 1);
@@ -260,7 +272,7 @@ void colorWipe(PatternVars vars)
 	prevpos = pos;*/
 }
 
-void continuousWipe(PatternVars vars)
+void continuousWipe(PatternVars &vars)
 {
 	/*static int pos = 0;
 	pos += speed / 10;

@@ -2,6 +2,7 @@
 
 int debugDepth = 0;
 
+int numMiddles = 0;
 
 void displayMemory(String label = "")
 {
@@ -13,24 +14,28 @@ void displayMemory(String label = "")
 
 void startTime(String functionName)
 {
+	debugDepth++;
+
 	for (int i = 0; i < debugDepth; i++)
 	{
 		Serial.print("	");
 	}
 	Serial.print(functionName);
 	Serial.println(" Start ");
-
-	debugDepth++;
+	numMiddles = 0;
 }
 
 void middleTime(String functionName)
 {
+	numMiddles++;
+
 	for (int i = 0; i < debugDepth; i++)
 	{
 		Serial.print("	");
 	}
 	Serial.print(functionName);
-	Serial.println(" Middle ");
+	Serial.print(" Middle #");
+	Serial.println(numMiddles);
 }
 
 void endTime(String functionName)
@@ -43,4 +48,5 @@ void endTime(String functionName)
 	Serial.println(" End ");
 
 	debugDepth--;
+	numMiddles = 0;
 }

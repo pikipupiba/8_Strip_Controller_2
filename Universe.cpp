@@ -3,9 +3,14 @@
 
 Universe::Universe()
 {
+	D(startTime("Universe::Universe()");)
+
+	gNumLeds = 0;
+	int numLedsSoFar = 0;
+
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		static int numLedsSoFar = 0;
+		D(middleTime("Universe::Universe()");)
 
 		if (i == 0)
 		{
@@ -56,11 +61,19 @@ Universe::Universe()
 			numLedsSoFar += NUM_LEDS_STRIP_7;
 		}
 
-		strips[i] = new LEDStrip( gLeds(gNumLeds, numLedsSoFar) );
+		//Serial.println(gNumLeds);
+		//Serial.println(numLedsSoFar - 1);
+
+		ledSets[i] = new CRGBSet( gLeds(gNumLeds, numLedsSoFar - 1));
+
+		strips[i] = new LEDStrip( ledSets[i] );
 
 		gNumLeds = numLedsSoFar;
 	}
 
+	gLeds.fill_solid(CRGB::Black);
+
+	D(endTime("Universe::Universe()");)
 }
 
 
@@ -70,15 +83,21 @@ Universe::~Universe()
 
 Universe* Universe::CreateUniverse()
 {
+	D(startTime("Universe::CreateUniverse()");)
 	return new Universe();
+	D(endTime("Universe::CreateUniverse()");)
 }
 
 void Universe::Update()
 {
+	D(startTime("Universe::Update()");)
+
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
 		strips[i]->UpdateStrip();
 	}
+
+	D(endTime("Universe::Update()");)
 }
 
 void Universe::PrintInfo()
