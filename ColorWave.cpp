@@ -37,7 +37,6 @@ ColorWave::ColorWave(StripController * newStrip, aniArg newAniArgs[])
 ColorWave::~ColorWave()
 {
 	Erase();
-	numObjects--;
 }
 
 void ColorWave::Erase()

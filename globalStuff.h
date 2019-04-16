@@ -19,6 +19,11 @@
 // Define a quick and easy ARRAY_SIZE function.
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
+// Use qsuba for smooth pixel filtering and qsubd for digital pixel filtering.
+#define qsubd(x, b)  ((x>b)?b:0)                                                // Digital unsigned subtraction macro. if result <0, then => 0. Otherwise, take on fixed value.
+#define qsuba(x, b)  ((x>b)?x-b:0)                                              // Analog Unsigned subtraction macro. if result <0, then => 0. By Andrew Tuline.
+
+
 // Define minimum and maximum values of some data types.
 // TODO If using floats is best then these probably aren't needed.
 #define uINT8_MIN	0
@@ -111,5 +116,9 @@ extern int numOscillators;
 
 extern int debugDepth;
 
+/*void showfps();
+void lineit();
+void waveit();
+void addGlitter(fract8 chanceOfGlitter);*/
 
 #endif
