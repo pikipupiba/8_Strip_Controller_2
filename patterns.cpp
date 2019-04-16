@@ -13,21 +13,22 @@
 void rainbow(PatternVars &vars)
 {
 	// FastLED's built-in rainbow generator
+	vars.leds->fill_rainbow(vars.hue, vars.size / 10);
 	//fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
 }
 
-void addGlitter(fract8 chanceOfGlitter)
+void addGlitter(fract8 chanceOfGlitter, PatternVars &vars)
 {
-	/*if (random8() < chanceOfGlitter) {
-		leds[0][random16(NUM_LEDS)] += CRGB::White;
-	}*/
+	if (random8() < chanceOfGlitter) {
+		vars.leds[0][random16(vars.numLeds)] += CRGB::White;
+	}
 }
 
 void rainbowWithGlitter(PatternVars &vars)
 {
 	// built-in FastLED rainbow, plus some random sparkly glitter
-	//rainbow();
-	//addGlitter(80);
+	rainbow(vars);
+	addGlitter(80, vars);
 }
 
 void confetti(PatternVars &vars)
@@ -41,17 +42,20 @@ void confetti(PatternVars &vars)
 void sinelon(PatternVars &vars)
 {
 	// a colored dot sweeping back and forth, with fading trails
-	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
-	int pos = beatsin16(speed/10, 0, NUM_LEDS_PER_STRIP - 1);
+	vars.leds->fadeToBlackBy(20);
+	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
+	int pos = beatsin16(vars.speed/5, 0, vars.numLeds - 1 - 100);
+
 	static int prevpos = 0;
-	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
+	CRGB color = HSVHue((int)vars.hue % 255);//ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 	if (pos < prevpos) {
-		fill_solid(leds[0] + pos, (prevpos - pos) + 1, color);
+		//vars.leds->fill_solid(vars.hue);
+		fill_solid(&vars.leds[0][pos], (prevpos - pos) + 1, color);
 	}
 	else {
-		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
+		fill_solid(vars.leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
-	prevpos = pos;*/
+	prevpos = pos;
 }
 
 void bpm(PatternVars &vars)
@@ -253,7 +257,7 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 
 void colorWaves(PatternVars &vars)
 {
-	/*colorwaves(leds[0], NUM_LEDS, currentPalette);*/
+	//colorwaves(vars.leds[0], NUM_LEDS, currentPalette);
 }
 
 void colorWipe(PatternVars &vars)
@@ -294,7 +298,7 @@ void continuousWipe(PatternVars &vars)
 	prevpos = pos;*/
 }
 
-PatternList patterns = { pride, colorWaves };
+PatternList patterns = { pride, colorWaves, rainbow, rainbowWithGlitter, bpm, sinelon };
 
 PatternAndNameList patternsAndNames = {
 	// TODO Things to add to web list.

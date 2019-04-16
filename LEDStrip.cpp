@@ -10,13 +10,13 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 	vars = {
 		leds,		// CRGBSet
 		leds->len,	// numLeds
-		0,			// curPattern
+		2,			// curPattern
 		255,		// brightness
 		0,			// hue
-		0,			// hueSpeed
+		1,			// hueSpeed
 		0,			// position
-		0,			// speed
-		0			// size
+		20,			// speed
+		10			// size
 	};
 
 	power = true;
@@ -51,11 +51,8 @@ void LEDStrip::UpdatePatternVars()
 {
 	D(startTime("LEDStrip::UpdatePatternVars()");)
 
-	/*with patternVars
-	{
-		hue += hueSpeed;
-		position += speed;
-	}*/
+		vars.hue += vars.hueSpeed;
+		vars.position += vars.speed;
 
 	D(endTime("LEDStrip::UpdatePatternVars()");)
 }

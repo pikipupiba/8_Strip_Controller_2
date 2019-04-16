@@ -2,7 +2,7 @@
 
 #define NUM_STRIPS 8
 
-#define NUM_LEDS_STRIP_0 300
+#define NUM_LEDS_STRIP_0 240
 #define NUM_LEDS_STRIP_1 300
 #define NUM_LEDS_STRIP_2 300
 #define NUM_LEDS_STRIP_3 300

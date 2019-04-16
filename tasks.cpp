@@ -3,7 +3,7 @@
 #include <arduino.h>
 #include <FastLED.h>
 
-#define FASTLED_SHOW_CORE 1
+#define FASTLED_SHOW_CORE 0
 
 // -- Task handles for use in the notifications
 static TaskHandle_t FastLEDshowTaskHandle = 0;

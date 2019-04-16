@@ -50,3 +50,24 @@ void endTime(String functionName)
 	debugDepth--;
 	numMiddles = 0;
 }
+
+void showfps()
+{
+	static int frame_time = millis();
+	static int new_frames = 0;
+
+	new_frames++;
+
+	if (millis() - frame_time > 1000)
+	{
+		frame_time = (millis() - frame_time) / new_frames;
+
+		Serial.print("Running at ");
+		Serial.print(1000 / frame_time);
+		Serial.println(" fps");
+
+		frame_time = millis();
+
+		new_frames = 0;
+	}
+}

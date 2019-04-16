@@ -2,7 +2,7 @@
 
 #include <arduino.h>
 
-#define DEBUG_US
+//#define DEBUG_US
 
 #if defined DEBUG_US
 #	define D(x) x
@@ -20,3 +20,5 @@ void displayMemory(String label);
 void startTime(String newFunctionName);
 void middleTime(String newFunctionName);
 void endTime(String newFunctionName);
+
+void showfps();

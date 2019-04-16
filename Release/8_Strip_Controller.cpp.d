@@ -180,5 +180,4 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\Universe.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\universeSettings.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\patterns.h \
- c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\pnjvqy5x.ql4\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\patterns.h
