@@ -64,7 +64,7 @@ const int boardLedPin = 2;
 #include "field.h"			// Gets field values from the web server.
 #include "fields.h"			// Causes field values to affect program.
 
-#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
+//#include "secrets.h"		// Contains information about WiFi networks the ESP32 should try to connect for web control.
 #include "wifi_changed.h"	// 
 #include "web.h"			// Sets up the web server and handles web input.
 #include "physicalInputs.h"	// Sets up and handles input from physical inputs.
