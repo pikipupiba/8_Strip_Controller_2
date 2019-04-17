@@ -10,12 +10,12 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 	vars = {
 		leds,		// CRGBSet
 		leds->len,	// numLeds
-		2,			// curPattern
+		0,			// curPattern
 		255,		// brightness
 		0,			// hue
 		1,			// hueSpeed
 		0,			// position
-		20,			// speed
+		10,			// speed
 		10			// size
 	};
 

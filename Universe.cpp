@@ -92,6 +92,14 @@ void Universe::Update()
 {
 	D(startTime("Universe::Update()");)
 
+	EVERY_N_SECONDS(10)
+	{
+		for (int i = 0; i < NUM_STRIPS; i++)
+		{
+			strips[i]->NextPattern();
+		}
+	}
+
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
 		strips[i]->UpdateStrip();

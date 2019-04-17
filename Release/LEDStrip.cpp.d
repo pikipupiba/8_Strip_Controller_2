@@ -1,7 +1,7 @@
-C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp.o: \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.cpp \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\LEDStrip.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\debug.h \
+C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\LEDStrip.cpp.o: \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\LEDStrip.cpp \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\LEDStrip.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\debug.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/arduino.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/stdint.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1/tools/sdk/include/newlib/machine/_default_types.h \
@@ -129,8 +129,8 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/HardwareSerial.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Esp.h \
  C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\cores\esp32/Arduino.h \
- C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\variants\heltec_wifi_kit_32/pins_arduino.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_heltec_wifi_kit_32\Release\patterns.h \
+ C:\Users\pikipupiba\AppData\Local\arduino15\packages\esp32\hardware\esp32\1.0.1\variants\nodemcu-32s/pins_arduino.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\patterns.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/cpp_compat.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/FastLED.h \

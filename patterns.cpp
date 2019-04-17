@@ -44,7 +44,7 @@ void sinelon(PatternVars &vars)
 	// a colored dot sweeping back and forth, with fading trails
 	vars.leds->fadeToBlackBy(20);
 	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
-	int pos = beatsin16(vars.speed/5, 0, vars.numLeds - 1 - 100);
+	int pos = beatsin16(vars.speed/5, 0, vars.numLeds - 1);
 
 	static int prevpos = 0;
 	CRGB color = HSVHue((int)vars.hue % 255);//ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
@@ -61,11 +61,11 @@ void sinelon(PatternVars &vars)
 void bpm(PatternVars &vars)
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-	/*uint8_t beat = beatsin8(speed/1.5, 64, 255);
-	CRGBPalette16 palette = palettes[currentPaletteIndex];
-	for (int i = 0; i < NUM_LEDS; i++) {
-		leds[0][i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
-	}*/
+	uint8_t beat = beatsin8(vars.speed/1.5, 64, 255);
+	//CRGBPalette16 palette = palettes[currentPaletteIndex];
+	for (int i = 0; i < vars.numLeds; i++) {
+		vars.leds[0][i] = CHSV(vars.hue + (i * 2), 255, beat - vars.hue + (i * 10));
+	}
 }
 
 void juggle(PatternVars &vars) {
@@ -298,7 +298,7 @@ void continuousWipe(PatternVars &vars)
 	prevpos = pos;*/
 }
 
-PatternList patterns = { pride, colorWaves, rainbow, rainbowWithGlitter, bpm, sinelon };
+PatternList patterns = { rainbow, rainbowWithGlitter, bpm, sinelon };
 
 PatternAndNameList patternsAndNames = {
 	// TODO Things to add to web list.

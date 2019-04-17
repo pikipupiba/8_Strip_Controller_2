@@ -20,14 +20,24 @@
 					NUM_LEDS_STRIP_6 + \
 					NUM_LEDS_STRIP_7
 
+/* The pins I used in the before time */
+//#define STRIP_PIN_0 13
+//#define STRIP_PIN_1 12
+//#define STRIP_PIN_2 27
+//#define STRIP_PIN_3 33
+//#define STRIP_PIN_4 15
+//#define STRIP_PIN_5 32
+//#define STRIP_PIN_6 14
+//#define STRIP_PIN_7 SCL
+
 #define STRIP_PIN_0 13
 #define STRIP_PIN_1 12
-#define STRIP_PIN_2 27
-#define STRIP_PIN_3 33
-#define STRIP_PIN_4 15
-#define STRIP_PIN_5 32
-#define STRIP_PIN_6 14
-#define STRIP_PIN_7 SCL
+#define STRIP_PIN_2 15
+#define STRIP_PIN_3 2
+#define STRIP_PIN_4 0
+#define STRIP_PIN_5 4
+#define STRIP_PIN_6 16
+#define STRIP_PIN_7 17
 
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
