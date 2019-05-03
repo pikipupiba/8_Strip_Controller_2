@@ -2,7 +2,7 @@
 
 #define NUM_STRIPS 8
 
-#define NUM_LEDS_STRIP_0 240
+#define NUM_LEDS_STRIP_0 300
 #define NUM_LEDS_STRIP_1 300
 #define NUM_LEDS_STRIP_2 300
 #define NUM_LEDS_STRIP_3 300
@@ -30,6 +30,7 @@
 //#define STRIP_PIN_6 14
 //#define STRIP_PIN_7 SCL
 
+/* The pins used on Jason Coon's awesome PCBs */
 #define STRIP_PIN_0 13
 #define STRIP_PIN_1 12
 #define STRIP_PIN_2 15
@@ -42,6 +43,6 @@
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
 
-#define MILLI_AMPS 60000
+#define MILLI_AMPS 50000
 
 #define FRAMES_PER_SECOND

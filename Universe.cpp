@@ -71,6 +71,8 @@ Universe::Universe()
 		gNumLeds = numLedsSoFar;
 	}
 
+	FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS);
+
 	gLeds.fill_solid(CRGB::Black);
 
 	D(endTime("Universe::Universe()");)
@@ -91,14 +93,6 @@ Universe* Universe::CreateUniverse()
 void Universe::Update()
 {
 	D(startTime("Universe::Update()");)
-
-	EVERY_N_SECONDS(10)
-	{
-		for (int i = 0; i < NUM_STRIPS; i++)
-		{
-			strips[i]->NextPattern();
-		}
-	}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{

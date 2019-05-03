@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "patterns.h"
 #include <FastLED.h>
-
+#include "palettes.h"
 
 void rainbow(PatternVars &vars)
 {
@@ -34,9 +34,9 @@ void rainbowWithGlitter(PatternVars &vars)
 void confetti(PatternVars &vars)
 {
 	// random colored speckles that blink in and fade smoothly
-	/*fadeToBlackBy(leds[0], NUM_LEDS, 10);
-	int pos = random16(NUM_LEDS);
-	leds[0][pos] += CHSV(gHue + random8(64), 200, 255);*/
+	fadeToBlackBy(vars.leds[0], vars.numLeds, 10);
+	int pos = random16(vars.numLeds);
+	vars.leds[0][pos] += CHSV(vars.hue + random8(64), 200, 255);
 }
 
 void sinelon(PatternVars &vars)
@@ -70,12 +70,12 @@ void bpm(PatternVars &vars)
 
 void juggle(PatternVars &vars) {
 	// eight colored dots, weaving in and out of sync with each other
-	/*fadeToBlackBy(leds[0], NUM_LEDS, 20);
+	fadeToBlackBy(vars.leds[0], vars.numLeds, 20);
 	byte dothue = 0;
 	for (int i = 0; i < 8; i++) {
-		leds[0][beatsin16(i + speed/20, 0, NUM_LEDS_PER_STRIP - 1)] |= CHSV(dothue, 200, 255);
+		vars.leds[0][beatsin16(i + vars.speed, 0, vars.numLeds - 1)] |= CHSV(dothue, 200, 255);
 		dothue += 32;
-	}*/
+	}
 }
 
 void showSolidColor(PatternVars &vars)
@@ -85,29 +85,33 @@ void showSolidColor(PatternVars &vars)
 
 void showSolidColorChanging(PatternVars &vars)
 {
-	//fill_solid(leds, gHue);
+	fill_solid(vars.leds[0], vars.numLeds, CHSV(vars.hue, 255, 255));
+	//vars.leds->fill_solid(CHSV(vars.hue,255,255));
 }
 
 // based on FastLED example Fire2012WithPalette: https://github.com/FastLED/FastLED/blob/master/examples/Fire2012WithPalette/Fire2012WithPalette.ino
-void heatMap(CRGBPalette16 palette, bool up)
+void heatMap(PatternVars &vars, CRGBPalette16 palette, bool up)
 {
-	/*fill_solid(leds[0], NUM_LEDS_PER_STRIP, CRGB::Black);
+#define cooling 40
+#define sparking 50
+
+	fill_solid(vars.leds[0], vars.numLeds, CRGB::Black);
 
 	// Add entropy to random number generator; we use a lot of it.
 	random16_add_entropy(random(256));
 
 	// Array of temperature readings at each simulation cell
-	static byte heat[NUM_LEDS_PER_STRIP];
+	static byte heat[300];
 
 	byte colorindex;
 
 	// Step 1.  Cool down every cell a little
-	for (uint16_t i = 0; i < NUM_LEDS_PER_STRIP; i++) {
-		heat[i] = qsub8(heat[i], random8(0, ((cooling * 10) / NUM_LEDS) + 2));
+	for (uint16_t i = 0; i < vars.numLeds; i++) {
+		heat[i] = qsub8(heat[i], random8(0, ((cooling * 10) / vars.numLeds) + 2));
 	}
 
 	// Step 2.  Heat from each cell drifts 'up' and diffuses a little
-	for (uint16_t k = NUM_LEDS_PER_STRIP - 1; k >= 2; k--) {
+	for (uint16_t k = vars.numLeds - 1; k >= 2; k--) {
 		heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
 	}
 
@@ -118,7 +122,7 @@ void heatMap(CRGBPalette16 palette, bool up)
 	}
 
 	// Step 4.  Map from heat cells to LED colors
-	for (uint16_t j = 0; j < NUM_LEDS_PER_STRIP; j++) {
+	for (uint16_t j = 0; j < vars.numLeds; j++) {
 		// Scale the heat value from 0-255 down to 0-240
 		// for best results with color palettes.
 		colorindex = scale8(heat[j], 190);
@@ -126,22 +130,22 @@ void heatMap(CRGBPalette16 palette, bool up)
 		CRGB color = ColorFromPalette(palette, colorindex);
 
 		if (up) {
-			leds[0][j] = color;
+			vars.leds[0][j] = color;
 		}
 		else {
-			leds[0][(NUM_LEDS_PER_STRIP - 1) - j] = color;
+			vars.leds[0][(vars.numLeds - 1) - j] = color;
 		}
-	}*/
+	}
 }
 
 void fire(PatternVars &vars)
 {
-	//heatMap(HeatColors_p, true);
+	heatMap(vars, HeatColors_p, true);
 }
 
 void water(PatternVars &vars)
 {
-	/*heatMap(IceColors_p, false);*/
+	heatMap(vars, IceColors_p, false);
 }
 
 // Pride2015 by Mark Kriegsman: https://gist.github.com/kriegsman/964de772d64c502760e5
@@ -205,7 +209,7 @@ void pride(PatternVars &vars)
 // widely-varying set of parameters, using a color palette.
 void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 {
-	/*static uint16_t sPseudotime = 0;
+	static uint16_t sPseudotime = 0;
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
 
@@ -252,55 +256,166 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 		pixelnumber = (numleds - 1) - pixelnumber;
 
 		nblend(ledarray[pixelnumber], newcolor, 128);
-	}*/
+	}
 }
 
 void colorWaves(PatternVars &vars)
 {
-	//colorwaves(vars.leds[0], NUM_LEDS, currentPalette);
+	colorwaves(vars.leds[0], vars.numLeds, vars.palette);
 }
 
 void colorWipe(PatternVars &vars)
 {
 
-	/*int pos = beatsin16(speed/5, 0, NUM_LEDS_PER_STRIP - 1);
+	int pos = beatsin16(vars.speed, 0, vars.numLeds - 1);
 
 	static int prevpos = 0;
-	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
+	CRGB color = ColorFromPalette(vars.palette, vars.hue, 255);
 	if (pos < prevpos) {
-		fill_solid(leds[0] + pos, (prevpos - pos) + 1, color);
+		fill_solid(vars.leds[0] + pos, (prevpos - pos) + 1, color);
 	}
 	else {
-		fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
+		fill_solid(vars.leds[0] + prevpos, (pos - prevpos) + 1, color);
 	}
-	prevpos = pos;*/
+	prevpos = pos;
 }
 
 void continuousWipe(PatternVars &vars)
 {
-	/*static int pos = 0;
-	pos += speed / 10;
 
-	if (pos >= NUM_LEDS_PER_STRIP && copyStrip == 1)
+	if (vars.position >= vars.numLeds)
 	{
-		pos = 0;
-	}
-	else if (pos >= NUM_LEDS && copyStrip == 0)
-	{
-		pos = 0;
+		vars.position = 0;
 	}
 
 	static int prevpos = 0;
-	CRGB color = ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
+	CRGB color = ColorFromPalette(vars.palette, vars.hue, 255);
 
-	fill_solid(leds[0] + prevpos, (pos - prevpos) + 1, color);
+	fill_solid(vars.leds[0] + prevpos, (vars.position - prevpos) + 1, color);
 
-	prevpos = pos;*/
+	prevpos = vars.position;
 }
 
-PatternList patterns = { rainbow, rainbowWithGlitter, bpm, sinelon };
+void dripper(PatternVars& vars)
+{
+	D(startTime("dripper()");)
 
-PatternAndNameList patternsAndNames = {
+	int tankSize = 40;
+	int dripSize = 5;
+
+	vars.leds->fadeToBlackBy(70);
+
+	vars.hueSpeed = -1;
+
+	for (int i = 0; i < tankSize; i++)
+	{
+		D(middleTime("dripper() " + String(i));)
+		vars.leds[0][i] = CHSV(vars.hue + i * 2, 255, vars.brightness);
+	}
+
+	if (vars.position == 0)
+	{
+		//if (random8() < 10)
+		//{
+			vars.position = tankSize - 1;
+			vars.speed = 0.1;
+			vars.hue2 = vars.hue + (tankSize - 5) * 2;
+		//}
+	}
+	else
+	{
+		D(middleTime("dripper() else");)
+		vars.speed += 0.01;
+
+		dripSize *= vars.speed;
+
+		if (vars.position + dripSize < vars.numLeds)
+		{
+			for (int i = vars.position; i < vars.position + dripSize - 1; i++)
+			{
+				vars.leds[0][i] = CHSV(vars.hue2, 255, vars.brightness);
+			}
+		}
+		else if (vars.position < vars.numLeds)
+		{
+			for (int i = vars.position; i < vars.numLeds - 1; i++)
+			{
+				vars.leds[0][i] = CHSV(vars.hue2, 255, vars.brightness);
+			}
+		}
+		else
+		{
+			vars.position = 0;
+			vars.speed = 0;
+		}
+	}
+
+	D(endTime("dripper()");)
+}
+
+void dripper2(PatternVars& vars)
+{
+	D(startTime("dripper2()");)
+
+	int tankSize = 40;
+	int dripSize = 5;
+
+	vars.leds->fadeToBlackBy(120);
+
+	vars.speed = -6;
+	vars.hueSpeed = 1;
+
+	for (int i = 0; i < tankSize; i++)
+	{
+		D(middleTime("dripper2() " + String(i));)
+			vars.leds[0][i] = CHSV(vars.hue - i * 3, 255, vars.brightness);
+	}
+
+	vars.hue2 = vars.hue - (tankSize) * 3;
+	
+	for (int i = tankSize - 1; i < vars.numLeds - 1; i++)
+	{
+
+		if (sin8(i - (i * i)/40 + vars.position) > 252)
+		{
+			vars.leds[0][vars.numLeds + tankSize - i] = CHSV(vars.hue2, 255, vars.brightness);
+		}
+	}
+
+
+	D(endTime("dripper2()");)
+}
+
+void twinkle(PatternVars& vars)
+{
+	vars.leds->fadeToBlackBy(80);
+
+	for (int i = 0; i < vars.numLeds; i++)
+	{
+		if (random8() < vars.speed * 4)
+		{
+			vars.leds[0][i] = CRGB(255,255,255);
+		}
+	}
+}
+
+PatternList patterns = {	rainbow,
+							rainbowWithGlitter, 
+							bpm,
+							sinelon,
+							juggle,
+							confetti,
+							colorWaves,
+							continuousWipe,
+							colorWipe, 
+							showSolidColorChanging,
+							fire,
+							water,
+							dripper,
+							dripper2,
+							twinkle		};
+
+/*PatternAndNameList patternsAndNames = {
 	// TODO Things to add to web list.
 	//{ poopyWorm,		"Poopy Worm"}
 	//{ continuousWipe,	"Continuous Wipe"},
@@ -324,6 +439,6 @@ PatternAndNameList patternsAndNames = {
 	{ bpm, "bpm" }
 
 	//{ showSolidColor,         "Solid Color" }
-};
+};*/
 
 const uint8_t patternCount = ARRAY_SIZE(patterns);

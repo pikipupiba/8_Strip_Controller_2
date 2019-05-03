@@ -1,6 +1,7 @@
-#include "stdafx.h"
-
 #pragma once
+
+#ifndef __GRADIENT_PALETTES_H
+#define __GRADIENT_PALETTES_H
 
 // From ColorWavesWithPalettes by Mark Kriegsman: https://gist.github.com/kriegsman/8281905786e8b2632aeb
 
@@ -468,3 +469,5 @@ DEFINE_GRADIENT_PALETTE( Blue_Cyan_Yellow_gp ) {
   127,   0,255,255,
   191,  42,255, 45,
   255, 255,255,  0};
+
+#endif

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LEDStrip.h"
-
+#include "palettes.h"
 
 LEDStrip::LEDStrip(CRGBSet* leds)
 {
@@ -10,13 +10,17 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 	vars = {
 		leds,		// CRGBSet
 		leds->len,	// numLeds
-		0,			// curPattern
-		255,		// brightness
+		14,			// curPattern
+		120,		// brightness
 		0,			// hue
 		1,			// hueSpeed
+		0,			// hue2
 		0,			// position
-		10,			// speed
-		10			// size
+		1,			// speed
+		10,			// size
+		0,			// clockOffset
+		palettes[0],// palette
+		palettes[0]	// tPalette
 	};
 
 	power = true;

@@ -138,6 +138,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="LEDStrip.cpp" />
+    <ClCompile Include="palettes.cpp" />
     <ClCompile Include="patterns.cpp" />
     <ClCompile Include="tasks.cpp" />
     <ClCompile Include="Universe.cpp" />

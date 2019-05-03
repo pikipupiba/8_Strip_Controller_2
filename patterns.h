@@ -19,11 +19,18 @@ typedef struct {
 
 	float hue;
 	float hueSpeed;
+	
+	float hue2;
 
 	float position;
 	float speed;
 
 	float size;
+
+	int clockOffset;
+
+	CRGBPalette16 palette;
+	CRGBPalette16 targetPalette;
 
 } PatternVars;
 
@@ -44,6 +51,9 @@ void pride				(PatternVars &vars);
 void colorWaves			(PatternVars &vars);
 void colorWipe			(PatternVars &vars);
 void continuousWipe		(PatternVars &vars);
+void dripper			(PatternVars& vars);
+void dripper2			(PatternVars& vars);
+void twinkle			(PatternVars& vars);
 
 
 typedef void(*Pattern)(PatternVars &vars);

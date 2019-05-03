@@ -176,4 +176,5 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/power_mgt.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/fastspi.h \
  C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/fastspi_bitbang.h \
- C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/chipsets.h
+ C:\Users\pikipupiba\Documents\Arduino\libraries\FastLED/chipsets.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\palettes.h
