@@ -1,4 +1,0 @@
-# esp32-fastled-webserver build property overrides
-#
-
-[code]build.code_debug=5[/code]
