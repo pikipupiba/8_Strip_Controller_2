@@ -48,6 +48,9 @@
     <ClInclude Include="patterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="web.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tasks.cpp">

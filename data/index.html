@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LED Single Strip Controller</title>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 22px;
+            background-color: #333333;
+            margin: 16px 0px 0px 16px;
+        }
+
+        div {
+            margin: 0px;
+        }
+
+        span {
+            margin: 0px;
+        }
+
+        .toggleButton {
+            display: inline-block;
+            margin: 0% 3.33% 3.33% 0%;
+            padding: 0px;
+            border: 0px;
+            width: 20%;
+            height: 30px;
+            color: #ffffff;
+            border-radius: 6px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 24px;
+            user-select: none;
+        }
+
+        .toggleButtonOff {
+            background-color: #666666;
+        }
+
+        .toggleButtonOn {
+            background-color: #4844FF;
+        }
+
+        .simpleButton {
+            display: inline-block;
+            padding: 0px;
+            border: 0px;
+            width: 20%;
+            height: 30px;
+            background-color: #666666;
+            color: #ffffff;
+            border-radius: 6px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 24px;
+            user-select: none;
+        }
+
+        .simpleButton:active {
+            background-color: #4844FF;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 50%;
+            height: 18px;
+            position: relative;
+            border-radius: 4px;
+            background: #666666;
+            opacity: 0.8;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50px;
+            background: #FFFFFF;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 40px;
+            background: #0000CC;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            background: #ffffff;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 6px;
+            width: 40%;
+            margin-bottom: 5%;
+        }
+
+        .textLabel {
+            padding: 4px;
+            margin-right: 2%;
+            user-select: none;
+        }
+
+        .textClickable {
+            color: #000000;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 0px 4px 0px 4px;
+            margin-right: 2%;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .leftArrow {
+            background: #ffffff;
+            border-radius: 100px 0px 0px 100px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .rightArrow {
+            background: #ffffff;
+            border-radius: 0px 100px 100px 0px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <span id="stripActive" class="simpleButton" style="width: 90%" onmousedown="stripActiveToggle()">On</span>
+    <div style="margin-bottom: 3%"></div>
+
+    <select id="animationValue" class="dropdown" oninput="dropdownChanged()">
+        <option>Random</option>
+        <option>Dancing Sisters</option>
+        <option>Fire</option>
+        <option>Twinkle</option>
+        <option>Mover</option>
+    </select>
+    <span id="randomPattern" class="simpleButton" style="width: 40%" onmousedown="randomPattern()">Random</span>
+    <div style="margin-bottom: 3%"></div>
+
+    <span class="textLabel">BRITE</span>
+    <span class="leftArrow" onmousedown="slider0Dec()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="range" id="slider0" class="slider" min="0" max="255" value="128" oninput="slider0Changed()" />
+    <span class="rightArrow" onmousedown="slider0Inc()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div style="margin-bottom: 6%"></div>
+
+    <span class="textClickable" onmousedown="slider1Reset()">SPEED</span>
+    <span class="leftArrow" onmousedown="slider1Dec()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="range" id="slider1" class="slider" min="-127" max="128" value="0" oninput="slider1Changed()" />
+    <span class="rightArrow" onmousedown="slider1Inc()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div style="margin-bottom: 6%"></div>
+
+    &nbsp;&nbsp;<span class="textLabel">HUE</span>
+    <span class="leftArrow" onmousedown="slider2Dec()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="range" id="slider2" class="slider" style="background: url('data:image/png;charset=utf-8;base64,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')" min="0" max="360" value="0" oninput="slider2Changed()" />
+    <span class="rightArrow" onmousedown="slider2Inc()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div style="margin-bottom: 6%"></div>
+
+    <span class="textClickable" onmousedown="slider3Reset()">HUESP</span>
+    <span class="leftArrow" onmousedown="slider3Dec()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="range" id="slider3" class="slider" min="-10000" max="10000" value="0" oninput="slider3Changed()" />
+    <span class="rightArrow" onmousedown="slider3Inc()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div style="margin-bottom: 6%"></div>
+
+    <span class="textLabel">OFFST</span>
+    <span class="leftArrow" onmousedown="slider4Dec()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="range" id="slider4" class="slider" min="0" max="255" value="0" oninput="slider4Changed()" />
+    <span class="rightArrow" onmousedown="slider4Inc()">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+    <div style="margin-bottom: 8%"></div>
+
+    <span id="setIP" class="simpleButton" style="width: 50%" onmousedown="setIP()">Set IP</span>
+    <div style="margin-bottom: 5%"></div>
+
+    <!--    <div id="status" style="margin-bottom: 3%">Ready</div>-->
+
+    <script>
+        //// First section: Stripped-down version of Jason Coon's "app.js"
+        //// Only using the sending features, the interface is built separately
+        //// Only sends values, no colors or booleans
+        //// Active 0/1
+        //// Pattern type (int staring at 0, corresponding to dropdown)
+        //// slider0, slider1, slider2 = all int values, range varies
+
+        /////////////////////////////// start of app.js
+
+        // used when hosting the site on the ESP8266
+        var address = location.hostname;
+        var urlBase = "";
+
+        // used when hosting the site somewhere other than the ESP8266 (handy for testing without waiting forever to upload to SPIFFS)
+        //var address = "192.168.43.115"; // replace with microcontroller's IP
+        //var urlBase = "http://" + address + "/";
+
+        //var postValueTimer = {};
+
+        // For data coming back from microcontroller
+        // var ws = new ReconnectingWebSocket('ws://' + address + ':81/', ['arduino']);
+        // ws.debug = true;
+        //
+        // ws.onmessage = function(evt) {
+        //   if(evt.data != null)
+        //   {
+        //     var data = JSON.parse(evt.data);
+        //     if(data == null) return;
+        //     updateFieldValue(data.name, data.value);
+        //   }
+        // }
+
+        /*
+        $(document).ready(function() {
+            $("#status").html("Connecting, please wait...");
+
+            $.get(urlBase + "all", function(data) {
+                    $("#status").html("Loading, please wait...");
+
+                    $("#status").html("Ready");
+                })
+                .fail(function(errorThrown) {
+                    console.log("error: " + errorThrown);
+                });
+        });
+        */
+
+        function postValue(name, value) {
+            /*
+            $("#status").html(name + ": " + value);
+
+            var body = {
+                name: name,
+                value: value
+            };
+
+            $.post(urlBase + "fieldValue?name=" + name + "&value=" + value, body, function(data) {
+                if (data.name != null) {
+                    $("#status").html("Set " + name + ": " + data.name);
+                } else {
+                    $("#status").html("Set " + name + ": " + data);
+                }
+            });
+            */
+        }
+
+        // May need this to slow data sends, need to test
+        function delayPostValue(name, value) {
+            /*clearTimeout(postValueTimer);
+            postValueTimer = setTimeout(function() {
+                postValue(name, value);
+            }, 300);
+            */
+        }
+
+        /////////////////////////////// end of app.js
+
+        var stripActive = 1;
+
+        var slider0 = 0;
+        var slider1 = 0;
+        var slider2 = 0;
+        var slider3 = 0;
+        var slider4 = 0;
+
+        var numAnimations = document.getElementById("animationValue").length;
+        var animationValue = 0;
+
+        var currentName = "";
+        var currentValue = 0;
+
+        var sendRate = 250; // interval for posting changes, to not overwhelm the server
+        var sendTimer = setInterval(sendRequest, sendRate);
+
+        showSettings();
+
+        ////////////////////
+
+        function showSettings() {
+            // On/Off button
+            if (stripActive == 1) {
+                document.getElementById("stripActive").className = "toggleButton toggleButtonOn";
+                document.getElementById("stripActive").innerHTML = "On";
+            } else {
+                document.getElementById("stripActive").className = "toggleButton toggleButtonOff";
+                document.getElementById("stripActive").innerHTML = "Off";
+            }
+
+            // Pattern dropdown
+            document.getElementById("animationValue").selectedIndex = animationValue;
+
+            // Sliders
+            document.getElementById("slider0").value = slider0;
+            document.getElementById("slider1").value = slider1;
+            document.getElementById("slider2").value = slider2;
+            document.getElementById("slider3").value = slider3;
+            document.getElementById("slider4").value = slider4;
+        }
+
+        function stripActiveToggle() {
+            (stripActive == 1) ? stripActive = 0: stripActive = 1;
+            showSettings();
+            currentName = "power";
+            currentValue = stripActive;
+        }
+
+
+        function slider0Changed() { // if slider changed, store new value
+            slider0 = document.getElementById("slider0").value;
+            currentName = "brightness";
+            currentValue = slider0;
+        }
+
+        function slider0Inc() {
+            slider0++;
+            currentName = "brightness";
+            currentValue = slider0;
+            showSettings();
+        }
+
+        function slider0Dec() {
+            slider0--;
+            currentName = "brightness";
+            currentValue = slider0;
+            showSettings();
+        }
+
+        function slider0Reset() {
+            slider0 = 0;
+            currentName = "brightness";
+            currentValue = slider0;
+            showSettings();
+        }
+
+        ////////////////////
+
+        function slider1Changed() {
+            slider1 = document.getElementById("slider1").value;
+            currentName = "speed";
+            currentValue = slider1;
+        }
+
+        function slider1Inc() {
+            slider1++;
+            currentName = "speed";
+            currentValue = slider1;
+            showSettings();
+        }
+
+        function slider1Dec() {
+            slider1--;
+            currentName = "speed";
+            currentValue = slider1;
+            showSettings();
+        }
+
+        ////////////////////
+
+        function slider2Changed() {
+            slider2 = document.getElementById("slider2").value;
+            currentName = "hue";
+            currentValue = slider2;
+        }
+
+        function slider2Inc() {
+            slider2++;
+            currentName = "hue";
+            currentValue = slider2;
+            showSettings();
+        }
+
+        function slider2Dec() {
+            slider2--;
+            currentName = "hue";
+            currentValue = slider2;
+            showSettings();
+        }
+
+        ////////////////////
+
+        function slider3Changed() {
+            slider3 = document.getElementById("slider3").value;
+            currentName = "hueSpeed";
+            currentValue = slider3;
+            showSettings();
+        }
+
+        function slider3Inc() {
+            slider3 += 300;
+            currentName = "hueSpeed";
+            currentValue = slider3;
+            showSettings();
+        }
+
+        function slider3Dec() {
+            slider3 -= 300;
+            currentName = "hueSpeed";
+            currentValue = slider3;
+            showSettings();
+        }
+
+        function slider3Reset() {
+            slider3 = 0;
+            currentName = "hueSpeed";
+            currentValue = slider3;
+            showSettings();
+        }
+
+        ////////////////////
+
+        function slider4Changed() {
+            slider4 = document.getElementById("slider4").value;
+            currentName = "offset";
+            currentValue = slider4;
+        }
+
+        function slider4Inc() {
+            slider4++;
+            currentName = "offset";
+            currentValue = slider4;
+            showSettings();
+        }
+
+        function slider4Dec() {
+            slider4--;
+            currentName = "offset";
+            currentValue = slider4;
+            showSettings();
+        }
+
+        ////////////////////
+
+        function dropdownChanged() { // if dropdown changed, store new value (int index)
+            animationValue = document.getElementById("animationValue").selectedIndex;
+            currentName = "pattern";
+            currentValue = animationValue;
+        }
+
+        function randomPattern() {
+            animationValue = Math.floor(Math.random() * numAnimations);
+            currentName = "pattern";
+            currentValue = animationValue;
+            showSettings();
+        }
+
+        function setIP() {
+            var newIP = prompt("Enter IP address of LED controller\nNo error checking, enter exactly", "127.0.0.1");
+            // IP syntax and range validation code here if needed
+            address = newIP;
+            urlBase = "http://" + address + "/";
+        }
+
+        function sendRequest() {
+            $.get(urlBase + "input?" + currentName + "=" + currentValue);
+            currentName = "null";
+            currentValue = 0;
+        }
+
+        //////////////////////////////
+
+    </script>
+</body>
+
+</html>

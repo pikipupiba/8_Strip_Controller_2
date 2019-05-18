@@ -75,6 +75,13 @@ Universe::Universe()
 
 	gLeds.fill_solid(CRGB::Black);
 
+	uPower = true;
+	uBrightness = 128;
+	uSpeed = 0;
+	uHue = 0;
+	uHueSpeed = 0;
+	uOffset = 0;
+
 	D(endTime("Universe::Universe()");)
 }
 
@@ -99,7 +106,118 @@ void Universe::Update()
 		strips[i]->UpdateStrip();
 	}
 
+	if (uPower)
+	{
+		FastLED.setBrightness(uBrightness);
+	}
+	else
+	{
+		FastLED.setBrightness(0);
+	}
+
 	D(endTime("Universe::Update()");)
+}
+
+void Universe::NextPattern()
+{
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.autoplayDuration = 5000;
+		strips[i]->vars.autoplay = false;
+
+		strips[i]->NextPattern();
+	}
+}
+
+void Universe::ToggleAutoplay()
+{
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		if (strips[i]->vars.autoplay == true)
+		{
+			strips[i]->vars.autoplayDuration += 5000;
+		}
+
+		strips[i]->vars.autoplay = true;
+	}
+}
+
+void Universe::Change(String label, int value)
+{
+	if (label == "power")
+	{
+		uPower = value;
+	}
+	else if (label == "brightness")
+	{
+		uBrightness = value;
+	}
+	else if (label == "speed")
+	{
+		uSpeed = (value + 10000) / 10000 * (20) - 10;
+	}
+	else if (label == "hue")
+	{
+		uHue = (value + 10000) / 10000 * (255);
+	}
+	else if (label == "hueSpeed")
+	{
+		uHueSpeed = (value + 10000) / 10000 * (20) - 10;
+	}
+	else if (label == "offset")
+	{
+		uOffset = value;
+	}
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->ChangeVars(uSpeed, uHue, uHueSpeed, uOffset);
+	}
+
+}
+
+void Universe::ChangeOffset()
+{
+	uOffset = (uOffset + 5);
+	
+	if (uOffset > 37)
+	{
+		uOffset = 0;
+	}
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.position = i * uOffset;
+		strips[i]->vars.positionOffset = i * uOffset;
+	}
+}
+
+void Universe::ChangeHueFactor()
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.hueScaleFactor += 0.2;
+
+		if (strips[i]->vars.hueScaleFactor > 2)
+		{
+			strips[i]->vars.hueScaleFactor = 0;
+		}
+	}
+}
+
+void Universe::ChangeSpeedFactor()
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.speedScaleFactor += 0.2;
+
+		if (strips[i]->vars.speedScaleFactor > 2)
+		{
+			strips[i]->vars.speedScaleFactor = 0;
+		}
+	}
 }
 
 void Universe::PrintInfo()
@@ -116,3 +234,4 @@ void Universe::PrintInfo()
 
 	Serial.println();
 }
+

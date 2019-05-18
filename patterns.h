@@ -27,10 +27,17 @@ typedef struct {
 
 	float size;
 
+	int positionOffset;
 	int clockOffset;
 
 	CRGBPalette16 palette;
 	CRGBPalette16 targetPalette;
+
+	bool autoplay;
+	int autoplayDuration;
+
+	float hueScaleFactor;
+	float speedScaleFactor;
 
 } PatternVars;
 
@@ -54,6 +61,9 @@ void continuousWipe		(PatternVars &vars);
 void dripper			(PatternVars& vars);
 void dripper2			(PatternVars& vars);
 void twinkle			(PatternVars& vars);
+void twinkleRain		(PatternVars& vars);
+void plasma				(PatternVars& vars);
+void meteor				(PatternVars& vars);
 
 
 typedef void(*Pattern)(PatternVars &vars);

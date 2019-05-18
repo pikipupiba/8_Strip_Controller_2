@@ -1,19 +1,26 @@
 #pragma once
 
 // BRIGHTNESS Potentiometer
-const int potPin1 = 36;
+//const int potPin1 = 36;
 // SPEED and HUE of Solid Color Potentiometer
-const int potPin2 = 37;
+//const int potPin2 = 37;
 // Blackout Button
-const int butPin1 = 39;
+const int butPin1 = 0;
 // Pattern Change Button
-const int butPin2 = 38;
+//const int butPin2 = 38;
+
+EasyButton button(butPin1);
+
+void changePattern()
+{
+	universe.NextPattern();
+}
 
 void setupInputs()
 {
 	// Set the Button Pins for INPUT.
-	pinMode(butPin1, INPUT);
-	pinMode(butPin2, INPUT);
+
+	//pinMode(butPin2, INPUT);
 }
 
 // Handle any and all physical buttons on the package.
@@ -27,5 +34,5 @@ void setupInputs()
 
 void handleInputs()
 {
-
+	
 }
