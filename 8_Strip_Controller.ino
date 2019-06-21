@@ -37,7 +37,8 @@ EasyButton button_R(BUTTON_PIN_R, 50, false, false);
 void onPressed_W()
 {
 	universe.NextPattern();
-	//Serial.println("WHITE BUTTON PRESSED!");
+
+	Serial.println("WHITE BUTTON PRESSED!");
 }
 
 void onHold_W()
@@ -48,9 +49,27 @@ void onHold_W()
 
 void onPressed_B()
 {
-	universe.uBrightness = universe.uBrightness * 0.8;
+	static long int lastPress = millis() - 501;
 
-	//Serial.println("BLACK BUTTON PRESSED!");
+
+	if (millis() - lastPress > 500)
+	{
+		universe.uBrightness = universe.uBrightness * 0.8;
+		lastPress = millis();
+
+		Serial.println("BLACK BUTTON PRESSED!");
+	}
+	else
+	{
+		universe.uBrightness = universe.uBrightness * 1.5625;
+
+		universe.ChangeHueFactor();
+
+
+		lastPress = millis() - 500;
+		Serial.println("BLACK BUTTON x2!");
+	}
+
 }
 
 void onHold_B()
@@ -60,31 +79,37 @@ void onHold_B()
 	//Serial.println("BLACK BUTTON HELD!");
 }
 
-void onSequence_B()
-{
-	universe.uBrightness = universe.uBrightness * 1.5625;
-
-	universe.ChangeHueFactor();
-	//Serial.println("BLACK BUTTON SEQUENCE!");
-}
 
 void onPressed_R()
 {
-	universe.ChangeOffset();
+	static long int lastPress = millis() - 501;
+
+
+	if (millis() - lastPress > 500)
+	{
+		universe.ChangeOffset();
+		lastPress = millis();
+
+		Serial.println("RED BUTTON PRESSED!");
+	}
+	else
+	{
+		universe.ChangeOffset();
+		universe.ChangeOffset();
+		universe.ChangeOffset();
+		universe.ChangeOffset();
+		universe.ChangeOffset();
+		universe.ChangeOffset();
+
+		universe.ChangeSpeedFactor();
+
+
+		lastPress = millis() - 500;
+
+		Serial.println("RED BUTTON x2!");
+	}
+	
 	//Serial.println("RED BUTTON PRESSED!");
-}
-
-void onSequence_R()
-{
-	universe.ChangeOffset();
-	universe.ChangeOffset();
-	universe.ChangeOffset();
-	universe.ChangeOffset();
-	universe.ChangeOffset();
-	universe.ChangeOffset();
-
-	universe.ChangeSpeedFactor();
-	//Serial.println("RED BUTTON SEQUENCE!");
 }
 
 void setup() {
@@ -102,10 +127,8 @@ void setup() {
 
 	button_B.onPressed(onPressed_B);
 	button_B.onPressedFor(1300, onHold_B);
-	button_B.onSequence(2, 500, onSequence_B);
 
 	button_R.onPressed(onPressed_R);
-	button_R.onSequence(2, 500, onSequence_R);
 
 	//setupInputs();
 	//setupWeb();
@@ -133,7 +156,7 @@ void loop()
 	universe.Update();
 
 	//showfps();
-	//fps(1);
+	fps(1);
 
 	FastLEDshowESP32();
 

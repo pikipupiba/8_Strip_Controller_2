@@ -40,6 +40,16 @@
 #define STRIP_PIN_6 16
 #define STRIP_PIN_7 17
 
+/* The pins used on an Arduino Nano */
+//#define STRIP_PIN_0 11
+//#define STRIP_PIN_1 12
+//#define STRIP_PIN_2 15
+//#define STRIP_PIN_3 2
+//#define STRIP_PIN_4 0
+//#define STRIP_PIN_5 4
+//#define STRIP_PIN_6 16
+//#define STRIP_PIN_7 17
+
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
 

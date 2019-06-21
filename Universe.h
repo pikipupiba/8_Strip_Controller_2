@@ -23,6 +23,10 @@ private:
 	float uHueSpeed;
 	int uOffset;
 
+	bool uAutoplay;
+	unsigned long uAutoplayTimeout;
+	int uAutoplayDuration;
+
 public:
 	int uBrightness;
 

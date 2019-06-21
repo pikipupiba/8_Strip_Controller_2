@@ -82,6 +82,10 @@ Universe::Universe()
 	uHueSpeed = 0;
 	uOffset = 0;
 
+	uAutoplay = false;
+	uAutoplayTimeout = millis() + 15000;
+	uAutoplayDuration = 15000;
+
 	D(endTime("Universe::Universe()");)
 }
 
@@ -100,6 +104,12 @@ Universe* Universe::CreateUniverse()
 void Universe::Update()
 {
 	D(startTime("Universe::Update()");)
+
+
+		if (uAutoplay && (millis() > uAutoplayTimeout)) {
+			NextPattern();
+			uAutoplayTimeout = millis() + (uAutoplayDuration);
+		}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
@@ -120,28 +130,85 @@ void Universe::Update()
 
 void Universe::NextPattern()
 {
-
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strips[i]->vars.autoplayDuration = 5000;
-		strips[i]->vars.autoplay = false;
+		strips[i]->vars.cyclePalettes = false;
+		strips[i]->vars.started = false;
+	}
 
-		strips[i]->NextPattern();
+	if (uAutoplay == true)
+	{
+		if (random8() < 128)
+		{
+			uOffset = random8(35);
+			float hueFactor = float(random8(50,200)) / 90;
+			float speedFactor = float(random8(50, 200)) / 90;
+
+			for (int i = 0; i < NUM_STRIPS; i++)
+			{
+				strips[i]->vars.positionOffset = i * uOffset;
+				strips[i]->vars.hueScaleFactor = hueFactor;
+				strips[i]->vars.speedScaleFactor = speedFactor;
+			}
+		}
+		else 
+		{
+			uOffset = 0;
+			float hueFactor = 1;
+			float speedFactor = 1;
+
+			for (int i = 0; i < NUM_STRIPS; i++)
+			{
+				strips[i]->vars.positionOffset = i * uOffset;
+				strips[i]->vars.hueScaleFactor = hueFactor;
+				strips[i]->vars.speedScaleFactor = speedFactor;
+				strips[i]->vars.speed = 1;
+				strips[i]->vars.hueSpeed = 1;
+			}
+		}
+
+		int patternNum = random8(patternCount);
+
+		Serial.println("Pattern Number : " + String(patternNum));
+
+		for (int i = 0; i < NUM_STRIPS; i++)
+		{
+			strips[i]->vars.curPattern = patternNum;
+		}
+
+	}
+	else
+	{
+		for (int i = 0; i < NUM_STRIPS; i++)
+		{
+
+			strips[i]->vars.autoplayDuration = 15000;
+
+			strips[i]->NextPattern();
+		}
 	}
 }
 
 void Universe::ToggleAutoplay()
 {
 
-	for (int i = 0; i < NUM_STRIPS; i++)
-	{
-		if (strips[i]->vars.autoplay == true)
+		if (uAutoplay == true )
 		{
-			strips[i]->vars.autoplayDuration += 5000;
+			if (uAutoplayDuration < 29999)
+			{
+				uAutoplayDuration += 15000;
+			}
+			else
+			{
+				uAutoplay = false;
+			}
+		}
+		else
+		{
+			uAutoplay = true;
 		}
 
-		strips[i]->vars.autoplay = true;
-	}
+	NextPattern();
 }
 
 void Universe::Change(String label, int value)
@@ -200,7 +267,7 @@ void Universe::ChangeHueFactor()
 	{
 		strips[i]->vars.hueScaleFactor += 0.2;
 
-		if (strips[i]->vars.hueScaleFactor > 2)
+		if (strips[i]->vars.hueScaleFactor > 2.5)
 		{
 			strips[i]->vars.hueScaleFactor = 0;
 		}
@@ -213,7 +280,7 @@ void Universe::ChangeSpeedFactor()
 	{
 		strips[i]->vars.speedScaleFactor += 0.2;
 
-		if (strips[i]->vars.speedScaleFactor > 2)
+		if (strips[i]->vars.speedScaleFactor > 2.5)
 		{
 			strips[i]->vars.speedScaleFactor = 0;
 		}

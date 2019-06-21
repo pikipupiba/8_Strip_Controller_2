@@ -7,6 +7,7 @@
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 #include <FastLED.h>
+#include "palettes.h"
 
 typedef struct {
 
@@ -23,6 +24,7 @@ typedef struct {
 	float hue2;
 
 	float position;
+
 	float speed;
 
 	float size;
@@ -31,13 +33,28 @@ typedef struct {
 	int clockOffset;
 
 	CRGBPalette16 palette;
+	int paletteNum;
 	CRGBPalette16 targetPalette;
+	int targetPaletteNum;
 
 	bool autoplay;
 	int autoplayDuration;
 
+	bool cyclePalettes;
+	int paletteDuration;
+
 	float hueScaleFactor;
 	float speedScaleFactor;
+
+	float Height[6];
+	float ImpactVelocity[6];
+	float TimeSinceLastBounce[6];
+	int   Position[6];
+	int	  PrevPosition[6];
+	long  ClockTimeSinceLastBounce[6];
+	float Dampening[6];
+
+	bool started;
 
 } PatternVars;
 
@@ -58,12 +75,13 @@ void pride				(PatternVars &vars);
 void colorWaves			(PatternVars &vars);
 void colorWipe			(PatternVars &vars);
 void continuousWipe		(PatternVars &vars);
-void dripper			(PatternVars& vars);
-void dripper2			(PatternVars& vars);
-void twinkle			(PatternVars& vars);
-void twinkleRain		(PatternVars& vars);
-void plasma				(PatternVars& vars);
-void meteor				(PatternVars& vars);
+void dripper			(PatternVars &vars);
+void dripper2			(PatternVars &vars);
+void twinkle			(PatternVars &vars);
+void twinkleRain		(PatternVars &vars);
+void plasma				(PatternVars &vars);
+void meteor				(PatternVars &vars);
+void bouncingBalls		(PatternVars &vars);
 
 
 typedef void(*Pattern)(PatternVars &vars);

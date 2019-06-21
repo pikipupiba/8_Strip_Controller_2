@@ -21,16 +21,29 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			0,			// positionOffset
 			0,			// clockOffset
 			palettes[0],// palette
+			0,
 			palettes[0],	// tPalette
+			0,
+			false,
+			15000,
 			false,
 			5000,
 			1,
-			1
+			1,
+			{0,0,0,0,0,0}, // Height
+			{0,0,0,0,0,0}, // Impact Velocity
+			{0,0,0,0,0,0}, // Time Since Last Bounce
+			{0,0,0,0,0,0}, // Position
+			{0,0,0,0,0,0}, // PrevPosition
+			{0,0,0,0,0,0}, // Clock Time since last bounce
+			{0,0,0,0,0,0}, // Dampening
+			false			// started
 	};
 
 	power = true;
 
 	stripAutoplayTimeout = millis() + vars.autoplayDuration;
+	stripPaletteTimeout = millis() + vars.paletteDuration;
 
 	D(endTime("LEDStrip::LEDStrip(CRGBSet leds)");)
 }
@@ -47,10 +60,17 @@ void LEDStrip::UpdateStrip()
 
 	patterns[vars.curPattern](vars);
 
-	if (vars.autoplay && (millis() > stripAutoplayTimeout)) {
-		NextPattern();
-		stripAutoplayTimeout = millis() + (vars.autoplayDuration);
+	//if (vars.autoplay && (millis() > stripAutoplayTimeout)) {
+	//	NextPattern();
+	//	stripAutoplayTimeout = millis() + (vars.autoplayDuration);
+	//}
+
+	if (vars.cyclePalettes && (millis() > vars.paletteDuration)) {
+		NextPalette();
+		stripPaletteTimeout = millis() + (vars.paletteDuration);
 	}
+
+	nblendPaletteTowardPalette(vars.palette, vars.targetPalette, 4);
 
 	D(endTime("LEDStrip::UpdateStrip()");)
 }
@@ -71,6 +91,7 @@ void LEDStrip::ResetTimeouts()
 	D(startTime("LEDStrip::ResetTimeouts()");)
 
 	stripAutoplayTimeout = millis() + (vars.autoplayDuration);
+	stripPaletteTimeout = millis() + vars.paletteDuration;
 
 	D(endTime("LEDStrip::ResetTimeouts()");)
 }
@@ -82,6 +103,12 @@ void LEDStrip::NextPattern()
 	vars.curPattern = (vars.curPattern + 1) % patternCount;
 
 	D(endTime("LEDStrip::NextPattern()");)
+}
+
+void LEDStrip::NextPalette()
+{
+	vars.targetPaletteNum = (vars.targetPaletteNum + 1) % paletteCount;
+	vars.targetPalette = palettes[vars.targetPaletteNum];
 }
 
 void LEDStrip::ChangeVars(float newSpeed, float newHueSpeed, int newOffset, float newHue)

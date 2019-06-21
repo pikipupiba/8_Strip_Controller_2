@@ -2,6 +2,7 @@
 
 #include "debug.h"
 #include "patterns.h"
+#include "palettes.h"
 
 class LEDStrip
 {
@@ -12,6 +13,7 @@ private:
 	//bool stripAutoplay;			// If TRUE then the current pattern (or preset!) will change every autoplayDuration seconds.
 	//int stripAutoplayDuration;
 	unsigned long stripAutoplayTimeout;
+	unsigned long stripPaletteTimeout;
 
 protected:
 	
@@ -27,6 +29,7 @@ public:
 	 void ResetTimeouts();	// Resets the timeouts for auto preset and palette rotation.
 	
 	 void NextPattern();	// Advances the pattern playing on the strip.
+	 void NextPalette();
 
 	 void ChangeVars(float newSpeed, float newHueSpeed, int newOffset, float newHue);
 

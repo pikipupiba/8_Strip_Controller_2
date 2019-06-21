@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "patterns.h"
 #include <FastLED.h>
-#include "palettes.h"
 
 void rainbow(PatternVars &vars)
 {
@@ -65,7 +64,7 @@ void sinelon(PatternVars &vars)
 void bpm(PatternVars &vars)
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-	uint8_t beat = beatsin8(vars.speed/1.5, 64, 255);
+	uint8_t beat = beatsin8(70, 64, 255, 0, vars.positionOffset/1.5);
 	//CRGBPalette16 palette = palettes[currentPaletteIndex];
 	for (int i = 0; i < vars.numLeds; i++) {
 		vars.leds[0][i] = CHSV(vars.hue + (i * 2), 255, beat - vars.hue + (i * 10));
@@ -76,9 +75,9 @@ void juggle(PatternVars &vars) {
 	// eight colored dots, weaving in and out of sync with each other
 	fadeToBlackBy(vars.leds[0], vars.numLeds, 20);
 	byte dothue = 0;
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 10; i++) {
 		vars.leds[0][beatsin16(i + vars.speed + 1, 0, vars.numLeds - 1,0,vars.positionOffset*100)] |= CHSV(dothue, 200, 255);
-		dothue += 32;
+		dothue += 25;
 	}
 }
 
@@ -163,13 +162,13 @@ void pride(PatternVars &vars)
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
 
-	uint8_t sat8 = beatsin88(87, 220, 250);
-	uint8_t brightdepth = beatsin88(341, 96, 224);
-	uint16_t brightnessthetainc16 = beatsin88(203, (25 * 256), (40 * 256));
-	uint8_t msmultiplier = beatsin88(147, 23, 60);
+	uint8_t sat8 = beatsin88(87, 220, 250,0,vars.positionOffset*100);
+	uint8_t brightdepth = beatsin88(341, 96, 224, 0, vars.positionOffset * 100);
+	uint16_t brightnessthetainc16 = beatsin88(203, (25 * 256), (40 * 256), 0, vars.positionOffset * 100);
+	uint8_t msmultiplier = beatsin88(147, 23, 60, 0, vars.positionOffset * 100);
 
 	uint16_t hue16 = sHue16;//gHue * 256;
-	uint16_t hueinc16 = beatsin88(113, 1, 3000);
+	uint16_t hueinc16 = beatsin88(113, 1, 3000, 0, vars.positionOffset * 100);
 
 	uint16_t ms = millis();
 	uint16_t deltams = ms - sLastMillis;
@@ -200,9 +199,7 @@ void pride(PatternVars &vars)
 			//Serial.println(*vars.leds);
 			//Serial.println(vars.numLeds);
 
-		vars.leds[pixelnumber].nblend( newcolor, 64);
-
-		//nblend(vars.leds[0][pixelnumber], newcolor, 64);
+		nblend(vars.leds[0][pixelnumber], newcolor, 64);
 	}
 
 	D(endTime("pride(PatternVars vars)");)
@@ -265,6 +262,8 @@ void colorwaves(CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 
 void colorWaves(PatternVars &vars)
 {
+	vars.cyclePalettes = true;
+
 	colorwaves(vars.leds[0], vars.numLeds, vars.palette);
 }
 
@@ -300,7 +299,7 @@ void continuousWipe(PatternVars &vars)
 	prevpos = vars.position;
 }
 
-void dripper(PatternVars& vars)
+void dripper(PatternVars &vars)
 {
 	D(startTime("dripper()");)
 
@@ -362,16 +361,11 @@ void dripper(PatternVars& vars)
 	D(endTime("dripper()");)
 }
 
-void dripper2(PatternVars& vars)
+void dripper2(PatternVars &vars)
 {
 	D(startTime("dripper2()");)
 
-		if (vars.position < 0 || vars.position > vars.numLeds)
-		{
-			vars.position = 0;
-		}
-
-	int tankSize = 70;
+	int tankSize = beatsin8(5, 10, 70);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(120);
@@ -400,7 +394,7 @@ void dripper2(PatternVars& vars)
 	D(endTime("dripper2()");)
 }
 
-void twinkle(PatternVars& vars)
+void twinkle(PatternVars &vars)
 {
 	vars.leds->fadeToBlackBy(10);
 
@@ -413,7 +407,7 @@ void twinkle(PatternVars& vars)
 	}
 }
 
-void twinkleRain(PatternVars& vars)
+void twinkleRain(PatternVars &vars)
 {
 	vars.leds->fadeToBlackBy(60);
 
@@ -437,7 +431,7 @@ void twinkleRain(PatternVars& vars)
 	addGlitter(80, vars);
 }
 
-void plasma(PatternVars& vars)
+void plasma(PatternVars &vars)
 {
 	vars.leds->fadeToBlackBy(80);
 
@@ -480,7 +474,93 @@ void plasma(PatternVars& vars)
 	//addGlitter(80, vars);
 }
 
-void meteor(PatternVars& vars)
+void plasma2(PatternVars& vars)
+{
+	vars.leds->fadeToBlackBy(80);
+
+	vars.speed = (float)(beatsin8(5, 200, 255)) / 250;// (float)(beatsin8(5, 50, 180) + beatsin8(2, 50, 200)) / 120;
+
+	//int limit = (beatsin8(3, 240, 245) + beatsin8(5, 240, 253) + beatsin8(1, 240, 247)) / 2;
+	int limit = (beatsin8(3, 240, 245) + beatsin8(5, 240, 253) + beatsin8(1, 240, 247));
+	int wave1 = beatsin8(1);
+	int wave2 = beatsin8(2);
+	int wave3 = beatsin8(3);
+	int bright = 0;
+
+	for (int i = 0; i < vars.numLeds - 1; i++)
+	{
+		/*if (
+			sin8(i * 1 - int(vars.position) + wave1) +
+			sin8(i * 3 - int(vars.position) + wave2) +
+			sin8(i * 2 - int(vars.position) + wave3)
+			//sin8(i * 5 - int(vars.position) + beatsin8(3)) +
+			//sin8(i * 7 - int(vars.position) + beatsin8(4)) +
+			//sin8(i * 9 - int(vars.position) + beatsin8(5))
+			> limit
+			)
+		{*/
+		bright = vars.brightness * (sin8(i * 1 - int(vars.position) + wave1) +
+			sin8(i * 3 - int(vars.position) + wave2) +
+			sin8(i * 2 - int(vars.position) + wave3)) / limit;
+
+		if (bright > 255)
+		{
+			bright = 255 - (bright - 255);
+		}
+
+		vars.leds[0][i] = CHSV(vars.hue + i, 255, bright);
+		//}
+
+
+	}
+
+	//addGlitter(80, vars);
+}
+
+void plasma3(PatternVars& vars)
+{
+	vars.leds->fadeToBlackBy(80);
+
+	vars.speed = (float)(beatsin8(5, 200, 255)) / 250;// (float)(beatsin8(5, 50, 180) + beatsin8(2, 50, 200)) / 120;
+
+	//int limit = (beatsin8(3, 240, 245) + beatsin8(5, 240, 253) + beatsin8(1, 240, 247)) / 2;
+	int limit = (beatsin8(3, 240, 245) + beatsin8(5, 240, 253) + beatsin8(1, 240, 247));
+	int wave1 = beatsin8(1);
+	int wave2 = beatsin8(2);
+	int wave3 = beatsin8(3);
+	int bright = 0;
+
+	for (int i = 0; i < vars.numLeds - 1; i++)
+	{
+		/*if (
+			sin8(i * 1 - int(vars.position) + wave1) +
+			sin8(i * 3 - int(vars.position) + wave2) +
+			sin8(i * 2 - int(vars.position) + wave3)
+			//sin8(i * 5 - int(vars.position) + beatsin8(3)) +
+			//sin8(i * 7 - int(vars.position) + beatsin8(4)) +
+			//sin8(i * 9 - int(vars.position) + beatsin8(5))
+			> limit
+			)
+		{*/
+		bright = vars.brightness * (sin8(i * 1 - int(vars.position) + wave1) +
+			sin8(i * 3 - int(vars.position) + wave2) +
+			sin8(i * 2 - int(vars.position) + wave3)) / limit;
+
+		if (bright > 255)
+		{
+			bright = 255 - (bright - 255);
+		}
+
+		vars.leds[0][i] = CHSV(vars.hue + i, 255, bright);
+		//}
+
+
+	}
+
+	//addGlitter(80, vars);
+}
+
+void meteor(PatternVars &vars)
 {
 	//startTime("meteor()");
 
@@ -496,8 +576,11 @@ void meteor(PatternVars& vars)
 
 		// fade brightness all LEDs one step
 		for (int j = 0; j < vars.numLeds; j++) {
-			if (random8(10) > 8 || j < vars.position - 70) {
+			if (random8(100) > 78) {
 				vars.leds[0][j].fadeToBlackBy(meteorTrailDecay);
+			}
+			if (j < vars.position - 100 || j > vars.position) {
+				vars.leds[0][j].fadeToBlackBy(meteorTrailDecay * 0.05);
 			}
 		}
 
@@ -518,13 +601,76 @@ void meteor(PatternVars& vars)
 		//endTime("meteor()");
 }
 
+void bouncingBalls(PatternVars &vars)
+{
+	vars.leds->fadeToBlackBy(120);
+
+
+	int BallCount = 3;
+	float Gravity = -0.8;
+	int StartHeight = 1;
+
+	float ImpactVelocityStart = sqrt(-2 * Gravity * StartHeight);
+
+	if (!vars.started)
+	{
+		for (int i = 0; i < BallCount; i++) {
+			vars.ClockTimeSinceLastBounce[i] = millis();
+			vars.Height[i] = StartHeight;
+			vars.Position[i] = 0;
+			vars.PrevPosition[i] = vars.Position[i];
+			vars.ImpactVelocity[i] = ImpactVelocityStart;
+			vars.TimeSinceLastBounce[i] = 0;
+			vars.Dampening[i] = 0.90 - float(i) / pow(BallCount, 2);
+
+			vars.hueSpeed = 0.08;
+		}
+		vars.started = true;
+	}
+
+	for (int i = 0; i < BallCount; i++) {
+
+		vars.PrevPosition[i] = vars.Position[i];
+
+		vars.TimeSinceLastBounce[i] = millis() - vars.ClockTimeSinceLastBounce[i];
+		vars.Height[i] = 0.5 * Gravity * pow(vars.TimeSinceLastBounce[i] / 1000, 2.0) + vars.ImpactVelocity[i] * vars.TimeSinceLastBounce[i] / 1000;
+
+		if (vars.Height[i] < 0) {
+			vars.Height[i] = 0;
+			vars.ImpactVelocity[i] = vars.Dampening[i] * vars.ImpactVelocity[i];
+			vars.ClockTimeSinceLastBounce[i] = millis();
+
+			if (vars.ImpactVelocity[i] < 0.01) {
+				vars.ImpactVelocity[i] = ImpactVelocityStart;
+			}
+		}
+		vars.Position[i] = round(vars.Height[i] * (vars.numLeds - 3) / StartHeight);
+	}
+
+	for (int i = 0; i < BallCount; i++) {
+		
+		vars.leds[0][vars.numLeds - vars.Position[i] - 1] += CHSV(vars.hue + i * 92, 255, vars.brightness);
+
+		for (int j = vars.PrevPosition[i]; j < vars.Position[i]; j++)
+		{
+			vars.leds[0][vars.numLeds - j - 1] += CHSV(vars.hue + i * 92, 255, vars.brightness);
+		}
+		for (int j = vars.PrevPosition[i]; j > vars.Position[i]; j--)
+		{
+			vars.leds[0][vars.numLeds - j - 1] += CHSV(vars.hue + i * 92, 255, vars.brightness);
+		}
+	}
+
+}
+
 PatternList patterns = {	rainbow,
 							rainbowWithGlitter, 
-							//bpm,
+							bpm,
 							//sinelon,
 							juggle,
 							confetti,
 							colorWaves,
+							pride,
 							//continuousWipe,
 							//colorWipe, 
 							showSolidColorChanging,
@@ -535,7 +681,11 @@ PatternList patterns = {	rainbow,
 							twinkle,
 							twinkleRain,
 							plasma,
-							meteor		};
+							//plasma2,
+							//plasma3,
+							meteor,
+							bouncingBalls
+						};
 
 /*PatternAndNameList patternsAndNames = {
 	// TODO Things to add to web list.
