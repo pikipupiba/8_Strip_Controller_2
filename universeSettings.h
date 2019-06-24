@@ -1,6 +1,6 @@
 #pragma once
 
-#define NUM_STRIPS 8
+#define NUM_STRIPS 16
 
 #define NUM_LEDS_STRIP_0 300
 #define NUM_LEDS_STRIP_1 300
@@ -10,6 +10,14 @@
 #define NUM_LEDS_STRIP_5 300
 #define NUM_LEDS_STRIP_6 300
 #define NUM_LEDS_STRIP_7 300
+#define NUM_LEDS_STRIP_8 300
+#define NUM_LEDS_STRIP_9 300
+#define NUM_LEDS_STRIP_10 300
+#define NUM_LEDS_STRIP_11 300
+#define NUM_LEDS_STRIP_12 300
+#define NUM_LEDS_STRIP_13 300
+#define NUM_LEDS_STRIP_14 300
+#define NUM_LEDS_STRIP_15 300
 
 #define NUM_LEDS	NUM_LEDS_STRIP_0 + \
 					NUM_LEDS_STRIP_1 + \
@@ -18,7 +26,15 @@
 					NUM_LEDS_STRIP_4 + \
 					NUM_LEDS_STRIP_5 + \
 					NUM_LEDS_STRIP_6 + \
-					NUM_LEDS_STRIP_7
+					NUM_LEDS_STRIP_7 + \
+					NUM_LEDS_STRIP_8 + \
+					NUM_LEDS_STRIP_9 + \
+					NUM_LEDS_STRIP_10 + \
+					NUM_LEDS_STRIP_11 + \
+					NUM_LEDS_STRIP_12 + \
+					NUM_LEDS_STRIP_13 + \
+					NUM_LEDS_STRIP_14 + \
+					NUM_LEDS_STRIP_15
 
 /* The pins I used in the before time */
 //#define STRIP_PIN_0 13

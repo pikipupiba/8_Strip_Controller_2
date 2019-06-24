@@ -13,7 +13,6 @@
 
 #define D2(x) x
 
-
 void displayMemory(String label);
 
 // Print functions for debugging.

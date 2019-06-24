@@ -181,4 +181,5 @@ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\universeSettings.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\LEDStrip.h \
  C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\patterns.h \
- C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\palettes.h
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\palettes.h \
+ C:\Users\pikipupiba\AppData\Local\Temp\VMBuilds\8_Strip_Controller\esp32_nodemcu-32s\Release\physicalInputs.h

@@ -60,11 +60,59 @@ Universe::Universe()
 				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_7).setCorrection(TypicalLEDStrip);
 			numLedsSoFar += NUM_LEDS_STRIP_7;
 		}
+		else if (i == 8)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_0, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_8).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_8;
+		}
+		else if (i == 9)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_1, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_9).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_9;
+		}
+		else if (i == 10)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_2, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_10).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_10;
+		}
+		else if (i == 11)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_3, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_11).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_11;
+		}
+		else if (i == 12)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_4, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_12).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_12;
+		}
+		else if (i == 13)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_5, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_13).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_13;
+		}
+		else if (i == 14)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_6, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_14).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_14;
+		}
+		else if (i == 15)
+		{
+			FastLED.addLeds<LED_TYPE, STRIP_PIN_7, COLOR_ORDER>
+				(gLeds, numLedsSoFar, NUM_LEDS_STRIP_15).setCorrection(TypicalLEDStrip);
+			numLedsSoFar += NUM_LEDS_STRIP_15;
+		}
 
 		//Serial.println(gNumLeds);
 		//Serial.println(numLedsSoFar - 1);
 
-		ledSets[i] = new CRGBSet( gLeds(gNumLeds, numLedsSoFar - 1));
+		ledSets[i]   = new CRGBSet( gLeds(gNumLeds, numLedsSoFar - 1));
 
 		strips[i] = new LEDStrip( ledSets[i] );
 
@@ -76,7 +124,7 @@ Universe::Universe()
 	gLeds.fill_solid(CRGB::Black);
 
 	uPower = true;
-	uBrightness = 128;
+	uBrightness = 20;
 	uSpeed = 0;
 	uHue = 0;
 	uHueSpeed = 0;
@@ -84,7 +132,9 @@ Universe::Universe()
 
 	uAutoplay = false;
 	uAutoplayTimeout = millis() + 15000;
-	uAutoplayDuration = 15000;
+	uAutoplayDuration = 20000;
+
+	uStrobeTime = 0;
 
 	D(endTime("Universe::Universe()");)
 }
@@ -182,11 +232,24 @@ void Universe::NextPattern()
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
 
-			strips[i]->vars.autoplayDuration = 15000;
+			strips[i]->vars.autoplayDuration = 20000;
 
 			strips[i]->NextPattern();
 		}
 	}
+}
+
+void Universe::PrevPattern()
+{
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+
+		strips[i]->vars.autoplayDuration = 20000;
+
+		strips[i]->PrevPattern();
+	}
+
 }
 
 void Universe::ToggleAutoplay()
@@ -194,14 +257,9 @@ void Universe::ToggleAutoplay()
 
 		if (uAutoplay == true )
 		{
-			if (uAutoplayDuration < 29999)
-			{
-				uAutoplayDuration += 15000;
-			}
-			else
-			{
-				uAutoplay = false;
-			}
+
+			uAutoplay = false;
+
 		}
 		else
 		{
@@ -245,6 +303,31 @@ void Universe::Change(String label, int value)
 
 }
 
+void Universe::RandomHue()
+{
+	int newHue = random8();
+
+	while (abs(newHue - strips[0]->vars.hue) < 50)
+	{
+		newHue = random8();
+	}
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.hue = newHue;
+	}
+}
+
+void Universe::NextHue()
+{
+	int newHue = strips[0]->vars.hue + 32;
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.hue = newHue;
+	}
+}
+
 void Universe::ChangeOffset()
 {
 	uOffset = (uOffset + 5);
@@ -253,6 +336,17 @@ void Universe::ChangeOffset()
 	{
 		uOffset = 0;
 	}
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.position = i * uOffset;
+		strips[i]->vars.positionOffset = i * uOffset;
+	}
+}
+
+void Universe::ChangeOffset(int newOffset)
+{
+	uOffset = newOffset;
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
@@ -274,6 +368,14 @@ void Universe::ChangeHueFactor()
 	}
 }
 
+void Universe::ChangeHueFactor(float newHueFactor)
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.hueScaleFactor = newHueFactor;
+	}
+}
+
 void Universe::ChangeSpeedFactor()
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -284,6 +386,14 @@ void Universe::ChangeSpeedFactor()
 		{
 			strips[i]->vars.speedScaleFactor = 0;
 		}
+	}
+}
+
+void Universe::ChangeSpeedFactor(float newSpeedFactor)
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.speedScaleFactor = newSpeedFactor;
 	}
 }
 

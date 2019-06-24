@@ -11,9 +11,9 @@
 
 void rainbow(PatternVars &vars)
 {
-	vars.hueSpeed = 1;
+	vars.hueSpeed = -2 * vars.speedScaleFactor;
 	// FastLED's built-in rainbow generator
-	vars.leds->fill_rainbow(vars.hue + vars.positionOffset/1.5, vars.size / 10);
+	vars.leds->fill_rainbow(vars.hue + vars.positionOffset/1.5, (vars.size / 4) * vars.speedScaleFactor);
 	//fill_rainbow(leds[0], NUM_LEDS, gHue, speed/10);
 }
 
@@ -44,27 +44,29 @@ void confetti(PatternVars &vars)
 
 void sinelon(PatternVars &vars)
 {
-	// a colored dot sweeping back and forth, with fading trails
-	vars.leds->fadeToBlackBy(20);
-	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
-	int pos = beatsin16(vars.speed/5, 0, vars.numLeds - 1);
+	vars.speed = 1;
 
-	static int prevpos = 0;
+	// a colored dot sweeping back and forth, with fading trails
+	vars.leds->fadeToBlackBy(5 * vars.speedScaleFactor + 1);
+	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
+	int pos = beatsin16((vars.speed * 60) * vars.speedScaleFactor / 5, 0, vars.numLeds - 1, vars.positionOffset * 50);
+
 	CRGB color = HSVHue((int)vars.hue % 255);//ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
-	if (pos < prevpos) {
-		//vars.leds->fill_solid(vars.hue);
-		fill_solid(&vars.leds[0][pos], (prevpos - pos) + 1, color);
+
+	for (int i = -5; i < 5; i++)
+	{
+		if (pos + i > 0 && pos + i < vars.numLeds)
+		{
+			vars.leds[0][pos + i] = CHSV(vars.hue, 255, vars.brightness);
+		}
 	}
-	else {
-		fill_solid(vars.leds[0] + prevpos, (pos - prevpos) + 1, color);
-	}
-	prevpos = pos;
+
 }
 
 void bpm(PatternVars &vars)
 {
 	// colored stripes pulsing at a defined Beats-Per-Minute (BPM)
-	uint8_t beat = beatsin8(70, 64, 255, 0, vars.positionOffset/1.5);
+	uint8_t beat = beatsin8(70 * vars.speedScaleFactor, 64, 255, 0, vars.positionOffset/1.5);
 	//CRGBPalette16 palette = palettes[currentPaletteIndex];
 	for (int i = 0; i < vars.numLeds; i++) {
 		vars.leds[0][i] = CHSV(vars.hue + (i * 2), 255, beat - vars.hue + (i * 10));
@@ -76,7 +78,7 @@ void juggle(PatternVars &vars) {
 	fadeToBlackBy(vars.leds[0], vars.numLeds, 20);
 	byte dothue = 0;
 	for (int i = 0; i < 10; i++) {
-		vars.leds[0][beatsin16(i + vars.speed + 1, 0, vars.numLeds - 1,0,vars.positionOffset*100)] |= CHSV(dothue, 200, 255);
+		vars.leds[0][beatsin16((i + vars.speed + 1) * vars.speedScaleFactor, 0, vars.numLeds - 1,0,vars.positionOffset*200)] |= CHSV(dothue, 200, 255);
 		dothue += 25;
 	}
 }
@@ -162,13 +164,13 @@ void pride(PatternVars &vars)
 	static uint16_t sLastMillis = 0;
 	static uint16_t sHue16 = 0;
 
-	uint8_t sat8 = beatsin88(87, 220, 250,0,vars.positionOffset*100);
-	uint8_t brightdepth = beatsin88(341, 96, 224, 0, vars.positionOffset * 100);
-	uint16_t brightnessthetainc16 = beatsin88(203, (25 * 256), (40 * 256), 0, vars.positionOffset * 100);
-	uint8_t msmultiplier = beatsin88(147, 23, 60, 0, vars.positionOffset * 100);
+	uint8_t sat8 = beatsin88(87 * vars.speedScaleFactor, 220, 250,0,vars.positionOffset*100);
+	uint8_t brightdepth = beatsin88(341 * vars.speedScaleFactor, 96, 224, 0, vars.positionOffset * 100);
+	uint16_t brightnessthetainc16 = beatsin88(203 * vars.speedScaleFactor, (25 * 256), (40 * 256), 0, vars.positionOffset * 100);
+	uint8_t msmultiplier = beatsin88(147 * vars.speedScaleFactor, 23, 60, 0, vars.positionOffset * 100);
 
 	uint16_t hue16 = sHue16;//gHue * 256;
-	uint16_t hueinc16 = beatsin88(113, 1, 3000, 0, vars.positionOffset * 100);
+	uint16_t hueinc16 = beatsin88(113 * vars.hueScaleFactor, 1, 3000, 0, vars.positionOffset * 100);
 
 	uint16_t ms = millis();
 	uint16_t deltams = ms - sLastMillis;
@@ -308,7 +310,7 @@ void dripper(PatternVars &vars)
 			vars.position = 0;
 		}
 
-	int tankSize = beatsin8(5, 10, 70);
+	int tankSize = beatsin8(5 * vars.speedScaleFactor, 10, 70, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(40);
@@ -365,7 +367,7 @@ void dripper2(PatternVars &vars)
 {
 	D(startTime("dripper2()");)
 
-	int tankSize = beatsin8(5, 10, 70);
+	int tankSize = beatsin8(5 * vars.speedScaleFactor, 10, 70, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(120);
@@ -400,7 +402,7 @@ void twinkle(PatternVars &vars)
 
 	for (int i = 0; i < vars.numLeds; i++)
 	{
-		if (random8() < 1)
+		if (random16() < 256 * vars.speedScaleFactor)
 		{
 			vars.leds[0][i] = CRGB(255,255,255);
 		}
@@ -666,7 +668,7 @@ void bouncingBalls(PatternVars &vars)
 PatternList patterns = {	rainbow,
 							rainbowWithGlitter, 
 							bpm,
-							//sinelon,
+							sinelon,
 							juggle,
 							confetti,
 							colorWaves,

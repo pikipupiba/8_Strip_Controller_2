@@ -9,7 +9,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 
 		vars = {
 			leds,		// CRGBSet
-			leds->len,	// numLeds
+			leds->len/2,	// numLeds on top
 			1,			// curPattern
 			255,		// brightness
 			0,			// hue
@@ -21,15 +21,15 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			0,			// positionOffset
 			0,			// clockOffset
 			palettes[0],// palette
-			0,
+			0,			// paletteNum
 			palettes[0],	// tPalette
-			0,
-			false,
-			15000,
-			false,
-			5000,
-			1,
-			1,
+			0,			// tPaletteNum
+			false,		// autoplay
+			15000,		//autoplayDuration
+			false,		// cyclePalettes
+			5000,		// paletteDuration
+			1,			// hueSpeedFactor
+			1,			// speedScaleFactor
 			{0,0,0,0,0,0}, // Height
 			{0,0,0,0,0,0}, // Impact Velocity
 			{0,0,0,0,0,0}, // Time Since Last Bounce
@@ -37,7 +37,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			{0,0,0,0,0,0}, // PrevPosition
 			{0,0,0,0,0,0}, // Clock Time since last bounce
 			{0,0,0,0,0,0}, // Dampening
-			false			// started
+			false,			// started
 	};
 
 	power = true;
@@ -60,12 +60,18 @@ void LEDStrip::UpdateStrip()
 
 	patterns[vars.curPattern](vars);
 
+	// reflect strip at center
+	for (int i = 0; i < vars.numLeds; i++)
+	{
+		vars.leds[0][vars.numLeds * 2 - i-1] = vars.leds[0][i];
+	}
+
 	//if (vars.autoplay && (millis() > stripAutoplayTimeout)) {
 	//	NextPattern();
 	//	stripAutoplayTimeout = millis() + (vars.autoplayDuration);
 	//}
 
-	if (vars.cyclePalettes && (millis() > vars.paletteDuration)) {
+	if (vars.cyclePalettes && (millis() > stripPaletteTimeout)) {
 		NextPalette();
 		stripPaletteTimeout = millis() + (vars.paletteDuration);
 	}
@@ -103,6 +109,18 @@ void LEDStrip::NextPattern()
 	vars.curPattern = (vars.curPattern + 1) % patternCount;
 
 	D(endTime("LEDStrip::NextPattern()");)
+}
+
+void LEDStrip::PrevPattern()
+{
+
+	vars.curPattern = (vars.curPattern - 1);
+
+	if (vars.curPattern < 0)
+	{
+		vars.curPattern = patternCount - 1;
+	}
+
 }
 
 void LEDStrip::NextPalette()
