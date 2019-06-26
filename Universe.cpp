@@ -303,6 +303,7 @@ void Universe::Change(String label, int value)
 
 }
 
+// Select a new hue that's at least 50 away from the current hue.
 void Universe::RandomHue()
 {
 	int newHue = random8();
@@ -318,6 +319,7 @@ void Universe::RandomHue()
 	}
 }
 
+// Advance the hue by 32.
 void Universe::NextHue()
 {
 	int newHue = strips[0]->vars.hue + 32;
@@ -328,6 +330,7 @@ void Universe::NextHue()
 	}
 }
 
+// Used when I only had one button to change the offset.
 void Universe::ChangeOffset()
 {
 	uOffset = (uOffset + 5);
@@ -344,6 +347,7 @@ void Universe::ChangeOffset()
 	}
 }
 
+// Used once I had a potentiometer to change the offset.
 void Universe::ChangeOffset(int newOffset)
 {
 	uOffset = newOffset;
@@ -355,6 +359,7 @@ void Universe::ChangeOffset(int newOffset)
 	}
 }
 
+// Used when I only had one buttone to change the hue factor.
 void Universe::ChangeHueFactor()
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -368,6 +373,7 @@ void Universe::ChangeHueFactor()
 	}
 }
 
+// Used once I had a potentiometer to change the hue factor.
 void Universe::ChangeHueFactor(float newHueFactor)
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -376,6 +382,7 @@ void Universe::ChangeHueFactor(float newHueFactor)
 	}
 }
 
+// Used when I only had one buttone to change the speed factor.
 void Universe::ChangeSpeedFactor()
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -389,6 +396,7 @@ void Universe::ChangeSpeedFactor()
 	}
 }
 
+// Used once I had a potentiometer to change the speed factor.
 void Universe::ChangeSpeedFactor(float newSpeedFactor)
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -397,6 +405,7 @@ void Universe::ChangeSpeedFactor(float newSpeedFactor)
 	}
 }
 
+// Used for debugging the Universe!
 void Universe::PrintInfo()
 {
 	Serial.println();

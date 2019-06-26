@@ -29,6 +29,7 @@ private:
 	int uAutoplayDuration;
 
 public:
+	// In my rush, I have broken encapsulation :(
 	bool uAutoplay;
 	int uBrightness;
 
