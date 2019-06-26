@@ -31,11 +31,11 @@ Universe universe;
 
 void setup() {
 
-	delay(3000);			// 3 second delay for recovery
+	delay(3000);			// 3 second delay for recovery.
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	setupInputs();
+	setupInputs();			// Initialize physical buttons and knobs.
 	//setupWeb();
 
 	//FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
@@ -43,7 +43,7 @@ void setup() {
 
 	createTasks();
 
-	universe = *Universe::CreateUniverse();
+	universe = *Universe::CreateUniverse();	// Somebody told me I should initialize my object this way. Not quite sure why.
 
 	FastLEDshowESP32();
 

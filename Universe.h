@@ -13,10 +13,11 @@ private:
 
 	int gNumLeds;
 
-	CRGBArray<NUM_LEDS> gLeds;
-	CRGBSet* ledSets[NUM_STRIPS * 2];
-	LEDStrip* strips[NUM_STRIPS * 2];
+	CRGBArray<NUM_LEDS> gLeds;		// global array of leds
+	CRGBSet* ledSets[NUM_STRIPS];	// array of pointers to the CRGBSets in each strip
+	LEDStrip* strips[NUM_STRIPS];	// array of LED strips
 
+	// various messy variables that I needed.
 	bool uPower;
 	float uSpeed;
 	float uHue;
@@ -36,7 +37,7 @@ public:
 	Universe();
 	~Universe();
 
-	static Universe* CreateUniverse();
+	static Universe* CreateUniverse();	// Why should I do it like this!?!?!
 
 	void Update();
 	void NextPattern();

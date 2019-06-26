@@ -1,9 +1,12 @@
 #pragma once
 
-// These patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
-// My new patterns will create and destroy animation objects as needed to create the desired effect.
-// The patterns will have access to the animation[] array of each strip and associated parameters.
-// I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
+// Some of these patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
+// I have had to modify them to accept a variable containing all the animation variables for a certain strip.
+// this list of variables has gotten pretty bloated and I think it's time for a change.
+
+// Just a few arrays chould be available to the patterns including an array of positions, speeds, hues,
+// hue speeds, sizes, offsets, palettes, etc. This information will be specific to a strip and patterns
+// will use the ones that they need.
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 #include <FastLED.h>
@@ -11,30 +14,30 @@
 
 typedef struct {
 
-	CRGBSet* leds;
-	int numLeds;
+	CRGBSet* leds;		// Pointer to the CRGBSet containing the leds on this strip.
+	int numLeds;		// number of leds in that set
 
-	int curPattern;
+	int curPattern;		// the current pattern being played
 
 	float brightness;
 
 	float hue;
-	float hueSpeed;
+	float hueSpeed;		// how quickly the hue changes
 	
-	float hue2;
+	float hue2;			// used by a couple animations
 
-	float position;
+	float position;		// used for tracking the current state of a pattern
 
-	float speed;
+	float speed;		// how quickly the position changes
 
-	float size;
+	float size;			// will be used to track the size of a pattern feature
 
-	int positionOffset;
-	int clockOffset;
+	int positionOffset;	// how far each strip's position is offset from the prev one's
+	int clockOffset;	// not used quite yet but seems like it might be needed someday
 
-	CRGBPalette16 palette;
-	int paletteNum;
-	CRGBPalette16 targetPalette;
+	CRGBPalette16 palette;			// probably don't need both palette and paletteNum.
+	int paletteNum;					// Can probably just keep track of the number, or
+	CRGBPalette16 targetPalette;	// use a different palette struct.
 	int targetPaletteNum;
 
 	bool autoplay;
@@ -43,9 +46,11 @@ typedef struct {
 	bool cyclePalettes;
 	int paletteDuration;
 
-	float hueScaleFactor;
-	float speedScaleFactor;
+	// Both of these could be done away with better pattern code that scales properly.
+	float hueScaleFactor;	// Used to change the hue speed easily
+	float speedScaleFactor;	// Used to change the speed easily
 
+	// These are just used for the bouncing balls.
 	float Height[6];
 	float ImpactVelocity[6];
 	float TimeSinceLastBounce[6];
@@ -54,9 +59,11 @@ typedef struct {
 	long  ClockTimeSinceLastBounce[6];
 	float Dampening[6];
 
-	bool started;
+	bool started;	// Lets a pattern know if it needs to initialize variables or use what's already there.
 
 } PatternVars;
+
+// Pass PatternVars vars by reference so it doesn't get copied in memory!
 
 void rainbow			(PatternVars &vars);
 //void addGlitter			(fract8 chanceOfGlitter);
@@ -83,7 +90,7 @@ void plasma				(PatternVars &vars);
 void meteor				(PatternVars &vars);
 void bouncingBalls		(PatternVars &vars);
 
-
+// I think this is the best way to do this??
 typedef void(*Pattern)(PatternVars &vars);
 typedef Pattern PatternList[];
 

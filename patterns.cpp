@@ -1,9 +1,9 @@
 #pragma once
 
-// These patterns were the sample patterns that came with the ESP32 Web server example by Jason Coon.
-// My new patterns will create and destroy animation objects as needed to create the desired effect.
-// The patterns will have access to the animation[] array of each strip and associated parameters.
-// I haven't quite figured out how this will work but you can check out my AnimationClassTest repo to see how that worked out.
+// All the weirdly specific values in this file are purely so that the an imations look good on my plant
+// or to try to get their speeds to scale linearly with each other. Maybe in the future each pattern
+// object could have it's own set of scaling factors to make the pattern code more readable and to easily
+// modify various aspects of the pattern while knowing how the changes you make affect how the pattern looks.
 
 #include "debug.h"
 #include "patterns.h"
