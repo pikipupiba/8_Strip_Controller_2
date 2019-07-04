@@ -32,8 +32,11 @@ public:
 	// In my rush, I have broken encapsulation :(
 	bool uAutoplay;
 	int uBrightness;
+	int uTempBrightness;
 
 	int uStrobeTime;
+	bool uStrobe;
+	bool uFlash;
 
 	Universe();
 	~Universe();
@@ -49,6 +52,7 @@ public:
 
 	void RandomHue();
 	void NextHue();
+	void SetHue(int newHue);
 
 	void ChangeOffset();
 	void ChangeOffset(int newOffset);

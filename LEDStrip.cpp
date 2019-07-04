@@ -9,7 +9,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 
 		vars = {
 			leds,		// CRGBSet
-			leds->len/2,	// numLeds on top
+			leds->len,	// numLeds on top
 			1,			// curPattern
 			255,		// brightness
 			0,			// hue
@@ -38,7 +38,13 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			{0,0,0,0,0,0}, // Clock Time since last bounce
 			{0,0,0,0,0,0}, // Dampening
 			false,			// started
+			true
 	};
+
+	if (vars.reflect)
+	{
+		vars.numLeds /= 2;
+	}
 
 	power = true;
 
@@ -61,9 +67,12 @@ void LEDStrip::UpdateStrip()
 	patterns[vars.curPattern](vars);
 
 	// reflect strip at center
-	for (int i = 0; i < vars.numLeds; i++)
+	if (vars.reflect)
 	{
-		vars.leds[0][vars.numLeds * 2 - i-1] = vars.leds[0][i];
+		for (int i = 0; i < vars.numLeds; i++)
+		{
+			vars.leds[0][vars.numLeds * 2 - i - 1] = vars.leds[0][i];
+		}
 	}
 
 	//if (vars.autoplay && (millis() > stripAutoplayTimeout)) {

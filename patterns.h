@@ -60,6 +60,7 @@ typedef struct {
 	float Dampening[6];
 
 	bool started;	// Lets a pattern know if it needs to initialize variables or use what's already there.
+	bool reflect;
 
 } PatternVars;
 
@@ -89,6 +90,7 @@ void twinkleRain		(PatternVars &vars);
 void plasma				(PatternVars &vars);
 void meteor				(PatternVars &vars);
 void bouncingBalls		(PatternVars &vars);
+void dancingSisters		(PatternVars& vars);
 
 // I think this is the best way to do this??
 typedef void(*Pattern)(PatternVars &vars);

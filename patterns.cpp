@@ -49,7 +49,7 @@ void sinelon(PatternVars &vars)
 	// a colored dot sweeping back and forth, with fading trails
 	vars.leds->fadeToBlackBy(5 * vars.speedScaleFactor + 1);
 	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
-	int pos = beatsin16((vars.speed * 60) * vars.speedScaleFactor / 5, 0, vars.numLeds - 1, vars.positionOffset * 50);
+	int pos = beatsin16((vars.speed * 110) * vars.speedScaleFactor / 5, 0, vars.numLeds - 1, vars.positionOffset * 50);
 
 	CRGB color = HSVHue((int)vars.hue % 255);//ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 
@@ -310,7 +310,7 @@ void dripper(PatternVars &vars)
 			vars.position = 0;
 		}
 
-	int tankSize = beatsin8(5 * vars.speedScaleFactor, 10, 70, 0, vars.positionOffset);
+	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds / 75, vars.numLeds - 20, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(40);
@@ -367,7 +367,7 @@ void dripper2(PatternVars &vars)
 {
 	D(startTime("dripper2()");)
 
-	int tankSize = beatsin8(5 * vars.speedScaleFactor, 10, 70, 0, vars.positionOffset);
+	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds/75, vars.numLeds/2, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(120);
@@ -430,7 +430,7 @@ void twinkleRain(PatternVars &vars)
 		}
 	}
 
-	addGlitter(80, vars);
+	//addGlitter(80, vars);
 }
 
 void plasma(PatternVars &vars)
@@ -665,6 +665,32 @@ void bouncingBalls(PatternVars &vars)
 
 }
 
+void dancingSisters(PatternVars& vars)
+{
+	//int size = beatsin8(10 * vars.speedScaleFactor+1, 2, vars.numLeds/2 - 1);
+	int  position = beatsin16(10 * vars.speedScaleFactor, vars.numLeds/2, vars.numLeds);
+
+	vars.leds->fadeToBlackBy(84);
+
+	for (int i = vars.numLeds / 2; i < position; i++)
+	{
+		vars.leds[0][i] += CHSV(vars.hue, 255, vars.brightness);
+		vars.leds[0][vars.numLeds - i] += CHSV(vars.hue + 128, 255, vars.brightness);
+	}
+
+	/*
+	vars.leds->fadeToBlackBy(255);
+
+	for (int i = position; i < position + size - 1; i++)
+	{
+		Serial.println(i);
+		vars.leds[i][0] += CHSV(vars.hue, 255, vars.brightness);
+		vars.leds[vars.numLeds/2 - i][0] += CHSV(vars.hue * 2, 255, vars.brightness);
+		Serial.println(i);
+	}
+	*/
+}
+
 PatternList patterns = {	rainbow,
 							rainbowWithGlitter, 
 							bpm,
@@ -686,7 +712,8 @@ PatternList patterns = {	rainbow,
 							//plasma2,
 							//plasma3,
 							meteor,
-							bouncingBalls
+							bouncingBalls,
+							//dancingSisters
 						};
 
 /*PatternAndNameList patternsAndNames = {

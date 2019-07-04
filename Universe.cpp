@@ -135,6 +135,8 @@ Universe::Universe()
 	uAutoplayDuration = 20000;
 
 	uStrobeTime = 0;
+	uStrobe = false;
+	uFlash = false;
 
 	D(endTime("Universe::Universe()");)
 }
@@ -155,6 +157,18 @@ void Universe::Update()
 {
 	D(startTime("Universe::Update()");)
 
+		if (uStrobe)
+		{
+			uTempBrightness = beatsin16(uStrobeTime,0,255);
+		}
+		else if (uFlash)
+		{
+			uTempBrightness = 255 - uBrightness;
+		}
+		else
+		{
+			uTempBrightness = uBrightness;
+		}
 
 		if (uAutoplay && (millis() > uAutoplayTimeout)) {
 			NextPattern();
@@ -168,7 +182,7 @@ void Universe::Update()
 
 	if (uPower)
 	{
-		FastLED.setBrightness(uBrightness);
+		FastLED.setBrightness(uTempBrightness);
 	}
 	else
 	{
@@ -324,6 +338,14 @@ void Universe::NextHue()
 {
 	int newHue = strips[0]->vars.hue + 32;
 
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.hue = newHue;
+	}
+}
+
+void Universe::SetHue(int newHue)
+{
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
 		strips[i]->vars.hue = newHue;

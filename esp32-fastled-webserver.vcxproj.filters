@@ -51,6 +51,9 @@
     <ClInclude Include="web.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="webInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tasks.cpp">

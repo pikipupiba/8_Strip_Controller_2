@@ -9,6 +9,9 @@
 //#include <SPIFFS.h>
 //#include "FS.h"
 #include <EasyButton.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
+
 
 // -----------------------------------------------------------------------------------//
 // --------------------------------PROJECT LIBRARIES----------------------------------//
@@ -24,9 +27,9 @@
 
 Universe universe;
 
-#include "physicalInputs.h"	// Sets up and handles input from physical controls.
+//#include "physicalInputs.h"	// Sets up and handles input from physical controls.
 
-
+#include "webInput.h"
 
 
 void setup() {
@@ -35,8 +38,8 @@ void setup() {
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
-	setupInputs();			// Initialize physical buttons and knobs.
-	//setupWeb();
+	//setupInputs();			// Initialize physical buttons and knobs.
+	setupWeb();
 
 	//FastLED.setMaxPowerInVoltsAndMilliamps(5, MILLI_AMPS * NUM_STRIPS);
 	//FastLED.setBrightness(gBrightness);
@@ -52,10 +55,14 @@ void setup() {
 
 void loop()
 {
-	handleInputs();	// Handles input from physical controls.
+	//handleInputs();	// Handles input from physical controls.
+	D(startTime("Loop");)
+	handleWeb();
 
+	D(middleTime("Loop");)
 	universe.Update();
 
+	D(endTime("Loop");)
 	//showfps();
 	fps(1);
 
