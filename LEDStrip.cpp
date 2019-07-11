@@ -10,7 +10,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 		vars = {
 			leds,		// CRGBSet
 			leds->len,	// numLeds on top
-			1,			// curPattern
+			6,			// curPattern
 			255,		// brightness
 			0,			// hue
 			1,			// hueSpeed
@@ -38,7 +38,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			{0,0,0,0,0,0}, // Clock Time since last bounce
 			{0,0,0,0,0,0}, // Dampening
 			false,			// started
-			true
+			false
 	};
 
 	if (vars.reflect)
@@ -115,6 +115,9 @@ void LEDStrip::NextPattern()
 {
 	D(startTime("LEDStrip::NextPattern()");)
 
+		vars.speed = 1;
+	vars.hueSpeed = 1;
+
 	vars.curPattern = (vars.curPattern + 1) % patternCount;
 
 	D(endTime("LEDStrip::NextPattern()");)
@@ -123,6 +126,9 @@ void LEDStrip::NextPattern()
 void LEDStrip::PrevPattern()
 {
 
+	vars.speed = 1;
+	vars.hueSpeed = 1;
+
 	vars.curPattern = (vars.curPattern - 1);
 
 	if (vars.curPattern < 0)
@@ -130,6 +136,14 @@ void LEDStrip::PrevPattern()
 		vars.curPattern = patternCount - 1;
 	}
 
+}
+
+void LEDStrip::SetPattern(int newPatternNum)
+{
+	vars.speed = 1;
+	vars.hueSpeed = 1;
+
+	vars.curPattern = newPatternNum;
 }
 
 void LEDStrip::NextPalette()

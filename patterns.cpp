@@ -49,7 +49,7 @@ void sinelon(PatternVars &vars)
 	// a colored dot sweeping back and forth, with fading trails
 	vars.leds->fadeToBlackBy(5 * vars.speedScaleFactor + 1);
 	//fadeToBlackBy(vars.leds[0], NUM_LEDS, 20);
-	int pos = beatsin16((vars.speed * 110) * vars.speedScaleFactor / 5, 0, vars.numLeds - 1, vars.positionOffset * 50);
+	int pos = beatsin16((vars.speed * 60) * vars.speedScaleFactor / 5, 0, vars.numLeds - 1, vars.positionOffset * 50);
 
 	CRGB color = HSVHue((int)vars.hue % 255);//ColorFromPalette(palettes[currentPaletteIndex], gHue, 255);
 
@@ -310,7 +310,7 @@ void dripper(PatternVars &vars)
 			vars.position = 0;
 		}
 
-	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds / 75, vars.numLeds - 20, 0, vars.positionOffset);
+	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds / 75, vars.numLeds * 0.75, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(40);
@@ -367,7 +367,7 @@ void dripper2(PatternVars &vars)
 {
 	D(startTime("dripper2()");)
 
-	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds/75, vars.numLeds/2, 0, vars.positionOffset);
+	int tankSize = beatsin8(15 * vars.speedScaleFactor, vars.numLeds/75, vars.numLeds * 0.75, 0, vars.positionOffset);
 	int dripSize = 5;
 
 	vars.leds->fadeToBlackBy(120);

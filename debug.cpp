@@ -4,6 +4,8 @@ int debugDepth = 0;
 
 int numMiddles = 0;
 
+bool error = false;
+
 void displayMemory(String label = "")
 {
 	Serial.print("Memory remaining" + label + ": ");

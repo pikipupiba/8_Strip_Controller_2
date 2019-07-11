@@ -21,3 +21,5 @@ void middleTime(String newFunctionName);
 void endTime(String newFunctionName);
 
 void showfps();
+
+extern bool error;

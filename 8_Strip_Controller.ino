@@ -34,7 +34,7 @@ Universe universe;
 
 void setup() {
 
-	delay(3000);			// 3 second delay for recovery.
+	delay(100);			// 3 second delay for recovery.
 
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
@@ -68,7 +68,13 @@ void loop()
 
 	FastLEDshowESP32();
 
-	//delay(20);
+	if (error && millis() > 10000)
+	{
+		ESP.restart();
+		//universe.PrintInfo();
+	}
+
+	//delay(6);
 }
 
 
@@ -87,5 +93,14 @@ static inline void fps(const int seconds) {
 		Serial.println(framesPerSecond);
 		frameCount = 0;
 		lastMillis = now;
+	}
+
+	if (framesPerSecond < 30 && !universe.uSlow && millis() - universe.uSlowStart > 2000)
+	{
+		error = true;
+	}
+	else
+	{
+		error = false;
 	}
 }

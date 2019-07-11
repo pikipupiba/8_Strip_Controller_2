@@ -1,14 +1,17 @@
 #pragma once
 
 // WiFi network name and password:
-//const char * networkName = "ESP_Master";
-//const char * networkPswd = "esp_password";
+const char * networkName = "ESP_Master";
+const char * networkPswd = "ESP_Secure_Password";
+
+//bool timeout = false;
+//long int try_again_time = millis() + 60000 * 5;
 
 //const char * networkName = "seejayjames";
 //const char * networkPswd = "qwerty22";
 
-const char* networkName = "Trap House";
-const char* networkPswd = "ThIsHoUsEisatrap72";
+//const char* networkName = "Trap House";
+//const char* networkPswd = "ThIsHoUsEisatrap72";
 
 //IP address to send UDP data to:
 // either use the ip address of the server or
@@ -41,11 +44,15 @@ void WiFiEvent(WiFiEvent_t event) {
 		//This initializes the transfer buffer
 		udp.begin(WiFi.localIP(), udpPort);
 		connected = true;
+
+		universe.uAutoplay = false;
+
 		break;
 	case SYSTEM_EVENT_STA_DISCONNECTED:
 		Serial.println("WiFi lost connection");
 		
 		connected = false;
+
 		break;
 	default:
 		break;
@@ -63,15 +70,17 @@ void connectToWiFi(const char* ssid, const char* pwd) { // was const char * for 
 	//WiFi.mode(WIFI_AP_STA);
 	//WiFi.mode(WIFI_AP);
 
+	//timeout = false;
 
-
-	while(connected == false)
+	while(connected == false )//&& timeout == false)
 	{
+		//universe.uAutoplay = false;
+
 		static long int time = millis();
 
-		
+		//static long int timeout_time = millis() + 10000;
 
-		if (millis() > time + 2000)
+		if (millis() > time + 2500)
 		{
 			// delete old config
 			WiFi.disconnect(); // passed "true" in original
@@ -86,6 +95,13 @@ void connectToWiFi(const char* ssid, const char* pwd) { // was const char * for 
 
 			time = millis();
 		}
+
+		//if (millis() > timeout_time)
+		//{
+		//	timeout = true;
+		//	try_again_time = millis() + 60000 * 5;
+		//	universe.uAutoplay = true;
+		//}
 
 	}
 
@@ -143,7 +159,7 @@ void handleWeb() {
 			}
 			else if (valueFromPacket.substring(0, 3) == "spd")
 			{
-				universe.ChangeSpeedFactor((float)value/60);
+				universe.ChangeSpeedFactor((float)value/40);
 				Serial.println("Speed = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "hue")
@@ -153,7 +169,7 @@ void handleWeb() {
 			}
 			else if (valueFromPacket.substring(0, 3) == "hsp")
 			{
-				universe.ChangeHueFactor((float)value/150);
+				universe.ChangeHueFactor((float)value/80);
 				Serial.println("Hue Speed = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "off")
@@ -198,6 +214,27 @@ void handleWeb() {
 			{
 				ESP.restart();
 			}
+			else if (valueFromPacket.substring(0, 3) == "b02")
+			{
+				universe.ChangeReflect();
+			}
+			else if (valueFromPacket.substring(0, 3) == "pat")
+			{
+				universe.SetPattern(value);
+			}
+			else if (valueFromPacket.substring(0, 3) == "act")
+			{
+				universe.uPower = (bool)value;
+			}
+			else if (valueFromPacket.substring(0, 3) == "b03")
+			{
+				universe.uSlowStart = millis();
+				universe.uSlow = (bool)value;
+			}
+			else if (valueFromPacket.substring(0, 3) == "del")
+			{
+				universe.uSlowDelay = value;
+			}
 
 			//middleTime("handleWeb");
 
@@ -209,7 +246,11 @@ void handleWeb() {
 	}
 	else
 	{
+		//if (millis() > try_again_time)
+		//{
+		universe.uAutoplay = true;
 		connectToWiFi(networkName, networkPswd);
+		//}
 	}
 	//endTime("handleWeb NOT CONNECTED YET");
 

@@ -18,7 +18,6 @@ private:
 	LEDStrip* strips[NUM_STRIPS];	// array of LED strips
 
 	// various messy variables that I needed.
-	bool uPower;
 	float uSpeed;
 	float uHue;
 	float uHueSpeed;
@@ -29,6 +28,7 @@ private:
 	int uAutoplayDuration;
 
 public:
+	bool uPower;
 	// In my rush, I have broken encapsulation :(
 	bool uAutoplay;
 	int uBrightness;
@@ -37,6 +37,10 @@ public:
 	int uStrobeTime;
 	bool uStrobe;
 	bool uFlash;
+	bool uSlow;
+	long int uSlowStart;
+	int uPrevSpeed;
+	int uSlowDelay;
 
 	Universe();
 	~Universe();
@@ -46,6 +50,7 @@ public:
 	void Update();
 	void NextPattern();
 	void PrevPattern();
+	void SetPattern(int newPatternNum);
 	void ToggleAutoplay();
 
 	void Change(String label, int value);
@@ -62,6 +67,8 @@ public:
 
 	void ChangeSpeedFactor();
 	void ChangeSpeedFactor(float newSpeedFactor);
+
+	void ChangeReflect();
 
 	void PrintInfo();
 };

@@ -124,7 +124,7 @@ Universe::Universe()
 	gLeds.fill_solid(CRGB::Black);
 
 	uPower = true;
-	uBrightness = 20;
+	uBrightness = 255;
 	uSpeed = 0;
 	uHue = 0;
 	uHueSpeed = 0;
@@ -137,6 +137,9 @@ Universe::Universe()
 	uStrobeTime = 0;
 	uStrobe = false;
 	uFlash = false;
+	uSlow = false;
+	uSlowStart = millis();
+	uSlowDelay = 30;
 
 	D(endTime("Universe::Universe()");)
 }
@@ -159,16 +162,29 @@ void Universe::Update()
 
 		if (uStrobe)
 		{
-			uTempBrightness = beatsin16(uStrobeTime,0,255);
+			uTempBrightness = beatsin16(uStrobeTime,0,uBrightness);
 		}
 		else if (uFlash)
 		{
-			uTempBrightness = 255 - uBrightness;
+			if (uBrightness < 128)
+			{
+				uTempBrightness = 255;
+			}
+			else
+			{
+				uTempBrightness = 0;
+			}
 		}
+		
 		else
 		{
 			uTempBrightness = uBrightness;
 		}
+
+	if (uSlow)
+	{
+		delay(uSlowDelay);
+	}
 
 		if (uAutoplay && (millis() > uAutoplayTimeout)) {
 			NextPattern();
@@ -258,12 +274,28 @@ void Universe::PrevPattern()
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
+		strips[i]->vars.cyclePalettes = false;
+		strips[i]->vars.started = false;
+	}
+
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
 
 		strips[i]->vars.autoplayDuration = 20000;
 
 		strips[i]->PrevPattern();
 	}
 
+}
+
+void Universe::SetPattern(int newPatternNum)
+{
+	for (int i = 0; i < NUM_STRIPS; i++)
+	{
+		strips[i]->vars.cyclePalettes = false;
+		strips[i]->vars.started = false;
+		strips[i]->SetPattern(newPatternNum);
+	}
 }
 
 void Universe::ToggleAutoplay()
@@ -425,6 +457,33 @@ void Universe::ChangeSpeedFactor(float newSpeedFactor)
 	{
 		strips[i]->vars.speedScaleFactor = newSpeedFactor;
 	}
+}
+
+void Universe::ChangeReflect()
+{
+	//startTime("Universe::ChangeReflect()");
+
+	if (strips[0]->vars.reflect)
+	{
+		for (int i = 0; i < NUM_STRIPS; i++)
+		{
+			strips[i]->vars.reflect = false;
+			strips[i]->vars.numLeds *= 2;
+			//Serial.println(strips[i]->vars.numLeds);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < NUM_STRIPS; i++)
+		{
+			strips[i]->vars.reflect = true;
+			strips[i]->vars.numLeds /= 2;
+			//Serial.println("else");
+			//Serial.println(strips[i]->vars.numLeds);
+		}
+	}
+
+	//endTime("Universe::ChangeReflect()");
 }
 
 // Used for debugging the Universe!

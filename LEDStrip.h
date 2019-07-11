@@ -30,6 +30,7 @@ public:
 	
 	 void NextPattern();	// Advances the pattern playing on the strip.
 	 void PrevPattern();
+	 void SetPattern(int newPatternNum);
 	 void NextPalette();
 
 	 void ChangeVars(float newSpeed, float newHueSpeed, int newOffset, float newHue);
