@@ -574,7 +574,7 @@ void meteor(PatternVars &vars)
 	byte meteorSize = 5;
 	byte meteorTrailDecay = 100 * vars.speedScaleFactor;
 
-	vars.hueSpeed = 0.25;
+	//vars.hueSpeed = 0.25;
 
 		// fade brightness all LEDs one step
 		for (int j = 0; j < vars.numLeds; j++) {

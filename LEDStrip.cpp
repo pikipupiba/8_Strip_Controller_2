@@ -27,7 +27,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			false,		// autoplay
 			15000,		//autoplayDuration
 			false,		// cyclePalettes
-			5000,		// paletteDuration
+			10000,		// paletteDuration
 			1,			// hueSpeedFactor
 			1,			// speedScaleFactor
 			{0,0,0,0,0,0}, // Height
@@ -38,7 +38,7 @@ LEDStrip::LEDStrip(CRGBSet* leds)
 			{0,0,0,0,0,0}, // Clock Time since last bounce
 			{0,0,0,0,0,0}, // Dampening
 			false,			// started
-			false
+			true
 	};
 
 	if (vars.reflect)
@@ -140,8 +140,8 @@ void LEDStrip::PrevPattern()
 
 void LEDStrip::SetPattern(int newPatternNum)
 {
-	vars.speed = 1;
-	vars.hueSpeed = 1;
+	//vars.speed = 1;
+	//vars.hueSpeed = 1;
 
 	vars.curPattern = newPatternNum;
 }

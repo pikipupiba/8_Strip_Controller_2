@@ -187,8 +187,8 @@ void Universe::Update()
 	}
 
 		if (uAutoplay && (millis() > uAutoplayTimeout)) {
-			NextPattern();
-			uAutoplayTimeout = millis() + (uAutoplayDuration);
+			//NextPattern();
+			//uAutoplayTimeout = millis() + (uAutoplayDuration);
 		}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
@@ -253,7 +253,7 @@ void Universe::NextPattern()
 
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
-			strips[i]->vars.curPattern = patternNum;
+			//strips[i]->vars.curPattern = patternNum;
 		}
 
 	}
@@ -292,9 +292,12 @@ void Universe::SetPattern(int newPatternNum)
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-		strips[i]->vars.cyclePalettes = false;
-		strips[i]->vars.started = false;
-		strips[i]->SetPattern(newPatternNum);
+		if (strips[i]->vars.curPattern != newPatternNum)
+		{
+			strips[i]->vars.cyclePalettes = false;
+			strips[i]->vars.started = false;
+			strips[i]->SetPattern(newPatternNum);
+		}
 	}
 }
 

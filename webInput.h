@@ -32,7 +32,7 @@ char incomingPacket[255];  // buffer for incoming packets
 // uncommented in original
 void WiFiEvent(WiFiEvent_t event) {
 	
-	startTime("WiFiEvent");
+	//startTime("WiFiEvent");
 
 	switch (event) {
 
@@ -58,12 +58,12 @@ void WiFiEvent(WiFiEvent_t event) {
 		break;
 	}
 
-	endTime("WiFiEvent");
+	//endTime("WiFiEvent");
 
 }
 
 void connectToWiFi(const char* ssid, const char* pwd) { // was const char * for both in originial
-	Serial.println("Connecting to WiFi network: " + String(ssid));
+	//Serial.println("Connecting to WiFi network: " + String(ssid));
 
 	//WiFi.persistent(false); // trying something from online
 	WiFi.mode(WIFI_STA);
@@ -107,7 +107,7 @@ void connectToWiFi(const char* ssid, const char* pwd) { // was const char * for 
 
 	WiFi.setSleep(false);
 
-	Serial.println("Waiting for WIFI connection...");
+	//Serial.println("Waiting for WIFI connection...");
 }
 
 void setupWeb()
@@ -155,27 +155,27 @@ void handleWeb() {
 			if (valueFromPacket.substring(0, 3) == "brt")
 			{
 				universe.uBrightness = value;
-				Serial.println("Brightness = " + String(value));
+				//Serial.println("Brightness = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "spd")
 			{
 				universe.ChangeSpeedFactor((float)value/40);
-				Serial.println("Speed = " + String(value));
+				//Serial.println("Speed = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "hue")
 			{
 				universe.SetHue(value);
-				Serial.println("Hue = " + String(value));
+				//Serial.println("Hue = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "hsp")
 			{
 				universe.ChangeHueFactor((float)value/80);
-				Serial.println("Hue Speed = " + String(value));
+				//Serial.println("Hue Speed = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "off")
 			{
 				universe.ChangeOffset(value);
-				Serial.println("Offset = " + String(value));
+				//Serial.println("Offset = " + String(value));
 			}
 			else if (valueFromPacket.substring(0, 3) == "b00")
 			{
@@ -220,6 +220,7 @@ void handleWeb() {
 			}
 			else if (valueFromPacket.substring(0, 3) == "pat")
 			{
+				Serial.println("Pattern = " + String(value));
 				universe.SetPattern(value);
 			}
 			else if (valueFromPacket.substring(0, 3) == "act")
@@ -238,7 +239,7 @@ void handleWeb() {
 
 			//middleTime("handleWeb");
 
-			Serial.println(valueFromPacket);
+			//Serial.println(valueFromPacket);
 
 		}
 		//endTime("handleWeb CONNECTED");
@@ -248,7 +249,7 @@ void handleWeb() {
 	{
 		//if (millis() > try_again_time)
 		//{
-		universe.uAutoplay = true;
+		//universe.uAutoplay = true;
 		connectToWiFi(networkName, networkPswd);
 		//}
 	}

@@ -35,7 +35,7 @@ Universe universe;
 void setup() {
 
 	delay(100);			// 3 second delay for recovery.
-
+	
 	Serial.begin(115200);	// Start the Serial Monitor for debugging.
 
 	//setupInputs();			// Initialize physical buttons and knobs.
@@ -74,7 +74,7 @@ void loop()
 		//universe.PrintInfo();
 	}
 
-	//delay(6);
+	delay(6);
 }
 
 
