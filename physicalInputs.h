@@ -1,3 +1,6 @@
+// This module is currently configured to take advantage of my button panel
+// with 8 buttons and 4 potentiometers
+
 #pragma once
 
 #define POT_PIN_GOLD		14

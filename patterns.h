@@ -12,6 +12,8 @@
 #include <FastLED.h>
 #include "palettes.h"
 
+// Definition of PatternVars, A struct that contains all the parameters a pattern may need
+// to keep track of it's own state, as well as coordinate with the other strips.
 typedef struct {
 
 	CRGBSet* leds;		// Pointer to the CRGBSet containing the leds on this strip.
@@ -60,7 +62,7 @@ typedef struct {
 	float Dampening[6];
 
 	bool started;	// Lets a pattern know if it needs to initialize variables or use what's already there.
-	bool reflect;
+	bool reflect;	// if true, reflect the pattern about the halfway point of the strip
 
 } PatternVars;
 

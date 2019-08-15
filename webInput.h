@@ -1,3 +1,5 @@
+// All code for handling UDP input from the app is here.
+
 #pragma once
 
 // WiFi network name and password:
@@ -7,11 +9,6 @@ const char * networkPswd = "ESP_Secure_Password";
 //bool timeout = false;
 //long int try_again_time = millis() + 60000 * 5;
 
-//const char * networkName = "seejayjames";
-//const char * networkPswd = "qwerty22";
-
-//const char* networkName = "Trap House";
-//const char* networkPswd = "ThIsHoUsEisatrap72";
 
 //IP address to send UDP data to:
 // either use the ip address of the server or
@@ -29,7 +26,7 @@ char incomingPacket[255];  // buffer for incoming packets
 
 
 //wifi event handler
-// uncommented in original
+
 void WiFiEvent(WiFiEvent_t event) {
 	
 	//startTime("WiFiEvent");

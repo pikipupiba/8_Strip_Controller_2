@@ -160,12 +160,15 @@ void Universe::Update()
 {
 	D(startTime("Universe::Update()");)
 
+		// Select the current brightness to display the strip
 		if (uStrobe)
 		{
+			// if strobe is active, link brightness to a beatsin
 			uTempBrightness = beatsin16(uStrobeTime,0,uBrightness);
 		}
 		else if (uFlash)
 		{
+			// if flash is active, either take brightness all the way up or down, which ever is farther away
 			if (uBrightness < 128)
 			{
 				uTempBrightness = 255;
@@ -175,27 +178,32 @@ void Universe::Update()
 				uTempBrightness = 0;
 			}
 		}
-		
 		else
 		{
+			// if no brightness modifiers are active, set to the current brightness value
 			uTempBrightness = uBrightness;
 		}
 
+	// if the stutter button is being pressed, add a small stutter
 	if (uSlow)
 	{
 		delay(uSlowDelay);
 	}
 
-		if (uAutoplay && (millis() > uAutoplayTimeout)) {
-			//NextPattern();
-			//uAutoplayTimeout = millis() + (uAutoplayDuration);
-		}
+	// Currently we defer to the autoplay built into the app.
 
+	//if (uAutoplay && (millis() > uAutoplayTimeout)) {
+		//NextPattern();
+		//uAutoplayTimeout = millis() + (uAutoplayDuration);
+	//}
+
+	// Update each strip
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
 		strips[i]->UpdateStrip();
 	}
 
+	// If power is on, set brightness to the current brightness
 	if (uPower)
 	{
 		FastLED.setBrightness(uTempBrightness);
@@ -212,12 +220,16 @@ void Universe::NextPattern()
 {
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
+		// Some patterns cycle palettes, so stop that when the pattern changes
 		strips[i]->vars.cyclePalettes = false;
+
+		// Set started to false so the pattern knows to initiate itself
 		strips[i]->vars.started = false;
 	}
 
 	if (uAutoplay == true)
 	{
+		// If autoplay is on, mix up some variables about half the time.
 		if (random8() < 128)
 		{
 			uOffset = random8(35);
@@ -231,6 +243,7 @@ void Universe::NextPattern()
 				strips[i]->vars.speedScaleFactor = speedFactor;
 			}
 		}
+		// The other half of the time, use standard values for the variables.
 		else 
 		{
 			uOffset = 0;
@@ -247,6 +260,7 @@ void Universe::NextPattern()
 			}
 		}
 
+		// Randomly select a pattern
 		int patternNum = random8(patternCount);
 
 		Serial.println("Pattern Number : " + String(patternNum));
@@ -257,12 +271,11 @@ void Universe::NextPattern()
 		}
 
 	}
+	// If autoplay is off, just go to the next pattern.
 	else
 	{
 		for (int i = 0; i < NUM_STRIPS; i++)
 		{
-
-			strips[i]->vars.autoplayDuration = 20000;
 
 			strips[i]->NextPattern();
 		}
@@ -274,14 +287,13 @@ void Universe::PrevPattern()
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
+		// Same as in NextPattern()
 		strips[i]->vars.cyclePalettes = false;
 		strips[i]->vars.started = false;
 	}
 
 	for (int i = 0; i < NUM_STRIPS; i++)
 	{
-
-		strips[i]->vars.autoplayDuration = 20000;
 
 		strips[i]->PrevPattern();
 	}
@@ -294,6 +306,7 @@ void Universe::SetPattern(int newPatternNum)
 	{
 		if (strips[i]->vars.curPattern != newPatternNum)
 		{
+			// Same as in NextPattern()
 			strips[i]->vars.cyclePalettes = false;
 			strips[i]->vars.started = false;
 			strips[i]->SetPattern(newPatternNum);
@@ -304,20 +317,23 @@ void Universe::SetPattern(int newPatternNum)
 void Universe::ToggleAutoplay()
 {
 
-		if (uAutoplay == true )
-		{
+	if (uAutoplay == true )
+	{
 
-			uAutoplay = false;
+		uAutoplay = false;
 
-		}
-		else
-		{
-			uAutoplay = true;
-		}
+	}
+	else
+	{
+		uAutoplay = true;
+	}
 
+		// Jump to the next pattern when you toggle autoplay so there is visual feedback
 	NextPattern();
 }
 
+// Was going to use this as the UDP interface, but due to time constraints I just made some
+// variables public. This will not be the case in the next version.
 void Universe::Change(String label, int value)
 {
 	if (label == "power")
@@ -472,7 +488,6 @@ void Universe::ChangeReflect()
 		{
 			strips[i]->vars.reflect = false;
 			strips[i]->vars.numLeds *= 2;
-			//Serial.println(strips[i]->vars.numLeds);
 		}
 	}
 	else
@@ -481,8 +496,6 @@ void Universe::ChangeReflect()
 		{
 			strips[i]->vars.reflect = true;
 			strips[i]->vars.numLeds /= 2;
-			//Serial.println("else");
-			//Serial.println(strips[i]->vars.numLeds);
 		}
 	}
 

@@ -1,3 +1,5 @@
+// The Universe class is responsible for keeping track of global variables as well as LED data.
+
 #pragma once
 
 #include <arduino.h>
@@ -28,26 +30,28 @@ private:
 	int uAutoplayDuration;
 
 public:
-	bool uPower;
 	// In my rush, I have broken encapsulation :(
-	bool uAutoplay;
-	int uBrightness;
-	int uTempBrightness;
+	// Although the next version will fix this :)
 
-	int uStrobeTime;
-	bool uStrobe;
-	bool uFlash;
-	bool uSlow;
-	long int uSlowStart;
+	bool uPower;			// Turn off the LEDs if false
+	bool uAutoplay;			// Auto cycle patterns
+	int uBrightness;		// current global brightness
+	int uTempBrightness;	// temporary brightness if using strobe or flash
+
+	int uStrobeTime;		// Beats per minute of the strobe
+	bool uStrobe;			// if true strobe is active
+	bool uFlash;			// if true flash is active
+	bool uSlow;				// if true slow or 'stutter' is active
+	long int uSlowStart;	// the time that the stutter began
 	int uPrevSpeed;
-	int uSlowDelay;
+	int uSlowDelay;			// how much the stutter slows the program
 
 	Universe();
 	~Universe();
 
-	static Universe* CreateUniverse();	// Why should I do it like this!?!?!
+	static Universe* CreateUniverse();
 
-	void Update();
+	void Update();			// Generate the next frame
 	void NextPattern();
 	void PrevPattern();
 	void SetPattern(int newPatternNum);

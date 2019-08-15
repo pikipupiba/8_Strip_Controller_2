@@ -1,3 +1,5 @@
+// All code for handling the self hosted web server interface is here.
+
 #pragma once
 
 // Replace with your network credentials

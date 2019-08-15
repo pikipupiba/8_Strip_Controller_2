@@ -1,6 +1,6 @@
 #pragma once
 
-// All the weirdly specific values in this file are purely so that the an imations look good on my plant
+// All the weirdly specific values in this file are purely so that the animations look good on my plant
 // or to try to get their speeds to scale linearly with each other. Maybe in the future each pattern
 // object could have it's own set of scaling factors to make the pattern code more readable and to easily
 // modify various aspects of the pattern while knowing how the changes you make affect how the pattern looks.

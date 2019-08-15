@@ -1,3 +1,5 @@
+// This is where you change the properties of the current fixture the code is being displayed on.
+
 #pragma once
 
 #define NUM_STRIPS 8
