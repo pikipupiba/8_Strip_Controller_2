@@ -1,3 +1,4 @@
+// 8_Strip_Controller.ino is where the controller starts when it first boots up.
 
 // -----------------------------------------------------------------------------------//
 // --------------------------------OUTSIDE LIBRARIES----------------------------------//
@@ -49,7 +50,7 @@ void setup() {
 	// Create the universe!
 	universe = *Universe::CreateUniverse();
 
-	FastLEDshowESP32();
+	FastLEDshowESP32();	// Output LED data (should all be off after setup)
 
 	//displayMemory(" after setup");
 }
@@ -60,17 +61,17 @@ void loop()
 
 	handleWeb();		// Handles input from the app.
 
-	universe.Update();
+	universe.Update();	// Calculate the next frame.
 
 	fps(1);			// Show frames per second.
 
-	FastLEDshowESP32();
+	FastLEDshowESP32();	// Output LED data
 	
 	// If the error has been detected, restart the controller.
 	if (error && millis() > 10000)
 	{
-		ESP.restart();
 		//universe.PrintInfo();
+		ESP.restart();
 	}
 	
 	// Modify this delay time based on the number of leds in the fixture
