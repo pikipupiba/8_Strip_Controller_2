@@ -90,6 +90,7 @@ void LEDStrip::UpdateStrip()
 	D(endTime("LEDStrip::UpdateStrip()");)
 }
 
+// advance position and hue based on speed and hueSpeed
 void LEDStrip::UpdatePatternVars()
 {
 	D(startTime("LEDStrip::UpdatePatternVars()");)
